@@ -1,0 +1,231 @@
+package com.tapuniverse.passportphoto
+
+import android.os.Bundle
+import android.util.Log
+import com.tapuniverse.passportphoto.adjust.Background
+import com.tapuniverse.passportphoto.adjust.Brightness
+import com.tapuniverse.passportphoto.adjust.Constrast
+import com.tapuniverse.passportphoto.adjust.Exposure
+import com.tapuniverse.passportphoto.adjust.Hightlight
+import com.tapuniverse.passportphoto.adjust.Saturation
+import com.tapuniverse.passportphoto.adjust.Shadow
+import com.tapuniverse.passportphoto.adjust.Sharpen
+import com.tapuniverse.passportphoto.adjust.Warmth
+import com.tapuniverse.passportphoto.detect_object.RemoveBackground
+import com.tapuniverse.passportphoto.exports.ExportPhoto
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+
+private const val TAG = "MainActivity"
+
+class MainActivity : FlutterActivity() {
+    var removeBg: RemoveBackground? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        removeBg = RemoveBackground(this.applicationContext)
+    }
+
+    companion object {
+        const val CHANNEL = "com.tapuniverse.passportphoto"
+    };
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        Log.d(TAG, "configureFlutterEngine: ")
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            CHANNEL
+        ).setMethodCallHandler { call, result ->
+            if (call.method == "detectAndSeperateObject") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val format = args[2] as Int
+                    var context = this.context
+                    removeBg?.detectObjectAndRemoveBackground(
+                        context,
+                        inputPath,
+                        outputPath,
+                        format,
+                        result
+                    )
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "SeperateObject: $e")
+                }
+            } else if (call.method == "changeBackground") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val colorValue = args[2] as String
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Background().changeBackground(inputPath, outputPath, colorValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Background: $e")
+                }
+            } else if (call.method == "changeBrightness") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val brightnessValue = args[2] as Double
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Brightness().changeBrightness(inputPath, outputPath, brightnessValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Brightness: $e")
+                }
+            } else if (call.method == "changeConstrast") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val constrastValue = args[2] as Double
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Constrast().changeConstrast(inputPath, outputPath, constrastValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Constrast: $e")
+                }
+            } else if (call.method == "changeExposure") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val exposureValue = args[2] as Double
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Exposure().changeExposure(inputPath, outputPath, exposureValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Exposure: $e")
+                }
+            } else if (call.method == "changeHightlight") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val hightlightValue = args[2] as Double
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Hightlight().changeHightlight(inputPath, outputPath, hightlightValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Hightlight: $e")
+                }
+            } else if (call.method == "changeSaturation") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val saturationValue = args[2] as Double
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Saturation().changeSaturation(inputPath, outputPath, saturationValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Saturation: $e")
+                }
+            } else if (call.method == "changeShadow") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val shadowValue = args[2] as Double
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Shadow().changeShadow(inputPath, outputPath, shadowValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Shadow: $e")
+                }
+            } else if (call.method == "changeSharpen") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val sharpenValue = args[2] as Double
+                    val context = this
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Sharpen().changeSharpen(context, inputPath, outputPath, sharpenValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Sharpen: $e")
+                }
+            } else if (call.method == "changeWarmth") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val warmthValue = args[2] as Double
+                    val context = this
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val _result =
+                            Warmth().changeWarmth(context, inputPath, outputPath, warmthValue)
+                        result.success(_result)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "Warmth: $e")
+                }
+            } else if (call.method == "resizeAndResoluteImage") {
+                try {
+                    var args = call.arguments as List<Any>
+                    val inputPath = args[0] as String
+                    val outputPath = args[1] as String
+                    val format = args[2] as Int
+                    val width = args[3] as Int
+                    val height = args[4] as Int
+                    val context = this
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val resultExport =
+                            ExportPhoto().resizeAndResoluteImage(
+                                context,
+                                inputPath,
+                                outputPath,
+                                format,
+                                width,
+                                height
+                            )
+                        result.success(resultExport)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "ResizeAndResoluteImage: $e")
+                }
+            } else if (call.method == "getAllImageFolders") {
+                try {
+                    val resultExport =
+                        ExportPhoto().getAllImageFolders(this)
+                    result.success(resultExport)
+                } catch (e: Exception) {
+                    Log.e("Method Channel Error", "GetAllImageFolders: $e")
+                }
+            }
+
+        }
+    }
+}

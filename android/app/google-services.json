@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "295459167632",
+    "project_id": "passport-photo-4f731",
+    "storage_bucket": "passport-photo-4f731.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295459167632:android:49028eb3594d46631e6715",
+        "android_client_info": {
+          "package_name": "com.tapuniverse.passportphoto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295459167632-nrtq2bgljdkritdrunihrln5q0fq33j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQi0j7Ped6bQ9vFSnBv31IP2o7URDBgnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295459167632-nrtq2bgljdkritdrunihrln5q0fq33j6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "295459167632-uog86s2fbnvo91vejhgifn2kf1ml0nad.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tapuniverse.passportphoto",
+                "app_store_id": "1492235157"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

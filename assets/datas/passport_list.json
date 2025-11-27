@@ -1,0 +1,6030 @@
+[
+  {
+    "size" : [
+      40,
+      45
+    ],
+    "name" : "Passport 4x4.5 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.2,
+    "upper" : 0.92,
+    "country" : "Afghanistan"
+  },
+  {
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "ID card (e-tazkira) 3x4 cm",
+    "upper" : 0.92,
+    "country" : "Afghanistan",
+    "sizeUnit" : "mm",
+    "lower" : 0.2
+  },
+  {
+    "lower" : 0.3,
+    "name" : "Passport 5x5 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "size" : [
+      50,
+      50
+    ],
+    "country" : "Afghanistan"
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Afghanistan",
+    "lower" : 0.2,
+    "name" : "Visa 35x45 mm",
+    "upper" : 0.92
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Afghanistan",
+    "name" : "Visa 2x2 in (from the USA)",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "Visa and e-visa 36x47 mm",
+    "upper" : 0.92,
+    "country" : "Albania",
+    "lower" : 0.2,
+    "size" : [
+      36,
+      47
+    ]
+  },
+  {
+    "lower" : 0.15,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Algeria",
+    "sizeUnit" : "mm",
+    "name" : "Passport 35x45 mm",
+    "upper" : 0.92
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Algeria",
+    "sizeUnit" : "mm",
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.15,
+    "upper" : 0.92
+  },
+  {
+    "name" : "ID card 35x45 mm",
+    "upper" : 0.92,
+    "lower" : 0.15,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Algeria"
+  },
+  {
+    "lower" : 0.15,
+    "name" : "Residence 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Algeria",
+    "upper" : 0.92,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.92,
+    "country" : "Algeria",
+    "name" : "Work permit 35x45 mm",
+    "lower" : 0.15
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Angola",
+    "name" : "Visa 3x4 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.19
+  },
+  {
+    "upper" : 0.94,
+    "name" : "Visa online 381x496 px",
+    "lower" : 0.19,
+    "size" : [
+      381,
+      496
+    ],
+    "country" : "Angola",
+    "sizeUnit" : "px"
+  },
+  {
+    "upper" : 0.92,
+    "name" : "DNI 4x4 cm",
+    "size" : [
+      40,
+      40
+    ],
+    "lower" : 0.22,
+    "country" : "Argentina",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Argentina",
+    "size" : [
+      40,
+      40
+    ],
+    "name" : "Passport 4x4 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.92,
+    "lower" : 0.22
+  },
+  {
+    "upper" : 0.92,
+    "size" : [
+      40,
+      40
+    ],
+    "country" : "Argentina",
+    "name" : "Visa 4x4 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.22
+  },
+  {
+    "country" : "Argentina",
+    "lower" : 0.21,
+    "name" : "Passport in USA 1.5x1.5 inch",
+    "upper" : 0.92,
+    "sizeUnit" : "inch",
+    "size" : [
+      1.5,
+      1.5
+    ]
+  },
+  {
+    "size" : [
+      1.5,
+      1.5
+    ],
+    "name" : "Visa in USA 1.5x1.5 inch",
+    "sizeUnit" : "inch",
+    "lower" : 0.21,
+    "upper" : 0.92,
+    "country" : "Argentina"
+  },
+  {
+    "size" : [
+      600,
+      600
+    ],
+    "lower" : 0.15,
+    "upper" : 0.9,
+    "name" : "Evisa photo 600x600 px",
+    "country" : "Armenia",
+    "sizeUnit" : "px"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Armenia",
+    "lower" : 0.19,
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.19,
+    "country" : "Armenia",
+    "name" : "Certificate of return 35x45 mm",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Armenia",
+    "name" : "ID card 3x4 cm",
+    "upper" : 0.94,
+    "lower" : 0.19,
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "country" : "Australia",
+    "lower" : 0.14,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Australia",
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.14,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "country" : "Australia",
+    "lower" : 0.14,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Adult proof of age card 35x45 mm",
+    "upper" : 0.94
+  },
+  {
+    "name" : "NSW Driver's Licence Photo-kit 35x45 mm",
+    "lower" : 0.14,
+    "sizeUnit" : "mm",
+    "country" : "Australia",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94
+  },
+  {
+    "name" : "Victoria Driver's Licence Photo-kit 35x45 mm",
+    "lower" : 0.14,
+    "upper" : 0.94,
+    "country" : "Australia",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "Queensland Driver's Licence Photo 35x45 mm",
+    "lower" : 0.14,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Australia",
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Austria",
+    "name" : "ID card 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.14,
+    "upper" : 0.94
+  },
+  {
+    "country" : "Austria",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.14,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Austria",
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.14,
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Driving license 35x45 mm",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.14,
+    "country" : "Austria"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Residence permit 35x45 mm",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "lower" : 0.14,
+    "country" : "Austria"
+  },
+  {
+    "country" : "Azerbaijan",
+    "name" : "Visa 30x40 mm",
+    "size" : [
+      30,
+      40
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Azerbaijan",
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "ID card 30x40 mm",
+    "lower" : 0.17
+  },
+  {
+    "country" : "Bahrainch",
+    "lower" : 0.27,
+    "upper" : 0.9,
+    "name" : "Passport 4x6 cm",
+    "size" : [
+      40,
+      60
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Visa 4x6 cm",
+    "lower" : 0.27,
+    "sizeUnit" : "mm",
+    "country" : "Bahrainch",
+    "size" : [
+      40,
+      60
+    ],
+    "upper" : 0.9
+  },
+  {
+    "country" : "Bahrainch",
+    "sizeUnit" : "px",
+    "upper" : 0.94,
+    "name" : "ID card 240x320 px",
+    "lower" : 0.14,
+    "size" : [
+      240,
+      320
+    ]
+  },
+  {
+    "country" : "Bangladesh",
+    "lower" : 0.22,
+    "size" : [
+      40,
+      50
+    ],
+    "upper" : 0.9,
+    "name" : "Passport 40x50 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.2,
+    "upper" : 0.82,
+    "size" : [
+      45,
+      55
+    ],
+    "country" : "Bangladesh",
+    "name" : "Passport 45x55 mm"
+  },
+  {
+    "lower" : 0.19,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport application 35x45 mm",
+    "country" : "Bangladesh",
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Bangladesh",
+    "upper" : 0.94,
+    "size" : [
+      25,
+      30
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "name" : "Passport 25x30 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "Dual nationality 40x50 mm",
+    "size" : [
+      40,
+      50
+    ],
+    "country" : "Bangladesh",
+    "upper" : 0.9,
+    "lower" : 0.22
+  },
+  {
+    "country" : "Bangladesh",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "E-visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Bangladesh",
+    "upper" : 0.94,
+    "lower" : 0.17
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      37,
+      37
+    ],
+    "country" : "Bangladesh",
+    "lower" : 0.25,
+    "name" : "Visa 37x37 mm"
+  },
+  {
+    "name" : "Passport 5x5 cm",
+    "upper" : 0.9,
+    "country" : "Barbados",
+    "size" : [
+      50,
+      50
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.22
+  },
+  {
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "country" : "Belarus",
+    "lower" : 0.26,
+    "size" : [
+      40,
+      50
+    ],
+    "name" : "Passport 40x50 mm"
+  },
+  {
+    "country" : "Belarus",
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "Electronic ID card (eID) 35x45 mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Belgium"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "country" : "Belgium",
+    "name" : "Kids-ID 35x45 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.25,
+    "country" : "Belgium",
+    "name" : "Visa 35x45 mm",
+    "upper" : 0.95
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Belgium",
+    "upper" : 0.94,
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.17
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "name" : "Residence permit 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Belgium",
+    "lower" : 0.17
+  },
+  {
+    "name" : "Visa 3.5x4.5 cm",
+    "sizeUnit" : "mm",
+    "country" : "Beninch",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "Passport 3.5x4.5 cm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Beninch",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "upper" : 0.94,
+    "name" : "Passport 2x2 in from USA",
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Beninch",
+    "lower" : 0.25,
+    "sizeUnit" : "inch"
+  },
+  {
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Bhutan",
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Visa 3x4 cm",
+    "country" : "Botswana",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Botswana",
+    "sizeUnit" : "mm",
+    "name" : "Passport 3x4 cm",
+    "upper" : 0.94,
+    "lower" : 0.19
+  },
+  {
+    "name" : "Residence permit 3x4 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "size" : [
+      30,
+      40
+    ],
+    "upper" : 0.94,
+    "country" : "Botswana"
+  },
+  {
+    "country" : "Brazil",
+    "name" : "Visa online 431x531 px",
+    "size" : [
+      431,
+      531
+    ],
+    "sizeUnit" : "px",
+    "lower" : 0.25,
+    "upper" : 0.93
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Brazil",
+    "name" : "ID card 3x4 cm",
+    "lower" : 0.19
+  },
+  {
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "country" : "Brazil",
+    "upper" : 0.94,
+    "name" : "Visa 2x2 in (from the US)"
+  },
+  {
+    "name" : "Passport online 431x531 px",
+    "upper" : 0.94,
+    "country" : "Brazil",
+    "lower" : 0.19,
+    "sizeUnit" : "px",
+    "size" : [
+      431,
+      531
+    ]
+  },
+  {
+    "size" : [
+      50,
+      70
+    ],
+    "name" : "Common Passport 5x7 cm",
+    "upper" : 0.89,
+    "country" : "Brazil",
+    "sizeUnit" : "mm",
+    "lower" : 0.28
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Brazil",
+    "upper" : 0.94,
+    "name" : "SPTrans Bilhete Único 3x4 cm",
+    "size" : [
+      30,
+      40
+    ],
+    "lower" : 0.18
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.21,
+    "name" : "Passport 4x5.2 cm",
+    "upper" : 0.89,
+    "country" : "Brunei",
+    "size" : [
+      40,
+      52
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.18,
+    "size" : [
+      35,
+      42
+    ],
+    "upper" : 0.92,
+    "country" : "Brunei",
+    "name" : "Emergency Certificate (Sijil Darurat) 3.5x4.2 cm"
+  },
+  {
+    "country" : "Bulgaria",
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.26,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "lower" : 0.17,
+    "country" : "Bulgaria",
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.26,
+    "upper" : 0.94,
+    "country" : "Bulgaria",
+    "name" : "ID card (лична карта) 35x45 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Burkina Faso",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport 3.5x4.5 cm"
+  },
+  {
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 3.5x4.5 cm",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "country" : "Burkina Faso"
+  },
+  {
+    "upper" : 0.9,
+    "lower" : 0.33,
+    "name" : "Passport 4x6 cm",
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Cambodia",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Cambodia",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.18
+  },
+  {
+    "name" : "Visa 4x6 cm",
+    "upper" : 0.9,
+    "size" : [
+      40,
+      60
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.33,
+    "country" : "Cambodia"
+  },
+  {
+    "upper" : 0.94,
+    "country" : "Cambodia",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "name" : "Visa 2x2 in from the USA",
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "name" : "Passport 4x4 cm",
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      40
+    ],
+    "country" : "Cameroon",
+    "lower" : 0.17,
+    "upper" : 0.92
+  },
+  {
+    "upper" : 0.9,
+    "name" : "Passport 4x5 cm",
+    "sizeUnit" : "mm",
+    "country" : "Cameroon",
+    "size" : [
+      40,
+      50
+    ],
+    "lower" : 0.22
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Cameroon",
+    "upper" : 0.94,
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "name" : "Passport 2x2 inch",
+    "upper" : 0.94,
+    "country" : "Cameroon"
+  },
+  {
+    "country" : "Cameroon",
+    "name" : "Visa 4x4 cm",
+    "lower" : 0.17,
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      40
+    ]
+  },
+  {
+    "country" : "Cameroon",
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "name" : "Visa 2x2 inch"
+  },
+  {
+    "country" : "Cameroon",
+    "upper" : 0.92,
+    "sizeUnit" : "px",
+    "size" : [
+      500,
+      500
+    ],
+    "lower" : 0.17,
+    "name" : "Visa online 500x500 px"
+  },
+  {
+    "country" : "Canada",
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "country" : "Canada",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "name" : "Temporary Resident Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17
+  },
+  {
+    "name" : "Passport 5x7 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.8,
+    "lower" : 0.3,
+    "size" : [
+      50,
+      70
+    ],
+    "country" : "Canada"
+  },
+  {
+    "sizeUnit" : "px",
+    "name" : "Permanent Resident Card Online 1200x1680 px",
+    "size" : [
+      1200,
+      1680
+    ],
+    "country" : "Canada",
+    "lower" : 0.36,
+    "upper" : 0.86
+  },
+  {
+    "lower" : 0.3,
+    "upper" : 0.8,
+    "name" : "Permanent Resident Card 5x7 cm",
+    "country" : "Canada",
+    "sizeUnit" : "mm",
+    "size" : [
+      50,
+      70
+    ]
+  },
+  {
+    "name" : "Citizenship 5x7 cm",
+    "lower" : 0.3,
+    "sizeUnit" : "mm",
+    "size" : [
+      50,
+      70
+    ],
+    "country" : "Canada",
+    "upper" : 0.8
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.24,
+    "size" : [
+      50,
+      50
+    ],
+    "name" : "Passport 50x50 mm",
+    "country" : "Chad",
+    "upper" : 0.92
+  },
+  {
+    "country" : "Chile",
+    "size" : [
+      20,
+      30
+    ],
+    "lower" : 0.15,
+    "upper" : 0.9,
+    "name" : "Visa 2x3 cm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      33,
+      48
+    ],
+    "name" : "Visa 33x48 mm",
+    "lower" : 0.24,
+    "upper" : 0.9,
+    "country" : "China",
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Passport online 354x472 px",
+    "size" : [
+      354,
+      472
+    ],
+    "country" : "China",
+    "upper" : 0.9,
+    "sizeUnit" : "px",
+    "lower" : 0.2
+  },
+  {
+    "lower" : 0.24,
+    "upper" : 0.9,
+    "name" : "Passport 33x48 mm",
+    "size" : [
+      33,
+      48
+    ],
+    "country" : "China",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "China",
+    "name" : "Visa online 354x472 px",
+    "sizeUnit" : "px",
+    "lower" : 0.2,
+    "upper" : 0.9,
+    "size" : [
+      354,
+      472
+    ]
+  },
+  {
+    "lower" : 0.24,
+    "size" : [
+      33,
+      48
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "country" : "China",
+    "name" : "Green Card 33x48 mm"
+  },
+  {
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "country" : "China",
+    "sizeUnit" : "px",
+    "size" : [
+      300,
+      400
+    ],
+    "name" : "APEC Business Travel Card 300x400 px"
+  },
+  {
+    "country" : "Colombia",
+    "name" : "Visa online 3x4 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.95,
+    "lower" : 0.19,
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "name" : "Cedula de ciudadania 4x5 cm",
+    "country" : "Colombia",
+    "sizeUnit" : "mm",
+    "upper" : 0.82,
+    "lower" : 0.28,
+    "size" : [
+      40,
+      50
+    ]
+  },
+  {
+    "name" : "Residence visa 3x4 cm",
+    "upper" : 0.95,
+    "lower" : 0.19,
+    "sizeUnit" : "mm",
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Colombia"
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "country" : "Comoros",
+    "upper" : 0.94,
+    "name" : "Visa 2x2 inch",
+    "lower" : 0.25
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "country" : "Comoros",
+    "name" : "ID card 2x2 inch",
+    "lower" : 0.25,
+    "upper" : 0.94
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Congo [DRC]",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Congo [Republic]",
+    "lower" : 0.22,
+    "upper" : 0.92,
+    "size" : [
+      40,
+      40
+    ],
+    "name" : "E-visa 4x4 cm"
+  },
+  {
+    "country" : "Congo [Republic]",
+    "upper" : 0.92,
+    "lower" : 0.22,
+    "size" : [
+      40,
+      40
+    ],
+    "name" : "Visa 4x4 cm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "upper" : 0.94,
+    "sizeUnit" : "inch",
+    "country" : "Congo [Republic]",
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Visa 2x2 in (from US, Canada, Mexico)",
+    "lower" : 0.25
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Congo [Republic]",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "upper" : 0.92,
+    "lower" : 0.22,
+    "size" : [
+      40,
+      40
+    ],
+    "name" : "Passport 4x4 cm",
+    "country" : "Congo [Republic]",
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "upper" : 0.94,
+    "country" : "Congo [Republic]",
+    "lower" : 0.25,
+    "name" : "Passport 2x2 in (from US, Canada, Mexico)"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.17,
+    "country" : "Croatia",
+    "name" : "ID card (Osobna iskaznica) 35x45 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "name" : "Visa 35x45 mm",
+    "country" : "Croatia",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "ID card (Cypriot identity card) 35x45 mm",
+    "lower" : 0.17,
+    "country" : "Cyprus",
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "upper" : 0.9,
+    "name" : "Passport 4x5 cm",
+    "size" : [
+      40,
+      50
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Cyprus",
+    "lower" : 0.22
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Cyprus",
+    "lower" : 0.17
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "ID card (Cypriot identity card) 3x4 cm",
+    "lower" : 0.18,
+    "size" : [
+      30,
+      40
+    ],
+    "upper" : 0.94,
+    "country" : "Cyprus"
+  },
+  {
+    "country" : "Cyprus",
+    "upper" : 0.94,
+    "lower" : 0.25,
+    "sizeUnit" : "inch",
+    "name" : "Visa 2x2 in from USA",
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "lower" : 0.18,
+    "country" : "Czech Republic",
+    "name" : "Passport 35x45 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      50,
+      50
+    ],
+    "upper" : 0.92,
+    "lower" : 0.24,
+    "name" : "Passport 5x5 cm",
+    "country" : "Czech Republic"
+  },
+  {
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "country" : "Czech Republic",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.18
+  },
+  {
+    "upper" : 0.94,
+    "name" : "Visa 35x45 mm",
+    "country" : "Denmark",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.18,
+    "sizeUnit" : "mm"
+  },
+  {
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "name" : "Passport 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Denmark",
+    "lower" : 0.18
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Denmark",
+    "lower" : 0.18,
+    "name" : "ID card 35x45 mm",
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "name" : "Driving license 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Denmark",
+    "lower" : 0.18,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "University of Copenhagen student card 200x200 pixel",
+    "country" : "Denmark",
+    "sizeUnit" : "px",
+    "lower" : 0.23,
+    "upper" : 0.93,
+    "size" : [
+      200,
+      200
+    ]
+  },
+  {
+    "lower" : 0.25,
+    "sizeUnit" : "inch",
+    "name" : "Visa 2x2 inch",
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Djibouti",
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "Passport 3.5x3.5 cm",
+    "country" : "Djibouti",
+    "lower" : 0.22,
+    "size" : [
+      35,
+      35
+    ],
+    "upper" : 0.92
+  },
+  {
+    "size" : [
+      35,
+      35
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.22,
+    "name" : "ID card 3.5x3.5 cm",
+    "upper" : 0.92,
+    "country" : "Djibouti"
+  },
+  {
+    "upper" : 0.9,
+    "country" : "Dominica",
+    "size" : [
+      38,
+      45
+    ],
+    "lower" : 0.24,
+    "sizeUnit" : "mm",
+    "name" : "Passport 38x45 mm"
+  },
+  {
+    "country" : "Egypt",
+    "name" : "Passport 40x60 mm",
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ],
+    "upper" : 0.9,
+    "lower" : 0.26
+  },
+  {
+    "lower" : 0.26,
+    "upper" : 0.9,
+    "country" : "Egypt",
+    "size" : [
+      40,
+      60
+    ],
+    "name" : "Visa 40x60 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Egypt",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "name" : "Passport (from USA only) 2x2 inch",
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "upper" : 0.94,
+    "name" : "Visa 2x2 inch",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Egypt"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Equatorial Guinea",
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "ID card (ID-kaart) 40x50 mm",
+    "lower" : 0.19,
+    "country" : "Estonia",
+    "upper" : 0.94,
+    "size" : [
+      40,
+      50
+    ]
+  },
+  {
+    "name" : "Passport 40x50 mm",
+    "lower" : 0.19,
+    "country" : "Estonia",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      40,
+      50
+    ]
+  },
+  {
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "size" : [
+      40,
+      50
+    ],
+    "country" : "Estonia",
+    "name" : "Aliens passport (välismaalase pass) 40x50 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.18,
+    "country" : "Estonia",
+    "name" : "Resident digital identity card 1300x1600 px",
+    "sizeUnit" : "px",
+    "size" : [
+      1300,
+      1600
+    ],
+    "upper" : 0.93
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "country" : "Estonia",
+    "name" : "Visa 40x50 mm",
+    "lower" : 0.19,
+    "size" : [
+      40,
+      50
+    ]
+  },
+  {
+    "country" : "Estonia",
+    "name" : "Long stay D visa 35x45 mm",
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "Weapons permit 30x40 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Estonia"
+  },
+  {
+    "name" : "E-visa online 35x45 mm",
+    "country" : "Ethiopia",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17
+  },
+  {
+    "name" : "Visa offline 3x4 cm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Ethiopia",
+    "sizeUnit" : "mm",
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Ethiopia",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "name" : "Passport 3x4 cm",
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "country" : "Ethiopia",
+    "lower" : 0.17,
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "Origin card 3x4 cm"
+  },
+  {
+    "name" : "Ation Card for Ethiopian Origin 2x3 cm",
+    "lower" : 0.27,
+    "size" : [
+      20,
+      30
+    ],
+    "country" : "Ethiopia",
+    "sizeUnit" : "mm",
+    "upper" : 0.9
+  },
+  {
+    "name" : "Schengen Visa 35x45 mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "European Union",
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "lower" : 0.17,
+    "country" : "European Union",
+    "sizeUnit" : "mm",
+    "name" : "EU Blue Card 35x45 mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.17,
+    "country" : "Fiji",
+    "name" : "Passport 35x45 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "size" : [
+      36,
+      47
+    ],
+    "country" : "Finland",
+    "upper" : 0.92,
+    "name" : "Passport 36x47 mm"
+  },
+  {
+    "country" : "Finland",
+    "upper" : 0.92,
+    "lower" : 0.17,
+    "size" : [
+      36,
+      47
+    ],
+    "name" : "Visa 36x47 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Passport online 500x653 px",
+    "country" : "Finland",
+    "upper" : 0.92,
+    "lower" : 0.17,
+    "sizeUnit" : "px",
+    "size" : [
+      500,
+      653
+    ]
+  },
+  {
+    "lower" : 0.17,
+    "size" : [
+      500,
+      653
+    ],
+    "country" : "Finland",
+    "name" : "ID card online 500x653 px",
+    "sizeUnit" : "px",
+    "upper" : 0.92
+  },
+  {
+    "country" : "Finland",
+    "upper" : 0.92,
+    "size" : [
+      36,
+      47
+    ],
+    "name" : "ID card offline 36x47 mm",
+    "lower" : 0.17,
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "name" : "Passport 35x45 mm",
+    "country" : "France"
+  },
+  {
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "country" : "France",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm"
+  },
+  {
+    "country" : "France",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "name" : "ID card 35x45 mm"
+  },
+  {
+    "upper" : 0.94,
+    "country" : "France",
+    "sizeUnit" : "mm",
+    "name" : "France 26x32 mm photo",
+    "size" : [
+      26,
+      32
+    ],
+    "lower" : 0.19
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "country" : "France",
+    "name" : "Driving Licence 35x45 mm",
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "France",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Asylum Seeker (Demande D'asile) 35x45 mm"
+  },
+  {
+    "name" : "Evisa 35x45 mm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Gabon",
+    "upper" : 0.94
+  },
+  {
+    "name" : "Visa 35x35 mm",
+    "size" : [
+      35,
+      35
+    ],
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "country" : "Gabon",
+    "lower" : 0.17
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Georgia",
+    "name" : "Passport 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.2,
+    "upper" : 0.89
+  },
+  {
+    "upper" : 0.84,
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.18,
+    "country" : "Georgia",
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "px",
+    "size" : [
+      472,
+      591
+    ],
+    "upper" : 0.84,
+    "lower" : 0.18,
+    "country" : "Georgia",
+    "name" : "E-visa 472x591 px"
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Germany",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "name" : "Passport 35x45 mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "ID card 35x45 mm",
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "country" : "Germany"
+  },
+  {
+    "country" : "Germany",
+    "name" : "Visa 35x45 mm",
+    "upper" : 0.94,
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "name" : "Driving License 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Germany"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Germany",
+    "name" : "Residence permit 35x45 mm",
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "upper" : 0.94,
+    "country" : "Ghana",
+    "name" : "Visa 3.5x4.5 cm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Ghana",
+    "sizeUnit" : "mm",
+    "name" : "Passport 3.5x4.5 cm",
+    "lower" : 0.17
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "country" : "Ghana",
+    "name" : "Visa 3x4 cm from Brazil",
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Greece",
+    "name" : "Passport 40x60 mm",
+    "lower" : 0.28,
+    "upper" : 0.85
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "country" : "Greece",
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "size" : [
+      36,
+      36
+    ],
+    "name" : "ID card 3.6x3.6 cm",
+    "country" : "Greece",
+    "lower" : 0.27
+  },
+  {
+    "sizeUnit" : "inch",
+    "name" : "Visa 2x2 in (from the USA)",
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "upper" : 0.94,
+    "country" : "Greece"
+  },
+  {
+    "size" : [
+      150,
+      214
+    ],
+    "country" : "Greece",
+    "sizeUnit" : "px",
+    "upper" : 0.92,
+    "name" : "Conakry e-visa for paf.gov.gn",
+    "lower" : 0.2
+  },
+  {
+    "lower" : 0.2,
+    "upper" : 0.92,
+    "country" : "Guinea",
+    "size" : [
+      35,
+      50
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Conakry visa and e-visa 35x50 mm"
+  },
+  {
+    "country" : "Guinea-Bissau",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "Visa 3x4 cm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "E-visa 3x4 cm",
+    "upper" : 0.94,
+    "country" : "Guinea-Bissau"
+  },
+  {
+    "name" : "Passport 26x32 mm",
+    "country" : "Guyana",
+    "upper" : 0.94,
+    "size" : [
+      26,
+      32
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.19
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.2,
+    "upper" : 0.94,
+    "country" : "Guyana",
+    "name" : "Passport 35x45 mm",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "sizeUnit" : "px",
+    "lower" : 0.2,
+    "upper" : 0.9,
+    "name" : "Online e-passport 1200x1600 px",
+    "size" : [
+      1200,
+      1600
+    ],
+    "country" : "Hong Kong"
+  },
+  {
+    "size" : [
+      1200,
+      1600
+    ],
+    "country" : "Hong Kong",
+    "name" : "Online e-visa 1200x1600 px",
+    "sizeUnit" : "px",
+    "upper" : 0.9,
+    "lower" : 0.2
+  },
+  {
+    "name" : "Passport 40x50 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.2,
+    "upper" : 0.9,
+    "country" : "Hong Kong",
+    "size" : [
+      40,
+      50
+    ]
+  },
+  {
+    "size" : [
+      40,
+      50
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "country" : "Hong Kong",
+    "lower" : 0.2,
+    "name" : "Visa 40x50 mm"
+  },
+  {
+    "size" : [
+      40,
+      50
+    ],
+    "name" : "APEC Business Travel Card 40x50 mm",
+    "country" : "Hong Kong",
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "lower" : 0.2
+  },
+  {
+    "country" : "Hungary",
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "upper" : 94,
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "upper" : 94,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "country" : "Hungary"
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "E-visa 2x2 inch",
+    "country" : "India",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "upper" : 94
+  },
+  {
+    "country" : "India",
+    "lower" : 0.25,
+    "upper" : 94,
+    "name" : "Visa 2x2 inch",
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch"
+  },
+  {
+    "upper" : 94,
+    "name" : "Visa 190x190 px",
+    "lower" : 0.25,
+    "country" : "India",
+    "sizeUnit" : "px",
+    "size" : [
+      190,
+      190
+    ]
+  },
+  {
+    "country" : "India",
+    "name" : "OCI Passport 2x2 inch",
+    "sizeUnit" : "inch",
+    "upper" : 94,
+    "size" : [
+      2,
+      2
+    ],
+    "lower" : 0.25
+  },
+  {
+    "name" : "Passport 2x2 inch",
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "country" : "India",
+    "lower" : 0.25,
+    "upper" : 94
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "country" : "India",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 94
+  },
+  {
+    "lower" : 0.22,
+    "upper" : 92,
+    "country" : "India",
+    "size" : [
+      35,
+      35
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Passport 35x35 mm"
+  },
+  {
+    "size" : [
+      25,
+      35
+    ],
+    "sizeUnit" : "mm",
+    "name" : "PAN card 25x35 mm",
+    "lower" : 0.2,
+    "country" : "India",
+    "upper" : 93
+  },
+  {
+    "size" : [
+      420,
+      525
+    ],
+    "upper" : 0.93,
+    "name" : "Online driving licence 420x525 px",
+    "sizeUnit" : "px",
+    "lower" : 0.18,
+    "country" : "India"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Driving licence 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "India",
+    "upper" : 0.93,
+    "lower" : 0.2
+  },
+  {
+    "name" : "Voter ID card 2x2 inch",
+    "upper" : 0.94,
+    "country" : "India",
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "lower" : 0.25
+  },
+  {
+    "lower" : 0.25,
+    "upper" : 0.92,
+    "size" : [
+      35,
+      35
+    ],
+    "country" : "India",
+    "name" : "PIO (Person of Indian Origin) 35x35 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.25,
+    "upper" : 0.92,
+    "country" : "India",
+    "size" : [
+      35,
+      35
+    ],
+    "name" : "PCC \/ Birth Certificate 35x35 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      35,
+      35
+    ],
+    "name" : "FRRO (Foreigner Registration) 35x35 mm online",
+    "lower" : 0.25,
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "country" : "India"
+  },
+  {
+    "lower" : 0.25,
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Passport for BLS USA Application 2x2 inch",
+    "country" : "India",
+    "upper" : 0.94
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ],
+    "lower" : 0.25,
+    "country" : "India",
+    "name" : "Police clearance certificate (PCC) 2x2 inch",
+    "sizeUnit" : "inch"
+  },
+  {
+    "lower" : 0.16,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "India",
+    "name" : "UDAAN DCGA 35x45 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Indonesia",
+    "lower" : 0.19,
+    "name" : "Visa 3x4 cm online red background",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.25,
+    "name" : "Passport 51x51 mm red background",
+    "country" : "Indonesia",
+    "size" : [
+      51,
+      51
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "country" : "Indonesia",
+    "lower" : 0.25,
+    "name" : "Passport 51x51 mm white background",
+    "size" : [
+      51,
+      51
+    ]
+  },
+  {
+    "sizeUnit" : "inch",
+    "upper" : 0.94,
+    "country" : "Indonesia",
+    "lower" : 0.25,
+    "name" : "Visa 2x2 inch",
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "lower" : 0.17,
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Indonesia",
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "size" : [
+      400,
+      600
+    ],
+    "sizeUnit" : "px",
+    "upper" : 0.93,
+    "country" : "Iran",
+    "lower" : 0.23,
+    "name" : "E-visa 400x600 px"
+  },
+  {
+    "upper" : 0.94,
+    "name" : "Passport 35x45 mm",
+    "country" : "Iraq",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "size" : [
+      50,
+      50
+    ],
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "country" : "Iraq",
+    "name" : "Visa 5x5 cm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Iraq",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "name" : "ID card 35x45 mm",
+    "upper" : 0.94,
+    "lower" : 0.17
+  },
+  {
+    "name" : "Residence 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Iraq",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "lower" : 0.25,
+    "name" : "Passport 5x5 cm",
+    "upper" : 0.94,
+    "country" : "Iraq",
+    "sizeUnit" : "mm",
+    "size" : [
+      50,
+      50
+    ]
+  },
+  {
+    "size" : [
+      715,
+      951
+    ],
+    "name" : "Passport online 715x951 px",
+    "lower" : 0.31,
+    "sizeUnit" : "px",
+    "country" : "Ireland",
+    "upper" : 0.86
+  },
+  {
+    "upper" : 0.94,
+    "country" : "Ireland",
+    "name" : "Passport offline 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "country" : "Ireland",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "name" : "Visa 35x45 mm"
+  },
+  {
+    "country" : "Ireland",
+    "name" : "Employment Permit Application 35x45 mm",
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Israel",
+    "lower" : 0.17,
+    "name" : "ID card 3.5x4.5 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.89
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Gov.il 3.5x4.5 cm",
+    "country" : "Israel",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.89
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.89,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Israel"
+  },
+  {
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "size" : [
+      50,
+      50
+    ],
+    "country" : "Israel",
+    "lower" : 0.25,
+    "name" : "Passport 5x5 cm"
+  },
+  {
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Israel"
+  },
+  {
+    "name" : "Visa 55x55 mm (usually from India)",
+    "lower" : 0.21,
+    "size" : [
+      55,
+      55
+    ],
+    "upper" : 0.89,
+    "sizeUnit" : "mm",
+    "country" : "Israel"
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Italy",
+    "upper" : 0.96,
+    "name" : "ID card 35x45 mm",
+    "lower" : 0.21
+  },
+  {
+    "country" : "Italy",
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.21,
+    "upper" : 0.96,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "country" : "Italy",
+    "sizeUnit" : "mm",
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "upper" : 0.925,
+    "country" : "Italy",
+    "size" : [
+      40,
+      40
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Passport 40x40 mm (LA consulate)",
+    "lower" : 0.175
+  },
+  {
+    "country" : "Ivory Coast",
+    "name" : "Cote d'Ivoire visa 3.5x4.5 cm",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "lower" : 0.17
+  },
+  {
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "name" : "Passport 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "country" : "Jamaica"
+  },
+  {
+    "name" : "Passport 35x45 mm pale blue background",
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "country" : "Jamaica",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.84,
+    "size" : [
+      45,
+      45
+    ],
+    "country" : "Japan",
+    "name" : "Visa 45x45 mm, head 27 mm",
+    "lower" : 0.23
+  },
+  {
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "name" : "Visa 2x2 in (standard visa from the US)",
+    "country" : "Japan",
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "lower" : 0.16,
+    "country" : "Japan",
+    "size" : [
+      45,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Visa 45x45 mm, head 34 mm",
+    "upper" : 0.92
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.17,
+    "country" : "Japan",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Residence Card or Certificate of Eligibility 30x40 mm",
+    "sizeUnit" : "mm",
+    "country" : "Japan",
+    "upper" : 0.85,
+    "lower" : 0.22,
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "name" : "GoGoNihon 35x45 mm",
+    "country" : "Japan",
+    "sizeUnit" : "mm",
+    "upper" : 0.945,
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.345
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.16,
+    "upper" : 0.92,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Japan",
+    "name" : "APEC Business Travel Card 35x45 mm"
+  },
+  {
+    "country" : "Jordan",
+    "name" : "Passport 3.5x4.5 cm",
+    "upper" : 0.92,
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.18,
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.18,
+    "country" : "Jordan",
+    "name" : "Visa 3.5x4.5 cm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.92,
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Jordan",
+    "name" : "ID card 3.5x4.5 cm",
+    "lower" : 0.18,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.92
+  },
+  {
+    "lower" : 0.18,
+    "country" : "Jordan",
+    "upper" : 0.92,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Residence 3.5x4.5 cm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "upper" : 0.92,
+    "name" : "Work permit 3.5x4.5 cm",
+    "lower" : 0.18,
+    "country" : "Jordan",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Jordan",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "name" : "Passport 2x2 in from USA",
+    "upper" : 0.94
+  },
+  {
+    "name" : "2x2 in ID card in USA",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Jordan"
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "country" : "Kazakhstan",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "name" : "ID card 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Kazakhstan",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      413,
+      531
+    ],
+    "country" : "Kazakhstan",
+    "sizeUnit" : "px",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "name" : "Passport online 413x531 px"
+  },
+  {
+    "upper" : 0.94,
+    "name" : "ID card online 413x531 px",
+    "sizeUnit" : "px",
+    "country" : "Kazakhstan",
+    "size" : [
+      413,
+      531
+    ],
+    "lower" : 0.17
+  },
+  {
+    "lower" : 0.17,
+    "country" : "Kazakhstan",
+    "sizeUnit" : "mm",
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "inch",
+    "upper" : 0.94,
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Visa photo 2x2",
+    "country" : "Kenya"
+  },
+  {
+    "country" : "Kenya",
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Passport 2x2 inch",
+    "lower" : 0.17,
+    "sizeUnit" : "inch"
+  },
+  {
+    "upper" : 0.95,
+    "sizeUnit" : "px",
+    "size" : [
+      500,
+      500
+    ],
+    "name" : "E-visa online 500x500 px",
+    "country" : "Kenya",
+    "lower" : 0.25
+  },
+  {
+    "name" : "Passport (first time) 4x5 cm blue background",
+    "sizeUnit" : "mm",
+    "upper" : 0.93,
+    "lower" : 0.17,
+    "size" : [
+      40,
+      50
+    ],
+    "country" : "Kuwait"
+  },
+  {
+    "lower" : 0.26,
+    "size" : [
+      40,
+      60
+    ],
+    "name" : "Passport 4x6 cm",
+    "upper" : 0.9,
+    "country" : "Kuwait",
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "size" : [
+      51,
+      51
+    ],
+    "country" : "Kuwait",
+    "name" : "Visa 51x51 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Kuwait",
+    "name" : "ID card 4x6 cm",
+    "lower" : 0.26,
+    "size" : [
+      40,
+      60
+    ],
+    "upper" : 0.9
+  },
+  {
+    "lower" : 0.26,
+    "upper" : 0.9,
+    "country" : "Kuwait",
+    "name" : "Residence 4x6 cm",
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "name" : "Work permit 4x6 cm",
+    "lower" : 0.26,
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Kuwait",
+    "sizeUnit" : "mm",
+    "upper" : 0.9
+  },
+  {
+    "name" : "Passport 4x6 cm",
+    "lower" : 0.26,
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "country" : "Kyrgyzstan",
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Kyrgyzstan",
+    "lower" : 0.17
+  },
+  {
+    "upper" : 0.9,
+    "country" : "Laos",
+    "sizeUnit" : "mm",
+    "name" : "Visa 4x6 cm",
+    "lower" : 0.3,
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "Visa 3x4 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "country" : "Laos"
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Laos",
+    "name" : "Passport 4x6 cm",
+    "lower" : 0.3
+  },
+  {
+    "name" : "Adoption visa 2x2 inch",
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "country" : "Laos",
+    "upper" : 0.94
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 3.5x4.5 cm",
+    "lower" : 0.17,
+    "country" : "Lebanon",
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport 3.5x4.5 cm",
+    "sizeUnit" : "mm",
+    "country" : "Lebanon",
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "name" : "ID card 3.5x4.5 cm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Lebanon"
+  },
+  {
+    "name" : "Residence 3.5x4.5 cm",
+    "country" : "Lebanon",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "country" : "Lebanon",
+    "name" : "Lebanese work permit 3.5x4.5 cm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "upper" : 0.94,
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Lesotho",
+    "name" : "E-visa 2x2 inch",
+    "lower" : 0.25
+  },
+  {
+    "upper" : 0.94,
+    "lower" : 0.17,
+    "name" : "Passport 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Liberia",
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.3,
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Libya",
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "name" : "Visa 4x6 cm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.3,
+    "size" : [
+      40,
+      60
+    ],
+    "name" : "Passport 4x6 cm",
+    "upper" : 0.9,
+    "country" : "Libya"
+  },
+  {
+    "lower" : 0.3,
+    "country" : "Libya",
+    "name" : "ID card 4x6 cm",
+    "upper" : 0.9,
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "name" : "ID card 40x60 mm",
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Lithuania",
+    "sizeUnit" : "mm",
+    "upper" : 0.87,
+    "lower" : 0.32
+  },
+  {
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Lithuania",
+    "sizeUnit" : "mm",
+    "upper" : 0.87,
+    "name" : "Passport 40x60 mm",
+    "lower" : 0.32
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Lithuania",
+    "name" : "Passport 35x45 mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17
+  },
+  {
+    "name" : "Resident identity card (BIR) 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.92,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Macau"
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Macau",
+    "upper" : 0.92,
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "Visa 33x48 mm",
+    "country" : "Macau",
+    "upper" : 0.9,
+    "size" : [
+      33,
+      48
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.24
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Visa 3.5x4.5 cm",
+    "upper" : 0.92,
+    "lower" : 0.17,
+    "country" : "Madagascar"
+  },
+  {
+    "country" : "Madagascar",
+    "lower" : 0.24,
+    "size" : [
+      50,
+      50
+    ],
+    "name" : "Visa 5x5 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.92
+  },
+  {
+    "country" : "Madagascar",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "sizeUnit" : "inch",
+    "name" : "Visa 2x2 inch",
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Malawi",
+    "name" : "Passport 3.5x4.5 cm",
+    "lower" : 0.17
+  },
+  {
+    "name" : "EVisa online application 35x50 mm",
+    "size" : [
+      35,
+      50
+    ],
+    "country" : "Malaysia",
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "lower" : 0.25
+  },
+  {
+    "country" : "Malaysia",
+    "upper" : 0.8,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      50
+    ],
+    "lower" : 0.22,
+    "name" : "Passport 35x50 mm blue background"
+  },
+  {
+    "country" : "Malaysia",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      50
+    ],
+    "name" : "Visa 35x50 mm blue background",
+    "lower" : 0.2,
+    "upper" : 0.9
+  },
+  {
+    "sizeUnit" : "px",
+    "upper" : 0.9,
+    "name" : "Expat 99x142 px blue background",
+    "country" : "Malaysia",
+    "size" : [
+      99,
+      142
+    ],
+    "lower" : 0.2
+  },
+  {
+    "name" : "Visa 35x50 mm white background",
+    "country" : "Malaysia",
+    "lower" : 0.2,
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "size" : [
+      35,
+      50
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.8,
+    "name" : "Passport 35x50 mm white background",
+    "country" : "Malaysia",
+    "lower" : 0.22,
+    "size" : [
+      35,
+      50
+    ]
+  },
+  {
+    "name" : "Visa 35x45 mm blue background",
+    "lower" : 0.2,
+    "upper" : 0.89,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Malaysia"
+  },
+  {
+    "upper" : 0.89,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.2,
+    "country" : "Malaysia",
+    "name" : "Visa 35x45 mm white background"
+  },
+  {
+    "sizeUnit" : "px",
+    "lower" : 0.15,
+    "country" : "Malaysia",
+    "size" : [
+      217,
+      280
+    ],
+    "name" : "EMGS online 217x280 px",
+    "upper" : 0.9
+  },
+  {
+    "size" : [
+      35,
+      50
+    ],
+    "country" : "Malaysia",
+    "lower" : 0.2,
+    "upper" : 0.9,
+    "name" : "APEC Business Travel Card 35x50 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Maldives",
+    "name" : "Passport 35x45 mm"
+  },
+  {
+    "size" : [
+      30,
+      40
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Malta",
+    "lower" : 0.19,
+    "name" : "Passport 30x40 mm",
+    "upper" : 0.94
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Malta",
+    "lower" : 0.19,
+    "upper" : 0.94
+  },
+  {
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Mauritania"
+  },
+  {
+    "upper" : 0.94,
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Mauritania",
+    "lower" : 0.19,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "ID card 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Mauritania"
+  },
+  {
+    "country" : "Mauritius",
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.2,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "Visa 25x35 mm",
+    "sizeUnit" : "mm",
+    "country" : "Mexico",
+    "lower" : 0.2,
+    "upper" : 0.95,
+    "size" : [
+      25,
+      35
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Mexico",
+    "name" : "Permanent residents visa 31x39 mm",
+    "upper" : 0.95,
+    "size" : [
+      31,
+      39
+    ],
+    "lower" : 0.21
+  },
+  {
+    "size" : [
+      1.5,
+      1.75
+    ],
+    "country" : "Mexico",
+    "sizeUnit" : "inch",
+    "name" : "Visa 1.5x1.75 inch",
+    "lower" : 0.2,
+    "upper" : 0.95
+  },
+  {
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "country" : "Moldova",
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "ID card (Buletin de identitate) 3x4 cm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "ID card (Buletin de identitate) 10x15 cm",
+    "country" : "Moldova",
+    "lower" : 0.23,
+    "size" : [
+      100,
+      150
+    ],
+    "upper" : 0.88
+  },
+  {
+    "country" : "Moldova",
+    "name" : "Visa 35x45 mm",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.23,
+    "upper" : 0.83,
+    "country" : "Moldova",
+    "size" : [
+      50,
+      60
+    ],
+    "name" : "Work and residence permit 50x60 mm"
+  },
+  {
+    "name" : "Visa 3x4 cm",
+    "lower" : 0.19,
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Mongolia",
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "name" : "Passport 3.5x4.5 cm",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "country" : "Mongolia"
+  },
+  {
+    "name" : "Citizenship 4x6 cm",
+    "country" : "Mongolia",
+    "lower" : 0.26,
+    "upper" : 0.9,
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "country" : "Mongolia",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "name" : "Residence permit 3x4 cm",
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "country" : "Morocco",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Passport 35x45 mm",
+    "country" : "Morocco"
+  },
+  {
+    "lower" : 0.19,
+    "upper" : 0.94,
+    "country" : "Morocco",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "National ID Card 35x45 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Morocco",
+    "upper" : 0.94,
+    "name" : "Residence 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.19
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.17,
+    "country" : "Mozambique"
+  },
+  {
+    "country" : "Myanmar [Burma]",
+    "upper" : 0.94,
+    "size" : [
+      38,
+      46
+    ],
+    "name" : "Visa 38x46 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.22
+  },
+  {
+    "size" : [
+      1.5,
+      2
+    ],
+    "name" : "Myanmar Permanent Residence 1.5x2 inch",
+    "lower" : 0.25,
+    "sizeUnit" : "inch",
+    "country" : "Myanmar [Burma]",
+    "upper" : 0.8
+  },
+  {
+    "country" : "Myanmar [Burma]",
+    "sizeUnit" : "mm",
+    "size" : [
+      38,
+      48
+    ],
+    "upper" : 0.92,
+    "name" : "Myanmar (Burma) Visa 38x48 mm",
+    "lower" : 0.2
+  },
+  {
+    "lower" : 0.22,
+    "country" : "Namibia",
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "size" : [
+      37,
+      52
+    ],
+    "name" : "Passport 37x52 mm"
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Namibia",
+    "name" : "Passport 2x2 inch",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "sizeUnit" : "inch"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.22,
+    "size" : [
+      37,
+      52
+    ],
+    "upper" : 0.92,
+    "name" : "Visa 37x52 mm",
+    "country" : "Namibia"
+  },
+  {
+    "country" : "Namibia",
+    "name" : "Visa from Europe 35x45 mm",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "sizeUnit" : "inch",
+    "size" : [
+      1.5,
+      1.5
+    ],
+    "lower" : 0.22,
+    "name" : "Online visa 1.5x1.5 inch",
+    "upper" : 0.94,
+    "country" : "Nepal"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "country" : "Nepal",
+    "sizeUnit" : "mm",
+    "lower" : 0.22,
+    "upper" : 0.94
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ],
+    "lower" : 0.25,
+    "name" : "Visa 2x2 inch",
+    "country" : "Nepal",
+    "sizeUnit" : "inch"
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.25,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Nepal",
+    "name" : "Passport 35x45 mm"
+  },
+  {
+    "lower" : 0.19,
+    "country" : "Nepal",
+    "name" : "NRN ID card 25x30 mm",
+    "upper" : 0.94,
+    "size" : [
+      25,
+      30
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Netherlands",
+    "name" : "Passport 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.21,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.86
+  },
+  {
+    "upper" : 0.86,
+    "lower" : 0.21,
+    "name" : "Visa 35x45 mm",
+    "country" : "Netherlands",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.21,
+    "upper" : 0.86,
+    "name" : "ID card 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Netherlands",
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Driving license 35x45 mm",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Netherlands",
+    "lower" : 0.21,
+    "upper" : 0.86
+  },
+  {
+    "size" : [
+      1500,
+      2000
+    ],
+    "name" : "Passport Online 1500x2000 px",
+    "country" : "New Zealand",
+    "sizeUnit" : "px",
+    "lower" : 0.22,
+    "upper" : 0.92
+  },
+  {
+    "sizeUnit" : "px",
+    "upper" : 0.92,
+    "lower" : 0.2,
+    "size" : [
+      1650,
+      2200
+    ],
+    "name" : "Visa online 1650x2200 px",
+    "country" : "New Zealand"
+  },
+  {
+    "upper" : 0.9,
+    "name" : "Passport Offline 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.25,
+    "country" : "New Zealand",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "New Zealand",
+    "name" : "Visa Offline 35x45 mm",
+    "lower" : 0.25,
+    "upper" : 0.9,
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.25,
+    "upper" : 0.9,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Firearms Licence 35x45 mm",
+    "country" : "New Zealand"
+  },
+  {
+    "name" : "Certificate of Identity \/ Refugee Travel Document 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "New Zealand",
+    "lower" : 0.25,
+    "sizeUnit" : "mm",
+    "upper" : 0.9
+  },
+  {
+    "name" : "Evidence of Age Document 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "New Zealand",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.9,
+    "lower" : 0.25
+  },
+  {
+    "upper" : 0.9,
+    "name" : "APEC Business Travel Card 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.25,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "New Zealand"
+  },
+  {
+    "name" : "Visa 2x2 in (from USA)",
+    "country" : "Niger",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "upper" : 0.94
+  },
+  {
+    "name" : "Online visa 200-450 px",
+    "country" : "Nigeria",
+    "sizeUnit" : "inch",
+    "lower" : 0.2,
+    "upper" : 0.93,
+    "size" : [
+      200,
+      450
+    ]
+  },
+  {
+    "lower" : 0.19,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Nigeria",
+    "name" : "Visa 3.5x4.5 cm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "NNPC recruitement 5x5 cm",
+    "upper" : 0.94,
+    "country" : "Nigeria",
+    "lower" : 0.25,
+    "size" : [
+      50,
+      50
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.19,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Norway"
+  },
+  {
+    "country" : "Norway",
+    "name" : "Visa 35x45 mm",
+    "lower" : 0.19,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "upper" : 0.9,
+    "name" : "Passport 4x6 cm",
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Oman",
+    "sizeUnit" : "mm",
+    "lower" : 0.26
+  },
+  {
+    "lower" : 0.26,
+    "country" : "Oman",
+    "size" : [
+      40,
+      60
+    ],
+    "name" : "Visa 4x6 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.9
+  },
+  {
+    "upper" : 0.9,
+    "name" : "ID card 4x6 cm",
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Oman",
+    "sizeUnit" : "mm",
+    "lower" : 0.26
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Oman",
+    "upper" : 0.9,
+    "lower" : 0.26,
+    "name" : "Residence 4x6 cm"
+  },
+  {
+    "country" : "Oman",
+    "sizeUnit" : "mm",
+    "name" : "Work permit 4x6 cm",
+    "lower" : 0.26,
+    "size" : [
+      40,
+      60
+    ],
+    "upper" : 0.9
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Pakistan",
+    "sizeUnit" : "mm",
+    "upper" : 0.82,
+    "lower" : 0.22,
+    "name" : "Babies NADRA ID card 35x45 mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "name" : "National ID card (NADRA, NICOP) 35x45 mm",
+    "upper" : 0.94,
+    "country" : "Pakistan"
+  },
+  {
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Pakistan",
+    "name" : "CNIC 35x45 mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "country" : "Pakistan",
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.19
+  },
+  {
+    "size" : [
+      2,
+      35
+    ],
+    "upper" : 0.85,
+    "country" : "Pakistan",
+    "name" : "NADRA 2 35x45 mm",
+    "lower" : 0.3,
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      3,
+      35
+    ],
+    "country" : "Pakistan",
+    "sizeUnit" : "mm",
+    "lower" : 0.3,
+    "upper" : 0.82,
+    "name" : "NADRA 3 35x45 mm"
+  },
+  {
+    "upper" : 0.92,
+    "country" : "Pakistan",
+    "name" : "Origin Card (NADRA) 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "upper" : 0.92,
+    "country" : "Pakistan",
+    "name" : "Family Registration Certificate (NADRA) 35x45 mm"
+  },
+  {
+    "upper" : 0.92,
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "country" : "Pakistan"
+  },
+  {
+    "name" : "Visa 2x2 in (from USA)",
+    "sizeUnit" : "inch",
+    "country" : "Pakistan",
+    "upper" : 0.94,
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Palestinian Territories",
+    "name" : "Passport 35x45 mm blue background",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.19
+  },
+  {
+    "country" : "Palestinian Territories",
+    "size" : [
+      30,
+      40
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "name" : "Visa 30x40 mm",
+    "upper" : 0.94
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "ID card 35x45 mm blue background",
+    "country" : "Palestinian Territories",
+    "sizeUnit" : "mm",
+    "lower" : 0.19
+  },
+  {
+    "country" : "Papua New Guinea",
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Citizenship 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Papua New Guinea",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "name" : "Visa 2x2 inch",
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Philippines"
+  },
+  {
+    "size" : [
+      1,
+      1
+    ],
+    "country" : "Philippines",
+    "upper" : 0.9,
+    "sizeUnit" : "inch",
+    "name" : "RUSH ID photo 1x1 inch",
+    "lower" : 0.25
+  },
+  {
+    "sizeUnit" : "inch",
+    "size" : [
+      1,
+      1
+    ],
+    "name" : "License 1x1 in photo",
+    "country" : "Philippines",
+    "upper" : 0.9,
+    "lower" : 0.25
+  },
+  {
+    "country" : "Philippines",
+    "sizeUnit" : "mm",
+    "upper" : 0.89,
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.15,
+    "name" : "Machine Readable Passport 3.5x4.5 cm"
+  },
+  {
+    "name" : "Visa 35x45 mm",
+    "country" : "Philippines",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "country" : "Philippines",
+    "name" : "Certificate of Identity and Registration (CIR) card 2.5x2.5 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.25,
+    "upper" : 0.93,
+    "size" : [
+      25,
+      25
+    ]
+  },
+  {
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Philippines",
+    "name" : "Acknowledgement of employment contracts 3x4 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "upper" : 0.94
+  },
+  {
+    "lower" : 0.17,
+    "country" : "Poland",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport 35x45 mm"
+  },
+  {
+    "lower" : 0.17,
+    "name" : "ID card online 492x633 px",
+    "size" : [
+      492,
+      633
+    ],
+    "country" : "Poland",
+    "upper" : 0.94,
+    "sizeUnit" : "px"
+  },
+  {
+    "lower" : 0.17,
+    "country" : "Poland",
+    "name" : "ID card 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "ID card online 492x610 px",
+    "sizeUnit" : "px",
+    "lower" : 0.2,
+    "size" : [
+      492,
+      610
+    ],
+    "upper" : 0.95,
+    "country" : "Poland"
+  },
+  {
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Poland",
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Poland",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "name" : "Card of the Pole 35x45 mm"
+  },
+  {
+    "upper" : 0.94,
+    "name" : "Permanent residence card 35x45 mm",
+    "lower" : 0.17,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Poland"
+  },
+  {
+    "upper" : 0.94,
+    "lower" : 0.17,
+    "country" : "Poland",
+    "sizeUnit" : "mm",
+    "name" : "Temporary residence card 35x45 mm",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      32,
+      32
+    ],
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "name" : "ID card 32x32 mm",
+    "lower" : 0.21,
+    "country" : "Portugal"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Portugal",
+    "name" : "Passport 35x45 mm",
+    "upper" : 0.94
+  },
+  {
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Portugal",
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.19,
+    "name" : "Citizen card 3x4 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Portugal"
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.17,
+    "name" : "Visa (in Indonesia and Philippines) 30x40 mm",
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Portugal"
+  },
+  {
+    "country" : "Qatar",
+    "name" : "Visa 38x48 mm",
+    "sizeUnit" : "mm",
+    "upper" : 0.92,
+    "lower" : 0.2,
+    "size" : [
+      38,
+      48
+    ]
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "lower" : 0.25,
+    "country" : "Qatar",
+    "sizeUnit" : "inch",
+    "name" : "Passport 2x2 inch",
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Qatar",
+    "size" : [
+      38,
+      48
+    ],
+    "name" : "Passport 38x48 mm",
+    "lower" : 0.2,
+    "upper" : 0.92
+  },
+  {
+    "name" : "ID card 38x48 mm",
+    "lower" : 0.2,
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "country" : "Qatar",
+    "size" : [
+      38,
+      48
+    ]
+  },
+  {
+    "country" : "Romania",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.19,
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "ID card 3x4 cm"
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Romania",
+    "sizeUnit" : "mm",
+    "name" : "Visa 30x40 mm",
+    "lower" : 0.19
+  },
+  {
+    "country" : "Russia",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.16,
+    "sizeUnit" : "mm",
+    "upper" : 0.89,
+    "name" : "International Passport Gosuslugi.ru, 35x45 mm"
+  },
+  {
+    "upper" : 0.89,
+    "sizeUnit" : "mm",
+    "name" : "International Passport offline, 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.16,
+    "country" : "Russia"
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "Internal Passport, 35x45 mm",
+    "upper" : 0.9,
+    "country" : "Russia",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.12
+  },
+  {
+    "lower" : 0.12,
+    "upper" : 0.9,
+    "country" : "Russia",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Internal Passport for Gosuslugi, 35x45 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Russia",
+    "upper" : 0.89,
+    "sizeUnit" : "mm",
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.3,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      30,
+      40
+    ],
+    "name" : "Pensioner ID 3x4 cm",
+    "country" : "Russia",
+    "sizeUnit" : "mm",
+    "lower" : 0.275,
+    "upper" : 0.9
+  },
+  {
+    "country" : "Russia",
+    "sizeUnit" : "px",
+    "lower" : 0.29,
+    "size" : [
+      245,
+      350
+    ],
+    "name" : "Driving License Gosuslugi 245x350 px",
+    "upper" : 0.96
+  },
+  {
+    "lower" : 0.29,
+    "country" : "Russia",
+    "sizeUnit" : "mm",
+    "upper" : 0.96,
+    "name" : "Army ID 3x4 cm",
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "name" : "Work Permit 3x4 cm",
+    "country" : "Russia",
+    "size" : [
+      30,
+      40
+    ],
+    "lower" : 0.275,
+    "upper" : 0.9,
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.275,
+    "name" : "Medical Book 3x4 cm",
+    "upper" : 0.9,
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Russia"
+  },
+  {
+    "upper" : 0.9,
+    "country" : "Russia",
+    "name" : "Temporary Residence 3x4 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.275,
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "lower" : 0.275,
+    "name" : "Student ID 3x4 cm",
+    "sizeUnit" : "mm",
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Russia",
+    "upper" : 0.9
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      25,
+      35
+    ],
+    "country" : "Russia",
+    "name" : "Student ID 25x35 mm",
+    "lower" : 0.16,
+    "upper" : 0.94
+  },
+  {
+    "country" : "Russia",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.16,
+    "sizeUnit" : "mm",
+    "upper" : 0.89,
+    "name" : "Visa 35x45 mm"
+  },
+  {
+    "lower" : 0.18,
+    "size" : [
+      450,
+      600
+    ],
+    "name" : "Evisa 450x600 px Vladivostok and Far East",
+    "sizeUnit" : "px",
+    "upper" : 0.93,
+    "country" : "Russia"
+  },
+  {
+    "lower" : 0.275,
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Russia",
+    "sizeUnit" : "mm",
+    "name" : "Hunting License 3x4 cm",
+    "upper" : 0.9
+  },
+  {
+    "size" : [
+      30,
+      40
+    ],
+    "country" : "Russia",
+    "sizeUnit" : "mm",
+    "upper" : 0.96,
+    "name" : "Moscow social card 3x4 cm",
+    "lower" : 0.25
+  },
+  {
+    "upper" : 0.93,
+    "name" : "APEC Business Travel Card 4x6 cm",
+    "lower" : 0.18,
+    "country" : "Russia",
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "size" : [
+      500,
+      500
+    ],
+    "country" : "Rwanda",
+    "name" : "East Africa Tourist Visa online 500x500 px",
+    "sizeUnit" : "px",
+    "lower" : 0.27,
+    "upper" : 0.92
+  },
+  {
+    "country" : "Rwanda",
+    "lower" : 0.25,
+    "name" : "Africa visa photo 2x2 in (Rwanda)",
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport photo 35x45 mm",
+    "lower" : 0.17,
+    "country" : "Saint Kitts and Nevis",
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.25,
+    "country" : "Samoa"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport 35x45 mm",
+    "country" : "Samoa",
+    "sizeUnit" : "mm",
+    "lower" : 0.25,
+    "upper" : 0.94
+  },
+  {
+    "upper" : 0.93,
+    "lower" : 0.23,
+    "size" : [
+      200,
+      200
+    ],
+    "name" : "E-visa online 200x200 px",
+    "country" : "Saudi Arabia",
+    "sizeUnit" : "px"
+  },
+  {
+    "size" : [
+      40,
+      60
+    ],
+    "lower" : 0.26,
+    "country" : "Saudi Arabia",
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "name" : "Passport 4x6 cm"
+  },
+  {
+    "country" : "Saudi Arabia",
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "name" : "Visa 2x2 inch"
+  },
+  {
+    "upper" : 0.9,
+    "size" : [
+      40,
+      60
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Saudi Arabia",
+    "lower" : 0.26,
+    "name" : "ID card 4x6 cm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "Work permit 4x6 cm",
+    "country" : "Saudi Arabia",
+    "lower" : 0.26,
+    "size" : [
+      40,
+      60
+    ],
+    "upper" : 0.9
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Serbia",
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "name" : "Passport 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Seychelles",
+    "sizeUnit" : "mm",
+    "lower" : 0.17
+  },
+  {
+    "upper" : 0.94,
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "Sierra Leone"
+  },
+  {
+    "country" : "Singapore",
+    "sizeUnit" : "px",
+    "name" : "Visa online 400x514 px",
+    "lower" : 0.17,
+    "size" : [
+      400,
+      514
+    ],
+    "upper" : 0.91
+  },
+  {
+    "name" : "Passport online 400x514 px",
+    "country" : "Singapore",
+    "size" : [
+      400,
+      514
+    ],
+    "sizeUnit" : "px",
+    "lower" : 0.17,
+    "upper" : 0.91
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "name" : "ID card 35x45 mm",
+    "country" : "Singapore",
+    "upper" : 0.91
+  },
+  {
+    "country" : "Singapore",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.91,
+    "name" : "Passport offline 35x45 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "country" : "Singapore",
+    "name" : "Visa offline 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.91
+  },
+  {
+    "country" : "Singapore",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.91,
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "name" : "Citizenship Certificate 35x45 mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Singapore",
+    "name" : "Certificate of Identity 35x45 mm",
+    "sizeUnit" : "mm",
+    "upper" : 0.91,
+    "lower" : 0.17
+  },
+  {
+    "lower" : 0.23,
+    "country" : "Slovakia",
+    "size" : [
+      30,
+      35
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "name" : "ID card 30x35 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      30,
+      35
+    ],
+    "country" : "Slovakia",
+    "lower" : 0.23,
+    "upper" : 0.94,
+    "name" : "Visa 30x35 mm"
+  },
+  {
+    "name" : "Visa 35x45 mm",
+    "upper" : 0.94,
+    "country" : "Somalia",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Somalia",
+    "lower" : 0.26,
+    "upper" : 0.9,
+    "name" : "ID card 4x6 cm",
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport 35x45 mm",
+    "country" : "South Africa",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "upper" : 0.94,
+    "country" : "South Africa",
+    "lower" : 0.17,
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "South Korea",
+    "name" : "Visa 35x45 mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.17,
+    "country" : "South Korea",
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Alien Registration 3x4 cm",
+    "country" : "South Korea",
+    "sizeUnit" : "mm",
+    "lower" : 0.15,
+    "upper" : 0.93,
+    "size" : [
+      30,
+      40
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "name" : "DNI (ID card) 26x32 mm",
+    "country" : "Spainch",
+    "upper" : 0.94,
+    "size" : [
+      26,
+      32
+    ]
+  },
+  {
+    "name" : "Passport 26x32 mm",
+    "lower" : 0.19,
+    "country" : "Spainch",
+    "size" : [
+      26,
+      32
+    ],
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.19,
+    "country" : "Spainch",
+    "size" : [
+      26,
+      32
+    ],
+    "name" : "Driving license 26x32 mm",
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "size" : [
+      26,
+      32
+    ],
+    "lower" : 0.19,
+    "country" : "Spainch",
+    "name" : "TIE card (foreigner ID) 26x32 mm",
+    "sizeUnit" : "mm",
+    "upper" : 0.94
+  },
+  {
+    "country" : "Spainch",
+    "name" : "NIE card 26x32 mm",
+    "upper" : 0.94,
+    "size" : [
+      26,
+      32
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.19
+  },
+  {
+    "lower" : 0.19,
+    "size" : [
+      26,
+      32
+    ],
+    "country" : "Spainch",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "name" : "Gun license 26x32 mm"
+  },
+  {
+    "name" : "Passport 40x53 mm",
+    "size" : [
+      40,
+      53
+    ],
+    "upper" : 0.72,
+    "sizeUnit" : "mm",
+    "lower" : 0.2,
+    "country" : "Spainch"
+  },
+  {
+    "country" : "Spainch",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm"
+  },
+  {
+    "upper" : 0.94,
+    "name" : "Visa 2x2 in (US Chicago consulate)",
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Spainch",
+    "sizeUnit" : "inch",
+    "lower" : 0.25
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "country" : "Sri Lanka",
+    "name" : "Visa 3.5x4.5 cm",
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "country" : "Sri Lanka",
+    "lower" : 0.17,
+    "name" : "Passport 3.5x4.5 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "name" : "ID card 35x45 mm blue background",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Sri Lanka",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94
+  },
+  {
+    "name" : "Dual citizenship 3.5x4.5 cm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Sri Lanka",
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Driving licence 3.5x4.5 cm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Sri Lanka",
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      40,
+      50
+    ],
+    "country" : "Sudan",
+    "sizeUnit" : "mm",
+    "name" : "Passport 40x50 mm",
+    "upper" : 0.9,
+    "lower" : 0.22
+  },
+  {
+    "upper" : 0.9,
+    "size" : [
+      40,
+      50
+    ],
+    "lower" : 0.22,
+    "name" : "ID card 40x50 mm",
+    "country" : "Sudan",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Sudan",
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "lower" : 0.22,
+    "size" : [
+      40,
+      50
+    ],
+    "name" : "Visa 40x50 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Suriname",
+    "name" : "Visa online 35x45 mm",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "country" : "Suriname",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.17
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "name" : "Visa 35x45 mm",
+    "upper" : 0.94,
+    "country" : "Suriname"
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      35,
+      50
+    ],
+    "lower" : 0.17,
+    "country" : "Suriname",
+    "name" : "Passport 35x50 mm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Sweden",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "name" : "Visa 35x45 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "name" : "Visa 35x45 mm",
+    "country" : "Switzerland",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "country" : "Switzerland",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "ID card 35x45 mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "sizeUnit" : "mm"
+  },
+  {
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "Syria",
+    "name" : "Passport 2x2 inch"
+  },
+  {
+    "name" : "Residence 2x2 inch",
+    "country" : "Syria",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "upper" : 0.9,
+    "size" : [
+      40,
+      60
+    ],
+    "name" : "Passport 40x60 mm",
+    "country" : "Syria",
+    "sizeUnit" : "mm",
+    "lower" : 0.26
+  },
+  {
+    "name" : "ID card 40x60 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.26,
+    "upper" : 0.9,
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Syria"
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ],
+    "upper" : 0.9,
+    "country" : "Syria",
+    "lower" : 0.26,
+    "name" : "Visa 40x60 mm"
+  },
+  {
+    "country" : "Taiwan",
+    "name" : "Passport 35x45 mm",
+    "lower" : 0.19,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "inch",
+    "country" : "Taiwan",
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Passport 2x2 in (apply from the US)",
+    "upper" : 0.94
+  },
+  {
+    "name" : "Visa 35x45 mm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "country" : "Taiwan",
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "inch",
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "ID card 2x2 inch",
+    "country" : "Taiwan",
+    "lower" : 0.25
+  },
+  {
+    "name" : "ID card 25x30 mm",
+    "country" : "Taiwan",
+    "lower" : 0.19,
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "size" : [
+      25,
+      30
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "name" : "Passport 3.5x4.5 cm",
+    "upper" : 0.94,
+    "lower" : 0.19,
+    "country" : "Tajikistan",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "size" : [
+      50,
+      60
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "lower" : 0.19,
+    "country" : "Tajikistan",
+    "name" : "E-visa 5x6 cm"
+  },
+  {
+    "country" : "Tanzania",
+    "upper" : 0.92,
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      45
+    ],
+    "lower" : 0.17,
+    "name" : "Passport 40x45 mm"
+  },
+  {
+    "upper" : 0.9,
+    "country" : "Thailand",
+    "size" : [
+      40,
+      60
+    ],
+    "name" : "Visa on arrival 4x6 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.15
+  },
+  {
+    "country" : "Thailand",
+    "size" : [
+      40,
+      60
+    ],
+    "upper" : 0.9,
+    "sizeUnit" : "mm",
+    "name" : "Visa 4x6 cm",
+    "lower" : 0.15
+  },
+  {
+    "country" : "Thailand",
+    "size" : [
+      40,
+      60
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "name" : "Certificate of residence 4x6 cm",
+    "lower" : 0.15
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm",
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "country" : "Thailand",
+    "lower" : 0.17
+  },
+  {
+    "country" : "Thailand",
+    "upper" : 0.94,
+    "name" : "Visa 2x2 in (from the US)",
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "lower" : 0.25
+  },
+  {
+    "sizeUnit" : "px",
+    "lower" : 0.19,
+    "country" : "Thailand",
+    "name" : "E-visa 132x170 px",
+    "upper" : 0.94,
+    "size" : [
+      132,
+      170
+    ]
+  },
+  {
+    "upper" : 0.9,
+    "sizeUnit" : "inch",
+    "size" : [
+      1,
+      1
+    ],
+    "lower" : 0.25,
+    "country" : "Thailand",
+    "name" : "License 1x1 in photo"
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      33,
+      48
+    ],
+    "country" : "Thailand",
+    "lower" : 0.2,
+    "upper" : 0.89,
+    "name" : "APEC Business Travel Card 33x48 mm"
+  },
+  {
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Togo",
+    "name" : "Visa 3.5x4.5 cm",
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport 3.5x4.5 cm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "country" : "Togo",
+    "upper" : 0.94
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Tunisia",
+    "name" : "Passport 3.5x4.5 cm",
+    "upper" : 0.92,
+    "lower" : 0.19,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "lower" : 0.19,
+    "upper" : 0.92,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 3.5x4.5 cm",
+    "sizeUnit" : "mm",
+    "country" : "Tunisia"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Tunisia",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "upper" : 0.92,
+    "name" : "ID card 3.5x4.5 cm"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Residence 3.5x4.5 cm",
+    "lower" : 0.19,
+    "upper" : 0.92,
+    "country" : "Tunisia"
+  },
+  {
+    "sizeUnit" : "inch",
+    "upper" : 0.94,
+    "name" : "Passport 2x2 in (from USA)",
+    "lower" : 0.25,
+    "country" : "Tunisia",
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      50,
+      60
+    ],
+    "lower" : 0.26,
+    "country" : "Turkey",
+    "name" : "Visa 50x60 mm",
+    "upper" : 0.84
+  },
+  {
+    "lower" : 0.26,
+    "size" : [
+      50,
+      60
+    ],
+    "name" : "Passport 50x60 mm",
+    "country" : "Turkey",
+    "upper" : 0.84,
+    "sizeUnit" : "mm"
+  },
+  {
+    "sizeUnit" : "px",
+    "upper" : 0.93,
+    "name" : "Turkish Passolig Card 600x771 px",
+    "lower" : 0.18,
+    "size" : [
+      600,
+      771
+    ],
+    "country" : "Turkey"
+  },
+  {
+    "name" : "Visa 5x6 cm",
+    "country" : "Turkmenistan",
+    "sizeUnit" : "mm",
+    "upper" : 0.84,
+    "lower" : 0.25,
+    "size" : [
+      50,
+      60
+    ]
+  },
+  {
+    "country" : "Turkmenistan",
+    "sizeUnit" : "mm",
+    "lower" : 0.19,
+    "size" : [
+      30,
+      40
+    ],
+    "upper" : 0.94,
+    "name" : "Passport 3x4 cm"
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Passport 2x2 inch",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "country" : "Uganda",
+    "upper" : 0.94
+  },
+  {
+    "country" : "Uganda",
+    "name" : "Visa 2x2 inch",
+    "upper" : 0.94,
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "Ukraine",
+    "name" : "Internal Passport 35x45 mm",
+    "upper" : 0.94,
+    "lower" : 0.17
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "name" : "International Passport (Child Information) 35x45 mm",
+    "country" : "Ukraine",
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Driving License 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.94,
+    "country" : "Ukraine"
+  },
+  {
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      450,
+      600
+    ],
+    "sizeUnit" : "px",
+    "country" : "Ukraine",
+    "name" : "Visa online 450x600 px"
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Visa 3x4 cm",
+    "country" : "Ukraine",
+    "lower" : 0.17
+  },
+  {
+    "name" : "Visa offline 43x55 mm",
+    "country" : "United Arab Emirates",
+    "upper" : 0.9,
+    "sizeUnit" : "mm",
+    "lower" : 0.18,
+    "size" : [
+      43,
+      55
+    ]
+  },
+  {
+    "size" : [
+      300,
+      369
+    ],
+    "upper" : 0.92,
+    "country" : "United Arab Emirates",
+    "name" : "Visa online 300x369 px",
+    "lower" : 0.2,
+    "sizeUnit" : "px"
+  },
+  {
+    "lower" : 0.26,
+    "name" : "Passport 4x6 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.9,
+    "country" : "United Arab Emirates",
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "lower" : 0.26,
+    "upper" : 0.9,
+    "country" : "United Arab Emirates",
+    "size" : [
+      40,
+      60
+    ],
+    "sizeUnit" : "mm",
+    "name" : "ID card 4x6 cm"
+  },
+  {
+    "country" : "United Arab Emirates",
+    "sizeUnit" : "mm",
+    "lower" : 0.26,
+    "name" : "Residence 4x6 cm",
+    "size" : [
+      40,
+      60
+    ],
+    "upper" : 0.9
+  },
+  {
+    "lower" : 0.16,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport offline 35x45 mm",
+    "sizeUnit" : "mm",
+    "country" : "United Kingdom",
+    "upper" : 0.89
+  },
+  {
+    "name" : "ID \/ residence card 35x45 mm",
+    "lower" : 0.16,
+    "sizeUnit" : "mm",
+    "country" : "United Kingdom",
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "lower" : 0.3,
+    "upper" : 0.85,
+    "size" : [
+      900,
+      1200
+    ],
+    "name" : "Passport online 900x1200 px",
+    "sizeUnit" : "px",
+    "country" : "United Kingdom"
+  },
+  {
+    "size" : [
+      35,
+      45
+    ],
+    "country" : "United Kingdom",
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "upper" : 0.89,
+    "lower" : 0.16
+  },
+  {
+    "country" : "United Kingdom",
+    "lower" : 0.16,
+    "size" : [
+      35,
+      45
+    ],
+    "sizeUnit" : "mm",
+    "upper" : 0.89,
+    "name" : "Driving Licence 35x45 mm"
+  },
+  {
+    "lower" : 0.16,
+    "size" : [
+      35,
+      45
+    ],
+    "upper" : 0.89,
+    "country" : "United Kingdom",
+    "sizeUnit" : "mm",
+    "name" : "BASC Firearms \/ Shotgun Licensing 35x45 mm"
+  },
+  {
+    "upper" : 0.89,
+    "size" : [
+      350,
+      450
+    ],
+    "name" : "Oyster travel photocard 35x45 cm",
+    "country" : "United Kingdom",
+    "lower" : 0.16,
+    "sizeUnit" : "mm"
+  },
+  {
+    "upper" : 0.94,
+    "country" : "United States",
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Passport 2x2 inch",
+    "sizeUnit" : "inch",
+    "lower" : 0.25
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "United States",
+    "sizeUnit" : "inch",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "name" : "Visa 2x2 inch"
+  },
+  {
+    "sizeUnit" : "inch",
+    "country" : "United States",
+    "lower" : 0.25,
+    "name" : "Green Card (Permanent Resident) 2x2 inch",
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "country" : "United States",
+    "name" : "Citizenship 2x2 inch",
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ]
+  },
+  {
+    "sizeUnit" : "inch",
+    "size" : [
+      2,
+      2
+    ],
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "country" : "United States",
+    "name" : "Employment Authorization 2x2 inch"
+  },
+  {
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Diversity Visa (DV) Lottery 2x2 inch",
+    "upper" : 0.94,
+    "sizeUnit" : "inch",
+    "country" : "United States"
+  },
+  {
+    "lower" : 0.27,
+    "sizeUnit" : "inch",
+    "upper" : 0.94,
+    "size" : [
+      1.5,
+      1.5
+    ],
+    "country" : "United States",
+    "name" : "NY Gun License 1.5x1.5 inch"
+  },
+  {
+    "size" : [
+      1.5,
+      2
+    ],
+    "name" : "NY MTA Metrocard for Seniors 1.5x2 inch",
+    "country" : "United States",
+    "sizeUnit" : "inch",
+    "lower" : 0.175,
+    "upper" : 0.875
+  },
+  {
+    "upper" : 0.94,
+    "country" : "United States",
+    "name" : "CIBTvisas visa photo 2x2 inch",
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "lower" : 0.25
+  },
+  {
+    "upper" : 0.94,
+    "country" : "United States",
+    "name" : "VisaCentral visa photo 2x2 inch",
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch"
+  },
+  {
+    "country" : "United States",
+    "size" : [
+      2,
+      2
+    ],
+    "name" : "Travisa visa photo 2x2 inch",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "sizeUnit" : "inch"
+  },
+  {
+    "name" : "VisaHQ visa photo 2x2 inch",
+    "country" : "United States",
+    "lower" : 0.25,
+    "size" : [
+      2,
+      2
+    ],
+    "upper" : 0.94,
+    "sizeUnit" : "inch"
+  },
+  {
+    "size" : [
+      2,
+      2
+    ],
+    "country" : "United States",
+    "name" : "Visa Headquarters visa photo 2x2 inch",
+    "sizeUnit" : "inch",
+    "upper" : 0.94,
+    "lower" : 0.25
+  },
+  {
+    "name" : "Visa 3.5x4.5 cm",
+    "upper" : 0.94,
+    "country" : "Uzbekistan",
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "lower" : 0.17
+  },
+  {
+    "size" : [
+      40,
+      60
+    ],
+    "sizeUnit" : "mm",
+    "name" : "Visa 40x60 mm",
+    "country" : "Vietnam",
+    "lower" : 0.23,
+    "upper" : 0.9
+  },
+  {
+    "upper" : 0.94,
+    "size" : [
+      30,
+      40
+    ],
+    "lower" : 0.19,
+    "country" : "Vietnam",
+    "name" : "ID card 3x4 cm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "country" : "Vietnam",
+    "name" : "Visa 2x2 inch",
+    "lower" : 0.25,
+    "upper" : 0.94,
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch"
+  },
+  {
+    "name" : "APEC Business Travel Card 3x4 cm",
+    "sizeUnit" : "mm",
+    "upper" : 0.94,
+    "country" : "Vietnam",
+    "size" : [
+      30,
+      40
+    ],
+    "lower" : 0.19
+  },
+  {
+    "upper" : 0.9,
+    "name" : "Passport 4x6 cm",
+    "lower" : 0.26,
+    "sizeUnit" : "mm",
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Yemen"
+  },
+  {
+    "upper" : 0.9,
+    "sizeUnit" : "mm",
+    "country" : "Yemen",
+    "name" : "ID card 4x6 cm",
+    "lower" : 0.26,
+    "size" : [
+      40,
+      60
+    ]
+  },
+  {
+    "upper" : 0.9,
+    "lower" : 0.26,
+    "size" : [
+      40,
+      60
+    ],
+    "country" : "Yemen",
+    "name" : "Visa 4x6 cm",
+    "sizeUnit" : "mm"
+  },
+  {
+    "name" : "Visa 35x45 mm",
+    "sizeUnit" : "mm",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "country" : "Zambia",
+    "size" : [
+      35,
+      45
+    ]
+  },
+  {
+    "country" : "Zambia",
+    "size" : [
+      2,
+      2
+    ],
+    "sizeUnit" : "inch",
+    "upper" : 0.94,
+    "name" : "Visa 2x2 in (from USA)",
+    "lower" : 0.25
+  },
+  {
+    "size" : [
+      1.5,
+      2
+    ],
+    "country" : "Zambia",
+    "sizeUnit" : "inch",
+    "upper" : 0.9,
+    "name" : "Passport 1.5x2 inch",
+    "lower" : 0.2
+  },
+  {
+    "country" : "Zimbabwe",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "sizeUnit" : "mm",
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Visa 35x45 mm"
+  },
+  {
+    "sizeUnit" : "mm",
+    "country" : "Zimbabwe",
+    "lower" : 0.17,
+    "upper" : 0.94,
+    "size" : [
+      35,
+      45
+    ],
+    "name" : "Passport 3.5x4.5 cm"
+  }
+]

@@ -1,0 +1,7 @@
+các document có size unit là px thì đang bị lưu thành pt -> cần export đúng là px, DPI ko ảnh hưởng đến kích thước px
+vd Saudi arabia e visa online, 200x200px thì khi lưu lại hiện 200x200pt nên output to hơn
+
+Sửa màu dialog khi darkmode
+
+Để lại 1 phần đuôi của exxport size khi hiển thị trong màn hình export: ví dụ: 'Size:123.099*234.4...inch'
+  
