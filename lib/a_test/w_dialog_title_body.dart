@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:passport_photo_2/commons/colors.dart';
 import 'package:passport_photo_2/commons/constants.dart';
+import 'package:passport_photo_2/helpers/convert.dart';
 import 'package:passport_photo_2/helpers/navigator_route.dart';
 import 'package:passport_photo_2/models/country_passport_model.dart';
 import 'package:passport_photo_2/models/export_size_model.dart';
@@ -16,8 +17,8 @@ import 'package:passport_photo_2/widgets/w_spacer.dart';
 import 'package:passport_photo_2/widgets/w_text.dart';
 
 // ignore: must_be_immutable
-class WBodyDialogCustomSize extends StatefulWidget { 
-  void Function(double width, double height) onComplete;
+class WBodyDialogCustomSize extends StatefulWidget {
+  void Function(ExportSizeModel) onComplete;
   ExportSizeModel exportSizeModel;
   WBodyDialogCustomSize({
     super.key,
@@ -37,10 +38,11 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
   late TextEditingController _controllerWidth, _controllerHeight;
   late Unit _currentUnit;
   final FocusNode _focusNodeWidth = FocusNode();
-
+  late ExportSizeModel _currentExportSizeModel;
   @override
   void initState() {
     super.initState();
+    _currentExportSizeModel = widget.exportSizeModel.copyWith();
     _controllerWidth = TextEditingController(
       text: widget.exportSizeModel.size.width.toString(),
     );
@@ -162,7 +164,19 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
                     double? height =
                         double.tryParse(_controllerHeight.value.text.trim());
                     if (width != null && height != null) {
-                      widget.onComplete(width, height);
+
+                      double widthByPixel = FlutterConvert.convertUnit(_currentUnit, PIXEL, width);
+                      double heightByPixel = FlutterConvert.convertUnit(_currentUnit, PIXEL, width);
+                      if (width > 0 && height > 0) {
+                        if (width > LIMITATION_DIMENSION_BY_PIXEl ||
+                            height > LIMITATION_DIMENSION_BY_PIXEl) {
+                          return;
+                        }
+                        onChangeSize(
+                          sizeModel!.copyWith(size: Size(width, height)),
+                        );
+                      }
+                      widget.onComplete(_currentExportSizeModel);
                       popNavigator(context);
                     }
                   },
@@ -250,6 +264,9 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
               context: context,
               currentUnit: _currentUnit,
               onSelected: (value) {
+                if (_currentUnit == value) return;
+                _currentExportSizeModel =
+                    _currentExportSizeModel.changeUnit(value);
                 setState(() {
                   _currentUnit = value;
                 });

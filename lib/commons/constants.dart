@@ -278,6 +278,10 @@ const double MAX_SIZE_EXPORT_IMAGE_NORMAL = 9000;
 // ignore: constant_identifier_names
 const double MAX_SIZE_EXPORT_IMAGE_WEAK = 7000;
 
+/// Kích thước tối đa mà thiết bị có thể xử lý
+// ignore: constant_identifier_names
+const double LIMITATION_DIMENSION_BY_PIXEl = 8000;
+
 // ignore: constant_identifier_names
 const Size SIZE_EXAMPLE = Size(411.4, 891.4);
 

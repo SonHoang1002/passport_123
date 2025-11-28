@@ -503,10 +503,11 @@ class WExports {
     required Size screenSize,
     // required ExportSizeModel exportSize,
     required CountryModel countrySelected,
-    required double valueResolution, // dpi
+    required double dpi, // dpi
     // required List<double> listPassportDimensionByInch,
     required bool isDarkMode,
-    required int indexFormat,
+    required int indexImageFormat,
+    required int indexTab,
     // Color? textColorWhenOverSize,
   }) {
     String message = "--";
@@ -518,56 +519,143 @@ class WExports {
 
     if (!isOverflowSize) {
       PassportModel currentPassport = countrySelected.currentPassport;
-      Size sizeToPreviewByPixel = Size(
-        FlutterConvert.convertUnit(
-            currentPassport.unit, PIXEL, currentPassport.width),
-        FlutterConvert.convertUnit(
-            currentPassport.unit, PIXEL, currentPassport.height),
-      );
-      // Unit targetUnit = currentPassport.unit;
-      // if (targetUnit == PIXEL) {
-      //   bool isTabPhoto = indexFormat == 2;
-      //   if (isTabPhoto) {
-      //     sizeToPreviewByPixel = currentPassport.size;
-      //   } else {
-      //     /// Lấy kích thước giấy mong muốn -> đổi sang inch -> nhân với dpi -> ra kích thước pixel
-      //     Size targetPaperSizeInInch = Size(
-      //       FlutterConvert.convertUnit(targetUnit, INCH, exportSize.width),
-      //       FlutterConvert.convertUnit(targetUnit, INCH, exportSize.height),
-      //     );
-      //     sizeToPreviewByPixel = Size(
-      //       targetPaperSizeInInch.width * dpi,
-      //       targetPaperSizeInInch.height * dpi,
-      //     );
-      //   }
-      // } else {
-      //   switch (indexFormat) {
-      //     case 0:
-      //     case 1:
-      //       sizeToPreviewByPixel = Size(
-      //         FlutterConvert.convertUnit(
-      //             currentPassport.unit, PIXEL, currentPassport.width),
-      //         FlutterConvert.convertUnit(
-      //             currentPassport.unit, PIXEL, currentPassport.height),
-      //       );
-      //       break;
-      //     case 2:
-
-      //       // Đổi kích thước passport sang INCH rồi nhân DPI để ra PX
-      //       double widthInInch = FlutterConvert
-      //           .convertUnit(currentPassport.unit, INCH, currentPassport.width);
-      //       double heightInInch = FlutterConvert.convertUnit(
-      //           currentPassport.unit, INCH, currentPassport.height);
-      //       sizeToPreviewByPixel = Size(
-      //         widthInInch * dpi,
-      //         heightInInch * dpi,
-      //       );
-      //     default:
-      //       throw Exception("khong ho tro");
-      //   }
+      double passportWidthByPixelWithDpi, passportHeightByPixelWithDpi;
+      // Size sizeToPreviewByPixel = Size(
+      //   FlutterConvert.convertUnit(
+      //       currentPassport.unit, PIXEL, currentPassport.width),
+      //   FlutterConvert.convertUnit(
+      //       currentPassport.unit, PIXEL, currentPassport.height),
+      // );
+      bool isTabPhoto = indexTab == 0;
+      consolelog("123123 = $currentPassport");
+      if (isTabPhoto) {
+        switch (indexImageFormat) {
+          case 0: // JPG
+            if (currentPassport.unit == PIXEL) {
+              passportWidthByPixelWithDpi = currentPassport.width;
+              passportHeightByPixelWithDpi = currentPassport.height;
+            } else {
+              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.width,
+                  ) *
+                  dpi;
+              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.height,
+                  ) *
+                  dpi;
+            }
+            break;
+          case 1: // PNG
+            if (currentPassport.unit == PIXEL) {
+              passportWidthByPixelWithDpi = currentPassport.width;
+              passportHeightByPixelWithDpi = currentPassport.height;
+            } else {
+              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.width,
+                  ) *
+                  dpi;
+              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.height,
+                  ) *
+                  dpi;
+            }
+            break;
+          case 2: // JPG
+            if (currentPassport.unit == PIXEL) {
+              passportWidthByPixelWithDpi = currentPassport.width;
+              passportHeightByPixelWithDpi = currentPassport.height;
+            } else {
+              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.width,
+                  ) *
+                  dpi;
+              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.height,
+                  ) *
+                  dpi;
+            }
+            break;
+          default:
+            throw Exception("Khong ho tro");
+        }
+      } else {
+        switch (indexImageFormat) {
+          case 0: // JPG
+            if (currentPassport.unit == PIXEL) {
+              passportWidthByPixelWithDpi = currentPassport.width;
+              passportHeightByPixelWithDpi = currentPassport.height;
+            } else {
+              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.width,
+                  ) *
+                  dpi;
+              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.height,
+                  ) *
+                  dpi;
+            }
+            break;
+          case 1: // PNG
+            if (currentPassport.unit == PIXEL) {
+              passportWidthByPixelWithDpi = currentPassport.width;
+              passportHeightByPixelWithDpi = currentPassport.height;
+            } else {
+              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.width,
+                  ) *
+                  dpi;
+              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.height,
+                  ) *
+                  dpi;
+            }
+            break;
+          case 2: // JPG
+            if (currentPassport.unit == PIXEL) {
+              passportWidthByPixelWithDpi = currentPassport.width;
+              passportHeightByPixelWithDpi = currentPassport.height;
+            } else {
+              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.width,
+                  ) *
+                  dpi;
+              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+                    currentPassport.unit,
+                    INCH,
+                    currentPassport.height,
+                  ) *
+                  dpi;
+            }
+            break;
+          default:
+            throw Exception("Khong ho tro");
+        }
+      }
 
       message =
-          "${sizeToPreviewByPixel.width.roundWithUnit(fractionDigits: 0)}x${sizeToPreviewByPixel.height.roundWithUnit(fractionDigits: 0)}";
+          "${passportWidthByPixelWithDpi.roundWithUnit(fractionDigits: 0)}x${passportHeightByPixelWithDpi.roundWithUnit(fractionDigits: 0)}";
     }
     message += "px";
 

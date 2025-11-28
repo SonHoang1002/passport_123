@@ -1,0 +1,56 @@
+#include <flutter/runtime_effect.glsl>
+
+precision highp float;
+
+out vec4 fragColor;
+
+uniform sampler2D inputImageTexture;
+ 
+layout(location = 0) uniform lowp float inputHighlights;
+layout(location = 1) uniform vec2 screenSize;
+
+const mediump vec3 luminanceWeightingHS = vec3(0.3, 0.3, 0.3);
+
+
+vec4 processColorWithShadowFakeHighlight(vec4 sourceColor){
+    mediump float luminance = dot(sourceColor.rgb, luminanceWeightingHS);
+
+	mediump float highlights = clamp(
+        (
+            pow(luminance, 1.0/(inputHighlights+1.0)) + 
+            (-0.76)*pow(luminance, 2.0/(inputHighlights+1.0))
+        ) - luminance,
+        0.0,
+        1.0
+        );
+	lowp vec3 result = vec3(0.0, 0.0, 0.0) + ((luminance + highlights + 0.0) - 0.0) * ((sourceColor.rgb - vec3(0.0, 0.0, 0.0))/(luminance - 0.0));
+
+	return vec4(result.rgb, sourceColor.a);
+}
+
+// highlight chính thống
+vec4 processColor(vec4 sourceColor){
+    mediump float luminance = dot(sourceColor.rgb, luminanceWeightingHS); 
+	mediump float highlight = clamp(
+        (
+            1.0 - 
+            (
+                pow(1.0-luminance, 1.0/(2.0-inputHighlights)) +
+                (-0.8)*pow(1.0-luminance, 2.0/(2.0-inputHighlights)))
+            )
+             - luminance,
+        -1.0,
+        0.0
+        );
+	lowp vec3 result = vec3(0.0, 0.0, 0.0) + ((luminance + 0.0 + highlight) - 0.0) * ((sourceColor.rgb - vec3(0.0, 0.0, 0.0))/(luminance - 0.0));
+
+	return vec4(result.rgb, sourceColor.a);
+}
+
+void main()
+{
+	vec2 textureCoordinate = FlutterFragCoord().xy / screenSize;
+	lowp vec4 textureColor = texture(inputImageTexture, textureCoordinate);
+
+	fragColor = processColorWithShadowFakeHighlight(textureColor);
+} 

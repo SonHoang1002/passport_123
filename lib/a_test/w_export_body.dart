@@ -80,11 +80,12 @@ class _WExportBody1State extends State<WExportBody1> {
   final ValueNotifier<bool> _isCaculating = ValueNotifier(false);
 
   /// getters
-  int get indexSegment => _vIndexSegment.value;
-  bool get isTabPhoto => indexSegment == 0;
+  int get indexTab => _vIndexSegment.value;
+  int get indexImageFormat => _vIndexImageFormat.value;
+  bool get isTabPhoto => indexTab == 0;
   bool get isDisableDpiFormat {
     var currentPassport = widget.countrySelected.currentPassport;
-    return (isTabPhoto && _vIndexImageFormat.value != 2) &&
+    return (isTabPhoto && indexImageFormat != 2) &&
         currentPassport.unit == PIXEL;
   }
 
@@ -121,12 +122,12 @@ class _WExportBody1State extends State<WExportBody1> {
     }
     if (isTabPhoto) {
       Map<String, dynamic> result = await ExportHelpers.handleGetFileSize(
-        indexImageFormat: _vIndexImageFormat.value,
+        indexImageFormat: indexImageFormat,
         imageCropped: widget.imageCropped,
         countrySelected: widget.countrySelected,
-        screenSize: _size,
+        // screenSize: _size,
         valueResolutionDpi: _vSliderDpiResolutionMain.value,
-        listPassportDimensionByInch: _listPassportDimensionByInch,
+        // listPassportDimensionByInch: _listPassportDimensionByInch,
         quality: _vSliderCompressionPercent.value,
       );
 
@@ -142,7 +143,7 @@ class _WExportBody1State extends State<WExportBody1> {
         exportSize: _vExportSize.value,
         copyNumber: _vCopyCount.value,
         valueResolutionDpi: _vSliderDpiResolutionMain.value,
-        indexImageFormat: _vIndexImageFormat.value,
+        indexImageFormat: indexImageFormat,
         countrySelected: widget.countrySelected,
         screenSize: _size,
         listPassportDimensionByInch: _listPassportDimensionByInch,
@@ -224,7 +225,7 @@ class _WExportBody1State extends State<WExportBody1> {
       if (indexImageFormat == 2) {
         await MyMethodChannel.createActionDocument(
           [listFile[0].path],
-          _vIndexImageFormat.value,
+          indexImageFormat,
         );
       } else {
         List<File?> resultFiles = [];
@@ -268,7 +269,7 @@ class _WExportBody1State extends State<WExportBody1> {
   ///
   List<dynamic> preparSavedData() {
     List<File> listFile = [];
-    if (_vIndexSegment.value == 0) {
+    if (indexTab == 0) {
       listFile.add(_convertedPhotoFile!);
     } else {
       for (var i = 0; i < _convertedPaperFiles.length; i++) {
@@ -280,11 +281,11 @@ class _WExportBody1State extends State<WExportBody1> {
     int randomNumber = randomInt();
     for (var i = 0; i < listFile.length; i++) {
       String fileName =
-          ("passport_$randomNumber.${EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[_vIndexImageFormat.value]!.toLowerCase()}");
+          ("passport_$randomNumber.${EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[indexImageFormat]!.toLowerCase()}");
 
       if (i != 0) {
         fileName =
-            ("passport_$randomNumber ($i).${EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[_vIndexImageFormat.value]!.toLowerCase()}");
+            ("passport_$randomNumber ($i).${EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[indexImageFormat]!.toLowerCase()}");
       }
       listFileName.add(fileName);
     }
@@ -383,8 +384,9 @@ class _WExportBody1State extends State<WExportBody1> {
                       screenSize: _size,
                       isDarkMode: isDarkMode,
                       countrySelected: countrySelected,
-                      valueResolution: _vSliderDpiResolutionPreview.value,
-                      indexFormat: indexSegment,
+                      dpi: _vSliderDpiResolutionPreview.value,
+                      indexImageFormat: indexImageFormat,
+                      indexTab: indexTab,
                     );
                   },
                 ),
@@ -398,7 +400,7 @@ class _WExportBody1State extends State<WExportBody1> {
                       context,
                       isDarkMode,
                       EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[
-                          _vIndexImageFormat.value]!,
+                          indexImageFormat]!,
                     );
                   },
                 ),
@@ -472,7 +474,7 @@ class _WExportBody1State extends State<WExportBody1> {
       builder: (context, _, child) {
         return WExports.buildSegments(
           context: context,
-          indexSelectedSegment: _vIndexSegment.value,
+          indexSelectedSegment: indexTab,
           isPhone: _isPhone,
           onSegmentChange: (value, prev) {
             if (value != prev) {
@@ -480,12 +482,14 @@ class _WExportBody1State extends State<WExportBody1> {
                 _vListMinMaxDpi.value = LIST_MIN_MAX_RESOLUTION_1;
                 _vDataSegmentResolution.value = DATA_SEGMENT_RESOLUTION_1;
                 _vIndexDpiFormat.value = 0;
-                _vSliderDpiResolutionPreview.value = 600;
+                // _vSliderDpiResolutionPreview.value = 600;
+                // _vSliderDpiResolutionMain.value = 600;
               } else {
                 _vListMinMaxDpi.value = LIST_MIN_MAX_RESOLUTION_2;
                 _vDataSegmentResolution.value = DATA_SEGMENT_RESOLUTION_2;
                 _vIndexDpiFormat.value = 1;
-                _vSliderDpiResolutionPreview.value = 600;
+                // _vSliderDpiResolutionPreview.value = 600;
+                // _vSliderDpiResolutionMain.value = 600;
               }
               _vIndexSegment.value = value;
             }
@@ -507,7 +511,7 @@ class _WExportBody1State extends State<WExportBody1> {
         return WExports.buildPreview(
           context: context,
           exportSize: _vExportSize.value,
-          indexSelectedSegment: _vIndexSegment.value,
+          indexSelectedSegment: indexTab,
           screenSize: _size,
           projectModel: widget.projectModel,
           copyNumber: _vCopyCount.value,
@@ -536,14 +540,14 @@ class _WExportBody1State extends State<WExportBody1> {
           isDisableDpiFormat: isDisableDpiFormat,
           context: context,
           screenSize: _size,
-          indexSelectedSegment: _vIndexSegment.value,
+          indexSelectedSegment: indexTab,
           projectModel: widget.projectModel,
           keysFormat: _keysFormat,
           copyNumber: _vCopyCount.value,
           exportSize: _vExportSize.value,
           compressionPercent: _vSliderCompressionPercent.value,
-          dpiResolution: _vSliderDpiResolutionPreview.value,
-          indexImageFormat: _vIndexImageFormat.value,
+          dpiResolution: _vSliderDpiResolutionMain.value,
+          indexImageFormat: indexImageFormat,
           listMinMaxDpi: _vListMinMaxDpi.value,
           dataSegmentResolution: _vDataSegmentResolution.value,
           indexDpiFormat: _vIndexDpiFormat.value,
@@ -590,7 +594,7 @@ class _WExportBody1State extends State<WExportBody1> {
         return WExports.buildButtons(
           context: context,
           screenSize: _size,
-          indexImageFormat: _vIndexImageFormat.value,
+          indexImageFormat: indexImageFormat,
           onSaveTo: () async {
             if (_isCaculating.value) return;
             List<dynamic> listData = preparSavedData();
@@ -605,7 +609,7 @@ class _WExportBody1State extends State<WExportBody1> {
               return;
             }
             _onShare(
-              indexImageFormat: _vIndexImageFormat.value,
+              indexImageFormat: indexImageFormat,
               files: listData[0],
               listFileName: listData[1],
             );
@@ -624,7 +628,7 @@ class _WExportBody1State extends State<WExportBody1> {
             }
             List<dynamic> listData = preparSavedData();
             _onSaveToLibrary(
-              indexImageFormat: _vIndexImageFormat.value,
+              indexImageFormat: indexImageFormat,
               listFile: listData[0],
               listFileName: listData[1],
             );

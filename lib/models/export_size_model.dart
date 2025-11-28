@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:passport_photo_2/commons/constants.dart';
+import 'package:passport_photo_2/helpers/convert.dart';
 import 'package:passport_photo_2/helpers/random_number.dart';
 import 'package:passport_photo_2/models/country_passport_model.dart';
 
@@ -29,7 +31,7 @@ class ExportSizeModel {
     int? id,
     String? title,
     Size? size,
-    Unit? unit,
+    // Unit? unit,
     MarginModel? marginModel,
     double? spacingHorizontal,
     double? spacingVertical,
@@ -39,10 +41,35 @@ class ExportSizeModel {
       id: id ?? this.id,
       title: title ?? this.title,
       size: size ?? this.size,
-      unit: unit ?? this.unit,
+      unit: unit,
       marginModel: marginModel ?? this.marginModel,
       spacingHorizontal: spacingHorizontal ?? this.spacingHorizontal,
       spacingVertical: spacingVertical ?? this.spacingVertical,
+    );
+  }
+
+  ExportSizeModel changeUnit(Unit targetUnit) {
+    return ExportSizeModel(
+      uid: randomInt(),
+      id: id,
+      unit: targetUnit,
+      marginModel: marginModel.copyWith(
+        mLeft: FlutterConvert.convertUnit(unit, targetUnit, marginModel.mLeft),
+        mTop: FlutterConvert.convertUnit(unit, targetUnit, marginModel.mTop),
+        mRight:
+            FlutterConvert.convertUnit(unit, targetUnit, marginModel.mRight),
+        mBottom:
+            FlutterConvert.convertUnit(unit, targetUnit, marginModel.mBottom),
+      ),
+      size: Size(
+        FlutterConvert.convertUnit(unit, targetUnit, size.width),
+        FlutterConvert.convertUnit(unit, targetUnit, size.height),
+      ),
+      spacingHorizontal:
+          FlutterConvert.convertUnit(unit, targetUnit, spacingHorizontal),
+      spacingVertical:
+          FlutterConvert.convertUnit(unit, targetUnit, spacingVertical),
+      title: title,
     );
   }
 
@@ -53,12 +80,14 @@ class ExportSizeModel {
 }
 
 class MarginModel {
+  final int id;
   final double mLeft;
   final double mTop;
   final double mRight;
   final double mBottom;
 
   MarginModel({
+    required this.id,
     required this.mLeft,
     required this.mTop,
     required this.mRight,
@@ -67,6 +96,7 @@ class MarginModel {
 
   static MarginModel marginAll(double marginAll) {
     return MarginModel(
+      id: randomInt(),
       mLeft: marginAll,
       mTop: marginAll,
       mRight: marginAll,
@@ -76,6 +106,7 @@ class MarginModel {
 
   static MarginModel marginSymmetric({double? horizontal, double? vertical}) {
     return MarginModel(
+      id: randomInt(),
       mLeft: horizontal ?? 0,
       mTop: vertical ?? 0,
       mRight: horizontal ?? 0,
@@ -102,12 +133,19 @@ class MarginModel {
     ];
   }
 
-  // MarginModel copyWith({int? id, String? title, Size? size, Unit? unit}) {
-  //   return MarginModel(
-  //     id: id ?? this.id,
-  //     title: title ?? this.title,
-  //     size: size ?? this.size,
-  //     unit: unit ?? this.unit,
-  //   );
-  // }
+  MarginModel copyWith({
+    int? id,
+    double? mLeft,
+    double? mTop,
+    double? mRight,
+    double? mBottom,
+  }) {
+    return MarginModel(
+      id: id ?? this.id,
+      mLeft: mLeft ?? this.mLeft,
+      mTop: mTop ?? this.mTop,
+      mRight: mRight ?? this.mRight,
+      mBottom: mBottom ?? this.mBottom,
+    );
+  }
 }

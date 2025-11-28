@@ -13,14 +13,14 @@ import 'package:passport_photo_2/models/country_passport_model.dart';
 import 'package:pdf/pdf.dart';
 
 class PrintHelper {
-  Future<Uint8List> generatePdf(
-    PdfPageFormat format,
-    String title,
-    File croppedFile,
-    int numberImage,
-    CountryModel countrySelected,
-    Size imagePreviewSize,
-  ) async {
+  Future<Uint8List> generatePdf({
+    required PdfPageFormat format,
+    required String title,
+    required File croppedFile,
+    required int numberImage,
+    required CountryModel countrySelected,
+    required Size passportSizeByPrintPoint,
+  }) async {
     final pdf = pw.Document(
       pageMode: PdfPageMode.fullscreen,
       version: PdfVersion.pdf_1_5,
@@ -135,53 +135,59 @@ class PrintHelper {
       pageMode: PdfPageMode.fullscreen,
       version: PdfVersion.pdf_1_5,
     );
-
-    // double marginLeft = format.marginLeft;
-    // double marginRight = format.marginRight;
-    // double marginTop = format.marginTop;
-    // double marginBottom = format.marginBottom;
-
-    Size mainSizePassport = passportSizeDrawByPoint;
-
     consolelog(
-        "generatePaperPdf format: $format, passportSizeDrawByPoint = $passportSizeDrawByPoint");
+        "generatePaperPdf format: $format, passportSizeDrawByPoint = $passportSizeDrawByPoint, copyNumber = $numberImage");
 
-    Size imageSize = mainSizePassport;
-    final soAnhTrong1Dong = (format.width) ~/ imageSize.width;
-    // 100 anh ->
-    final maxRows = (format.height) ~/ imageSize.height;
-    final soAnhTrong1Trang = maxRows * soAnhTrong1Dong;
-    int numberPage = (numberImage / soAnhTrong1Trang).ceil();
+    Size imageSize = passportSizeDrawByPoint;
+    consolelog("format.width = ${format.width}");
+    final soAnhTrong1Dong =
+        (format.width - format.marginLeft - format.marginRight) ~/
+            imageSize.width;
+
+    final soDongTrong1Trang =
+        (format.height - format.marginTop - format.marginBottom) ~/
+            imageSize.height;
+    final soAnhTrong1Trang = soDongTrong1Trang * soAnhTrong1Dong;
+    int soTrangCanIn = (numberImage / soAnhTrong1Trang).ceil();
 
     // change quality of file
     final dirPath = (await getExternalStorageDirectory())!.path;
     String extension = "jpg";
     String outPath = "$dirPath/resize_before_pdf.$extension";
-
+    consolelog("originalCroppedImage.path: ${originalCroppedImage.path}");
     final resizedFile = await MyMethodChannel.resizeAndResoluteImage(
       inputPath: originalCroppedImage.path,
       format: 0,
-      listWH: [passportSizeDrawByPoint.width, passportSizeDrawByPoint.height],
-      scaleWH: [1, 1],
+      // listWH: [passportSizeDrawByPoint.width, passportSizeDrawByPoint.height],
+      // scaleWH: [1, 1],
       outPath: outPath,
       quality: quality,
     );
     Uint8List byteData = resizedFile!.readAsBytesSync();
-    pw.Image imageMemory = pw.Image(pw.MemoryImage(byteData));
-
+    pw.Image imageMemory = pw.Image(
+      pw.MemoryImage(byteData),
+      fit: pw.BoxFit.cover,
+    );
+    consolelog("soAnhTrong1Trang = $soAnhTrong1Trang");
     // draw pdf page
-    for (int i = 0; i < numberPage; i++) {
-      int numberImageOnPage = 0;
-      int soAnhConLai = numberImage - (i) * soAnhTrong1Trang;
-      if (soAnhConLai >= soAnhTrong1Trang) {
-        numberImageOnPage = soAnhTrong1Trang;
-      } else {
-        numberImageOnPage = soAnhConLai;
-        if (soAnhConLai < soAnhTrong1Dong) {
-          // vẽ thừa 1 số ảnh còn lại để căn trái list
-          numberImageOnPage = soAnhTrong1Dong;
-        }
+    for (int i = 0; i < soTrangCanIn; i++) {
+      int soAnh = soAnhTrong1Trang;
+      if (i >= soTrangCanIn - 1) {
+        soAnh = numberImage - soAnhTrong1Trang * (soTrangCanIn - 1);
       }
+
+      // int numberImageOnPage = 0;
+      // int soAnhConLai = numberImage - (i) * soAnhTrong1Trang;
+      // if (soAnhConLai >= soAnhTrong1Trang) {
+      //   numberImageOnPage = soAnhTrong1Trang;
+      // } else {
+      //   numberImageOnPage = soAnhConLai;
+      //   if (soAnhConLai < soAnhTrong1Dong) {
+      //     // vẽ thừa 1 số ảnh còn lại để căn trái list
+      //     numberImageOnPage = soAnhTrong1Dong;
+      //   }
+      // }
+      consolelog("soAnh: $soAnh");
       pdf.addPage(
         pw.Page(
           pageFormat: format,
@@ -193,16 +199,15 @@ class PrintHelper {
                 runSpacing: listSpaceHV[1],
                 alignment: pw.WrapAlignment.start,
                 crossAxisAlignment: pw.WrapCrossAlignment.start,
-                children:
-                    List.generate(numberImageOnPage, (index) => index).map(
+                children: List.generate(soAnh, (index) => index).map(
                   (e) {
                     // vẽ thừa 1 số ảnh còn lại để căn trái list
-                    // if ((e + 1) + i * so_anh_trong_1_trang > numberImage) {
-                    //   return pw.Container(
-                    //     height: imageSize.height,
-                    //     width: imageSize.width,
-                    //   );
-                    // }
+                    if ((e + 1) + i * soAnhTrong1Trang > numberImage) {
+                      return pw.Container(
+                        height: imageSize.height,
+                        width: imageSize.width,
+                      );
+                    }
                     return pw.Container(
                       height: imageSize.height,
                       width: imageSize.width,

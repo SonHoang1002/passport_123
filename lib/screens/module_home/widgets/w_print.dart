@@ -71,50 +71,60 @@ class _WPrintBodyState extends State<WPrintBody> {
     File croppedFile,
     CountryModel countrySelected,
   ) async {
+    double dpi = 600.0;
     var currentPassport = countrySelected.currentPassport;
-    double widthByInch = FlutterConvert.convertUnit(
-        countrySelected.currentPassport.unit, INCH, currentPassport.width);
-    double heightByInch = FlutterConvert.convertUnit(
-        countrySelected.currentPassport.unit, INCH, currentPassport.height);
 
-    double ratioWH = uiImageCropped.width / uiImageCropped.height;
-    double widthWithDpi = 1800 * widthByInch;
-    double heightWithDpi = 1800 * heightByInch;
+    double passportWidthByPrintPoint, passportHeightByPrintPoint;
 
-    Size imagePreviewSize =
-        Size(uiImageCropped.width.toDouble(), uiImageCropped.height.toDouble());
-    if (ratioWH > 1) {
-      if (uiImageCropped.width > widthWithDpi) {
-        imagePreviewSize = Size(
-          widthWithDpi,
-          widthWithDpi / ratioWH,
-        );
-      }
-    } else if (ratioWH < 1) {
-      if (uiImageCropped.height > heightWithDpi) {
-        imagePreviewSize = Size(
-          heightWithDpi * ratioWH,
-          heightWithDpi,
-        );
-      }
+    if (currentPassport.unit == PIXEL) {
+      passportWidthByPrintPoint = currentPassport.width / dpi * 72;
+      passportHeightByPrintPoint = currentPassport.height / dpi * 72;
     } else {
-      if (uiImageCropped.height > heightWithDpi) {
-        imagePreviewSize = Size(
-          heightWithDpi,
-          heightWithDpi,
-        );
-      }
+      passportWidthByPrintPoint = FlutterConvert.convertUnit(
+          currentPassport.unit, POINT, currentPassport.width);
+      passportHeightByPrintPoint = FlutterConvert.convertUnit(
+          currentPassport.unit, POINT, currentPassport.height);
     }
+    // double ratioWH = uiImageCropped.width / uiImageCropped.height;
+
+    Size passportSizeByPrintPoint = Size(
+      passportWidthByPrintPoint,
+      passportHeightByPrintPoint,
+    );
+    
+
+    // if (ratioWH > 1) {
+    //   if (uiImageCropped.width > widthWithDpi) {
+    //     passportSizeByPrintPointLimited = Size(
+    //       widthWithDpi,
+    //       widthWithDpi / ratioWH,
+    //     );
+    //   }
+    // } else if (ratioWH < 1) {
+    //   if (uiImageCropped.height > heightWithDpi) {
+    //     imagePreviewSize = Size(
+    //       heightWithDpi * ratioWH,
+    //       heightWithDpi,
+    //     );
+    //   }
+    // } else {
+    //   if (uiImageCropped.height > heightWithDpi) {
+    //     imagePreviewSize = Size(
+    //       heightWithDpi,
+    //       heightWithDpi,
+    //     );
+    //   }
+    // }
     consolelog(
-        "imagePreviewSize  ${imagePreviewSize} -  ${uiImageCropped.width}- ${uiImageCropped.height}");
+        "passportSizeByPrintPoint ${passportSizeByPrintPoint} -  ${uiImageCropped.width}- ${uiImageCropped.height}");
 
     return PrintHelper().generatePdf(
-      pdfPageFormat,
-      title,
-      croppedFile,
-      numberImage,
-      countrySelected,
-      imagePreviewSize,
+   format:    pdfPageFormat,
+     title:   title,
+     croppedFile:  croppedFile,
+   numberImage:    numberImage,
+     countrySelected:  countrySelected,
+     imagePreviewSize:   passportSizeByPrintPoint,
     );
   }
 

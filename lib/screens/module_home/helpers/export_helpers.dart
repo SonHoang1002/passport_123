@@ -4,6 +4,7 @@ import 'package:passport_photo_2/commons/colors.dart';
 import 'package:passport_photo_2/commons/extension.dart';
 import 'package:passport_photo_2/helpers/convert.dart';
 import 'package:passport_photo_2/widgets/w_custom_about_dialog.dart';
+import 'package:passport_photo_2/commons/constants.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:ui' as ui;
 import 'package:image/image.dart' as img;
@@ -41,102 +42,137 @@ class ExportHelpers {
     required List<double> listPassportDimensionByInch,
     required int quality,
   }) async {
-    (ui.Image, Uint8List) imageData = await _loadImageData(
-      projectModel,
-      indexImageFormat,
-      countrySelected,
-      screenSize,
-      valueResolutionDpi,
-      listPassportDimensionByInch,
-      quality,
-    );
+    /// Từ kích thuơc của passport -> đổi sang pixel cùng với dpi -> tạo ảnh với kíc thước này
+    ///
 
-    Map<String, dynamic> drawResult = GeneratePdfHelpers().draw(
-      projectModel,
-      exportSize,
-      copyNumber,
-      imageData.$1,
-      valueResolutionDpi,
-    );
-    List<ui.Image> images = drawResult["listUiImage"];
-    Size paperSizeDraw = drawResult[
-        "paperSizeConvertedByPoint"]; // Kích thước giấy PDF, đơn vij pixel
-    Size passportSizeDrawByPoint = drawResult[
-        "passportSizeLimitedByPoint"]; // Kích thước ảnh hộ chiếu sau khi đã limit, đơn vị pixel
-    double spacingHorizontalByPoint = drawResult["spacingHorizontalByPoint"];
-    double spacingVerticalByPoint = drawResult["spacingVerticalByPoint"];
-    EdgeInsets marginByPoint = drawResult["marginByPoint"];
+    switch (indexImageFormat) {
+      case 0: // JPG
+      case 1: // PNG
+        consolelog("indexImageFormatindexImageFormat = $indexImageFormat");
+        (ui.Image, Uint8List) imageData = await _loadImageDataForPdfImageFormat(
+          projectModel,
+          indexImageFormat,
+          countrySelected,
+          screenSize,
+          valueResolutionDpi,
+          listPassportDimensionByInch,
+          quality,
+        );
+        Map<String, dynamic> drawResult = GeneratePdfHelpers().drawPdfImage(
+          projectModel,
+          exportSize,
+          copyNumber,
+          imageData.$1,
+          valueResolutionDpi,
+        );
+        List<ui.Image> listPdfImages = drawResult["listUiPdfImage"];
+        // Size paperSizeByPixel = drawResult["paperSizeByPixel"];
+        // Size passportSizeByPixel = drawResult["passportSizeByPixel"];
+        // double spacingHorizontalByPixel =
+        //     drawResult["spacingHorizontalByPixel"];
+        // double spacingVerticalByPixel = drawResult["spacingVerticalByPixel"];
+        // EdgeInsets marginByPixel = drawResult["marginByPixel"];
 
-    Stopwatch stopwatch = Stopwatch();
-    stopwatch.start();
+        Stopwatch stopwatch = Stopwatch();
+        stopwatch.start();
+        List<File> listMainFile = [];
 
-    List<File> listMainFile = [];
-
-    // Trường hợp
-    // số lượng ảnh lớn hơn 2 -> generate ra 2 ảnh duy nhất : ảnh đầu tiên và ảnh cuối cùng
-    // con truong hop images.length == copynumber -> gen 1 anh duy nhat
-    if (images.length > 2) {
-      List<File> listTempFile = [];
-      List<ui.Image> collapseList = [images.first, images.last];
-      for (var i = 0; i < collapseList.length; i++) {
-        var item = collapseList[i];
-        Uint8List? bytes =
-            (await item.toByteData(format: ui.ImageByteFormat.png))
+        // Trường hợp
+        // số lượng ảnh lớn hơn 2 -> generate ra 2 ảnh duy nhất : ảnh đầu tiên và ảnh cuối cùng
+        // con truong hop images.length == copynumber -> gen 1 anh duy nhat
+        if (listPdfImages.length > 2) {
+          List<File> listTempFile = [];
+          List<ui.Image> collapseList = [
+            listPdfImages.first,
+            listPdfImages.last
+          ];
+          for (var i = 0; i < collapseList.length; i++) {
+            var item = collapseList[i];
+            Uint8List? bytes = (await item.toByteData(
+              format: ui.ImageByteFormat.png,
+            ))
                 ?.buffer
                 .asUint8List();
 
-        final directory = await getExternalStorageDirectory();
-        final String path = '${directory!.path}/test_save_to_$i.png';
+            final directory = await getExternalStorageDirectory();
+            final String path = '${directory!.path}/generated_pdf_image_$i.png';
 
-        File file = File(path);
-        await file.writeAsBytes(bytes!);
-        listTempFile.add(file);
-      }
-      for (var i = 0; i < images.length; i++) {
-        if (i < images.length - 1) {
-          listMainFile.add(listTempFile[0]);
+            File file = File(path);
+            await file.writeAsBytes(bytes!);
+            listTempFile.add(file);
+          }
+          for (var i = 0; i < listPdfImages.length; i++) {
+            if (i < listPdfImages.length - 1) {
+              listMainFile.add(listTempFile[0]);
+            } else {
+              listMainFile.add(listTempFile[1]);
+            }
+          }
         } else {
-          listMainFile.add(listTempFile[1]);
-        }
-      }
-    } else {
-      for (var i = 0; i < images.length; i++) {
-        var item = images[i];
-        Uint8List? bytes =
-            (await item.toByteData(format: ui.ImageByteFormat.png))
+          for (var i = 0; i < listPdfImages.length; i++) {
+            var item = listPdfImages[i];
+            Uint8List? bytes = (await item.toByteData(
+              format: ui.ImageByteFormat.png,
+            ))
                 ?.buffer
                 .asUint8List();
-        final directory = await getExternalStorageDirectory();
-        final String path = '${directory!.path}/test_save_to_$i.png';
-        File file = File(path);
-        await file.writeAsBytes(bytes!);
-        listMainFile.add(file);
-      }
-    }
-    bool isPDFFormat =
-        indexImageFormat == EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT.length - 1;
-    if (isPDFFormat) {
-      File result = await GeneratePdfHelpers().generatePaperPdf(
-        projectModel,
-        paperSizeDraw,
-        passportSizeDrawByPoint,
-        copyNumber,
-        valueResolutionDpi,
-        [spacingHorizontalByPoint, spacingVerticalByPoint],
-        marginByPoint,
-        quality,
-      );
-      consolelog(
-          "multi pdf: image data length: ${imageData.$2.length} - pdf data length: ${result.readAsBytesSync().length}");
-      listMainFile = [result];
-    }
+            final directory = await getExternalStorageDirectory();
+            final String path = '${directory!.path}/generated_pdf_image_$i.png';
+            File file = File(path);
+            await file.writeAsBytes(bytes!);
+            listMainFile.add(file);
+          }
+        }
+        stopwatch.stop();
+        consolelog("stopwatch abc listMainFile ${listMainFile.length}");
+        return listMainFile;
+      case 2:
+        consolelog("exportSize: $exportSize");
+        List<File> listMainFile = [];
+        // (ui.Image, Uint8List) imageData = await _loadImageDataForPdfFormat(
+        //   projectModel,
+        //   indexImageFormat,
+        //   countrySelected,
+        //   screenSize,
+        //   valueResolutionDpi,
+        //   listPassportDimensionByInch,
+        //   quality,
+        // );
 
-    stopwatch.stop();
-    consolelog("stopwatch abc listMainFile ${listMainFile.length}");
-    return listMainFile;
+        Map<String, dynamic> drawResult = GeneratePdfHelpers().drawPdfPage(
+          projectModel,
+          exportSize,
+          copyNumber,
+          // imageData.$1,
+          valueResolutionDpi,
+        );
+        Size paperSizeByPoint = drawResult["paperSizeByPoint"];
+        Size passportSizeByPoint = drawResult["passportSizeByPoint"];
+        double spacingHorizontalByPoint =
+            drawResult["spacingHorizontalByPoint"];
+        double spacingVerticalByPoint = drawResult["spacingVerticalByPoint"];
+        EdgeInsets marginByPoint = drawResult["marginByPoint"];
+
+        File result = await GeneratePdfHelpers().generatePaperPdf(
+          projectModel,
+          paperSizeByPoint,
+          passportSizeByPoint,
+          copyNumber,
+          valueResolutionDpi,
+          [spacingHorizontalByPoint, spacingVerticalByPoint],
+          marginByPoint,
+          quality,
+        );
+
+        listMainFile = [result];
+
+        return listMainFile;
+      default:
+        return [];
+    }
   }
 
-  static Future<(ui.Image, Uint8List)> _loadImageData(
+  static Future<(ui.Image, Uint8List)> _loadImageDataForPdfImageFormat(
     ProjectModel projectModel,
     int indexImageFormat,
     CountryModel countrySelected,
@@ -149,13 +185,44 @@ class ExportHelpers {
     stopwatch.start();
 
     // is generate pdf -> lay jpg
-    int indexImageFormat0 = indexImageFormat;
-    if (indexImageFormat == 2) {
-      indexImageFormat0 = 0;
-    }
+    /// Dựa vào kích thước mong muốn in ra
+    /// Resize ảnh original
     File? resizedFile = await _resizeImage(
       projectModel.croppedFile!,
-      indexImageFormat0,
+      indexImageFormat,
+      countrySelected,
+      screenSize,
+      valueResolution,
+      listPassportDimensionByInch,
+      quality,
+    );
+    Uint8List bytes = await resizedFile!.readAsBytes();
+
+    final Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(bytes, (ui.Image img) {
+      completer.complete(img);
+    });
+
+    stopwatch.stop();
+    ui.Image image = await completer.future;
+    return (image, bytes);
+  }
+
+  static Future<(ui.Image, Uint8List)> _loadImageDataForPdfFormat(
+    ProjectModel projectModel,
+    int indexImageFormat,
+    CountryModel countrySelected,
+    Size screenSize,
+    double valueResolution,
+    List<double> listPassportDimensionByInch,
+    int quality,
+  ) async {
+    Stopwatch stopwatch = Stopwatch();
+    stopwatch.start();
+
+    File? resizedFile = await _resizeImageForPdf(
+      projectModel.croppedFile!,
+      0, // JPG format
       countrySelected,
       screenSize,
       valueResolution,
@@ -184,124 +251,127 @@ class ExportHelpers {
     required int indexImageFormat,
     required File imageCropped,
     required CountryModel countrySelected,
-    required Size screenSize,
+    // required Size screenSize,
     required double valueResolutionDpi,
-    required List<double> listPassportDimensionByInch,
+    // required List<double> listPassportDimensionByInch,
     required int quality,
   }) async {
     double dpi = valueResolutionDpi;
-    Map<String, dynamic> result = {
-      "outputFile": null,
-      "fileSize": 0.0,
-    };
+    Map<String, dynamic> result = {"outputFile": null, "fileSize": 0.0};
     try {
-      int indexImageFormat0 = indexImageFormat;
-
       /// Kiểm tra xem đang dùng for
       bool idPdfFormat = indexImageFormat ==
           EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT.length - 1;
-
-      /// Tạo path IMAGE cuối cùng để ghi dữ liệu đã generate vào
       final dirPath = (await getExternalStorageDirectory())!.path;
-      String extension = LIST_FORMAT_IMAGE[indexImageFormat0].toLowerCase();
-      String outImagePath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
 
-      // if (idPdfFormat) {
-      //   File? pdfFile;
+      if (idPdfFormat) {
+        String extension = JPG.toLowerCase();
+        String outImagePath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
 
-      //   /// Nếu là ảnh binhf thường
-      //   /// -> chuyển đơn vị hiện tại sang đơn vị pixel để so sánh giới hạn
-      //   /// Nếu in ấn
-      //   /// -> chuyển đơn vị hiện tại sang đơn vị pixel ( KÈM THEO DPI ), công thức với value như sau:
-      //   ///
-      //   /// input: pixel -> output: value
-      //   /// input: point -> output: value / 72 * dpi  ( điểm in )
-      //   /// input: cm    -> output: value / 2.54 * dpi
-      //   /// input: mm    -> output: value / 2.54 * dpi / 10
+        File? pdfFile;
+        PassportModel currentPassport = countrySelected.currentPassport;
+        double passportWidthByPixel, passportHeightByPixel;
+        if (currentPassport.unit == PIXEL) {
+          passportWidthByPixel = currentPassport.width;
+          passportHeightByPixel = currentPassport.height;
+        } else {
+          passportWidthByPixel = FlutterConvert.convertUnit(
+                currentPassport.unit,
+                INCH,
+                currentPassport.width,
+              ) *
+              dpi;
+          passportHeightByPixel = FlutterConvert.convertUnit(
+                currentPassport.unit,
+                INCH,
+                currentPassport.height,
+              ) *
+              dpi;
+        }
+        File? resizedFile = await MyMethodChannel.resizeAndResoluteImage(
+          inputPath: imageCropped.path,
+          format: 0, // JPG format
+          listWH: [passportWidthByPixel, passportHeightByPixel],
+          scaleWH: [1, 1],
+          outPath: outImagePath,
+          quality: quality,
+        );
 
-      //   /// Giới hạn kích thước mà user muốn in
-      //   /// Trả về kích thước với đơn vị pixel để sử dụng cho việc resize ảnh phía sau
-
-      //   double widthInInch, heightInInch;
-
-      //   // 2️⃣ Chuyển inch → pixel theo DPI
-      //   Size passportSizeByPixel = Size(
-      //     widthInInch * dpi,
-      //     heightInInch * dpi,
-      //   );
-
-      //   /// Kích thước ảnh (pixel) giành cho
-
-      //   /// Sử dụng ảnh original đã cắt, điều chỉnh chất lượng hình ảnh
-      //   /// Giữu nguyên kích thước đã cắt
-      //   ///
-      //   /// Trong trường hợp user muốn in với ảnh quá to -> giới hạn nó xuống mức giới hạn tuỳ vào cỡ của màn hình (5000 haowjc 9000px)
-      //   File? resizedFile = await MyMethodChannel.resizeAndResoluteImage(
-      //     inputPath: imageCropped.path,
-      //     format: indexImageFormat0,
-      //     listWH: [passportSizeByPixel.width, passportSizeByPixel.height],
-      //     scaleWH: [1, 1],
-      //     outPath: outImagePath,
-      //     quality: quality,
-      //   );
-
-      //   if (resizedFile != null) {
-      //     PassportModel currentPassport = countrySelected.currentPassport;
-
-      //     double passportWidthConverted, passportHeightConverted;
-      //     if (currentPassport.unit == PIXEL) {
-      //       passportWidthConverted =
-      //           currentPassport.width / valueResolutionDpi * 72;
-      //       passportHeightConverted =
-      //           currentPassport.height / valueResolutionDpi * 72;
-      //     } else {
-      //       passportWidthConverted = FlutterConvert.convertUnit(
-      //           currentPassport.unit, POINT, currentPassport.width);
-      //       passportHeightConverted = FlutterConvert.convertUnit(
-      //           currentPassport.unit, POINT, currentPassport.height);
-      //     }
-      //     consolelog("valueResolutionDpi = $valueResolutionDpi");
-      //     pdfFile = await GeneratePdfHelpers().generateSingleImagePdf(
-      //       Size(passportWidthConverted, passportHeightConverted),
-      //       [resizedFile],
-      //     );
-      //     // single pdf: image data length: 927866 - pdf data length: 928820
-      //     consolelog(
-      //         "single pdf: image data length: ${resizedFile.readAsBytesSync().length} - pdf data length: ${pdfFile!.readAsBytesSync().length}");
-      //   }
-      //   if (pdfFile != null) {
-      //     double fileSize = await getFileSize(pdfFile);
-      //     result['outputFile'] = pdfFile;
-      //     result['fileSize'] = fileSize;
-      //   }
-      // } else {
-      var currentPassport = countrySelected.currentPassport;
-      double passportWidthByPixel, passportHeightByPixel;
-      if (currentPassport.unit == PIXEL) {
-        passportWidthByPixel = currentPassport.width;
-        passportHeightByPixel = currentPassport.height;
+        if (resizedFile != null) {
+          double passportWidthByPrintPoint, passportHeightByPrintPoint;
+          if (currentPassport.unit == PIXEL) {
+            passportWidthByPrintPoint =
+                currentPassport.width / valueResolutionDpi * 72;
+            passportHeightByPrintPoint =
+                currentPassport.height / valueResolutionDpi * 72;
+          } else {
+            passportWidthByPrintPoint = FlutterConvert.convertUnit(
+              currentPassport.unit,
+              POINT,
+              currentPassport.width,
+            );
+            passportHeightByPrintPoint = FlutterConvert.convertUnit(
+              currentPassport.unit,
+              POINT,
+              currentPassport.height,
+            );
+          }
+          consolelog("valueResolutionDpi = $valueResolutionDpi");
+          pdfFile = await GeneratePdfHelpers().generateSingleImagePdf(
+            Size(passportWidthByPrintPoint, passportHeightByPrintPoint),
+            [resizedFile],
+          );
+          // single pdf: image data length: 927866 - pdf data length: 928820
+          consolelog(
+            "single pdf: image data length: ${resizedFile.readAsBytesSync().length} - pdf data length: ${pdfFile!.readAsBytesSync().length}",
+          );
+        }
+        if (pdfFile != null) {
+          double fileSize = await getFileSize(pdfFile);
+          result['outputFile'] = pdfFile;
+          result['fileSize'] = fileSize;
+        }
       } else {
-        /// 
-        /// inch=⎩
-⎨
-⎧​pixel/DPIpt/72cm/2.54mm/25.4inch​neˆˊu đơn vị laˋ pixelneˆˊu đơn vị laˋ pointneˆˊu đơn vị laˋ cmneˆˊu đơn vị laˋ mminchthıˋgiữnguye^n​
-      }
+        final dirPath = (await getExternalStorageDirectory())!.path;
+        String extension =
+            LIST_FORMAT_IMAGE[indexImageFormat].toLowerCase(); // JPG or PNG
+        String outImagePath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
+        var currentPassport = countrySelected.currentPassport;
+        double passportWidthByPixel, passportHeightByPixel;
 
-      File? resizedFile = await MyMethodChannel.resizeAndResoluteImage(
-        inputPath: imageCropped.path,
-        format: indexImageFormat0,
-        listWH: [passportWidthByPixel, passportHeightByPixel],
-        scaleWH: [1, 1],
-        outPath: outImagePath,
-        quality: quality,
-      );
-      if (resizedFile != null) {
-        double fileSize = await getFileSize(resizedFile);
+        if (currentPassport.unit == PIXEL) {
+          passportWidthByPixel = currentPassport.width;
+          passportHeightByPixel = currentPassport.height;
+        } else {
+          passportWidthByPixel = FlutterConvert.convertUnit(
+                currentPassport.unit,
+                INCH,
+                currentPassport.width,
+              ) *
+              dpi;
+          passportHeightByPixel = FlutterConvert.convertUnit(
+                currentPassport.unit,
+                INCH,
+                currentPassport.height,
+              ) *
+              dpi;
+        }
 
-        result['outputFile'] = resizedFile;
-        result['fileSize'] = fileSize;
+        File? resizedFile = await MyMethodChannel.resizeAndResoluteImage(
+          inputPath: imageCropped.path,
+          format: indexImageFormat,
+          listWH: [passportWidthByPixel, passportHeightByPixel],
+          scaleWH: [1, 1],
+          outPath: outImagePath,
+          quality: quality,
+        );
+        if (resizedFile != null) {
+          double fileSize = await getFileSize(resizedFile);
+
+          result['outputFile'] = resizedFile;
+          result['fileSize'] = fileSize;
+        }
       }
-      // }
     } catch (e) {
       consolelog("handleGetFileSize error: $e");
     }
@@ -314,12 +384,61 @@ class ExportHelpers {
     int indexImageFormat,
     CountryModel countrySelected,
     Size size,
-    double valueResolution,
+    double dpi,
     List<double> listPassportDimensionByInch,
     int quality,
   ) async {
     final dirPath = (await getExternalStorageDirectory())!.path;
-    String extension = LIST_FORMAT_IMAGE[indexImageFormat].toLowerCase();
+    String extension =
+        LIST_FORMAT_IMAGE[indexImageFormat].toLowerCase(); // JPG format
+    String outPath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
+
+    var currentPassport = countrySelected.currentPassport;
+    double passportWidthByPixel, passportHeightByPixel;
+
+    if (currentPassport.unit == PIXEL) {
+      passportWidthByPixel = currentPassport.width;
+      passportHeightByPixel = currentPassport.height;
+    } else {
+      passportWidthByPixel = FlutterConvert.convertUnit(
+            currentPassport.unit,
+            INCH,
+            currentPassport.width,
+          ) *
+          dpi;
+      passportHeightByPixel = FlutterConvert.convertUnit(
+            currentPassport.unit,
+            INCH,
+            currentPassport.height,
+          ) *
+          dpi;
+    }
+    // Size abc = handleLimitDPI(
+    //     countrySelected, size, valueResolution, listPassportDimensionByInch);
+
+    final resizedFile = await MyMethodChannel.resizeAndResoluteImage(
+      inputPath: imageCropped.path,
+      format: indexImageFormat,
+      listWH: [passportWidthByPixel, passportHeightByPixel],
+      scaleWH: [1, 1],
+      outPath: outPath,
+      quality: quality,
+    );
+    return resizedFile;
+  }
+
+  static Future<File?> _resizeImageForPdf(
+    File imageCropped,
+    int indexImageFormat,
+    CountryModel countrySelected,
+    Size size,
+    double dpi,
+    List<double> listPassportDimensionByInch,
+    int quality,
+  ) async {
+    final dirPath = (await getExternalStorageDirectory())!.path;
+    String extension =
+        LIST_FORMAT_IMAGE[indexImageFormat].toLowerCase(); // JPG format
     String outPath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
 
     // Size abc = handleLimitDPI(
@@ -328,8 +447,8 @@ class ExportHelpers {
     final resizedFile = await MyMethodChannel.resizeAndResoluteImage(
       inputPath: imageCropped.path,
       format: indexImageFormat,
-      // [abc.width, abc.height],
-      // [1, 1],
+      // listWH: [passportWidthByPixel, passportHeightByPixel],
+      // scaleWH: [1, 1],
       outPath: outPath,
       quality: quality,
     );
@@ -352,19 +471,17 @@ class ExportHelpers {
     }
 
     final pdf = pw.Document();
-    final imageProvider = pw.MemoryImage(
-      imageFile.readAsBytesSync(),
-    );
+    final imageProvider = pw.MemoryImage(imageFile.readAsBytesSync());
 
     // Tạo trang PDF với kích thước bằng với ảnh
     pdf.addPage(
       pw.Page(
-        pageFormat:
-            PdfPageFormat(image.width.toDouble(), image.height.toDouble()),
+        pageFormat: PdfPageFormat(
+          image.width.toDouble(),
+          image.height.toDouble(),
+        ),
         build: (pw.Context context) {
-          return pw.Center(
-            child: pw.Image(imageProvider),
-          );
+          return pw.Center(child: pw.Image(imageProvider));
         },
       ),
     );
@@ -421,7 +538,8 @@ class ExportHelpers {
     /// Đổi kích thước passport sang đơn vị pixel
     double ratioWH;
     consolelog(
-        "handleLimitDPI passportSizeByPixelWithDpi = $passportSizeByPixelWithDpi");
+      "handleLimitDPI passportSizeByPixelWithDpi = $passportSizeByPixelWithDpi",
+    );
     targetWidth = passportSizeByPixelWithDpi.width;
     targetHeight = passportSizeByPixelWithDpi.height;
     if (targetHeight <= 0) {
@@ -510,8 +628,12 @@ class ExportHelpers {
     double itemHeight = 44.0;
     RenderBox renderBox =
         keyCopy.currentContext?.findRenderObject() as RenderBox;
-    Offset offset = renderBox.localToGlobal(const Offset(0, 0)
-        .translate(-5, -heightDialog - (renderBox.size.height) - 35));
+    Offset offset = renderBox.localToGlobal(
+      const Offset(
+        0,
+        0,
+      ).translate(-5, -heightDialog - (renderBox.size.height) - 35),
+    );
     showCustomDialogWithOffset(
       context: context,
       newScreen: BodyDialogCustom(
@@ -547,10 +669,9 @@ class ExportHelpers {
     RenderBox renderBox =
         keySize.currentContext?.findRenderObject() as RenderBox;
     double heightOfDialog = (itemHeight) * LIST_EXPORT_SIZE.length;
-    Offset offset = renderBox.localToGlobal(const Offset(0, 0)).translate(
-          -5,
-          -heightOfDialog - (renderBox.size.height - 10),
-        );
+    Offset offset = renderBox
+        .localToGlobal(const Offset(0, 0))
+        .translate(-5, -heightOfDialog - (renderBox.size.height - 10));
 
     showCustomDialogWithOffset(
       context: context,
@@ -564,7 +685,8 @@ class ExportHelpers {
                 .where((element) => element.title == value)
                 .toList()
                 .firstOrNull;
-            if (value == LIST_EXPORT_SIZE.last.title) {
+            bool isCustomSize = value == LIST_EXPORT_SIZE.last.title;
+            if (isCustomSize) {
               sizeModel = currentExportSize.copyWith(
                 title: LIST_EXPORT_SIZE.last.title,
               );
@@ -575,19 +697,8 @@ class ExportHelpers {
                 () {
                   onTapOutside();
                 },
-                (width, height) {
-                  // check value before apply
-                  if (width > 0 && height > 0) {
-                    if (width > 5000 || height > 5000) {
-                      onChangeSize(sizeModel!);
-                      return;
-                    }
-                    onChangeSize(
-                      sizeModel!.copyWith(
-                        size: Size(width, height),
-                      ),
-                    );
-                  }
+                (exportSize) {
+                  onChangeSize(exportSize);
                 },
               );
             } else {
@@ -621,13 +732,8 @@ class ExportHelpers {
     RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
 
     Offset offset = renderBox
-        .localToGlobal(
-          const Offset(0, 0),
-        )
-        .translate(
-          0,
-          -172 - (renderBox.size.height - 15),
-        );
+        .localToGlobal(const Offset(0, 0))
+        .translate(0, -172 - (renderBox.size.height - 15));
 
     showCustomDialogWithOffset(
       context: context,
@@ -700,15 +806,15 @@ class ExportHelpers {
     BuildContext context,
     ExportSizeModel exportSizeModel,
     void Function() onCancelFocus,
-    void Function(double width, double height) onComplete,
+    void Function(ExportSizeModel exportSizeModel) onComplete,
   ) {
     showCupertinoDialog(
       context: context,
       builder: (context) {
         return WBodyDialogCustomSize(
           exportSizeModel: exportSizeModel,
-          onComplete: (width, height) {
-            onComplete(width, height);
+          onComplete: (ExportSizeModel exportSizeModel) {
+            onComplete(exportSizeModel);
           },
         );
       },
@@ -724,9 +830,15 @@ class ExportHelpers {
     // double valueResolution,
   ) {
     double widthConverted = FlutterConvert.convertUnit(
-        currentPassport.unit, INCH, currentPassport.width);
+      currentPassport.unit,
+      INCH,
+      currentPassport.width,
+    );
     double heightConverted = FlutterConvert.convertUnit(
-        currentPassport.unit, INCH, currentPassport.height);
+      currentPassport.unit,
+      INCH,
+      currentPassport.height,
+    );
 
     Size expandedSize = Size(widthConverted, heightConverted);
 
