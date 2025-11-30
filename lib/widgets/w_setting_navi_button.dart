@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/screens/module_setting/setting.dart';
-import 'package:passport_photo_2/widgets/bottom_sheet/show_bottom_sheet.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/screens/module_setting/setting.dart';
+import 'package:pass1_/widgets/bottom_sheet/show_bottom_sheet.dart';
 
 class WSettingNavigatorButton extends StatelessWidget {
   final bool isDarkMode;
@@ -21,10 +21,10 @@ class WSettingNavigatorButton extends StatelessWidget {
       child: Container(
         height: 46,
         width: 46,
-        child: Image.asset(PATH_PREFIX_ICON +
-            (isDarkMode
-                ? "icon_setting_dark.png"
-                : "icon_setting_light.png")),
+        child: Image.asset(
+          PATH_PREFIX_ICON +
+              (isDarkMode ? "icon_setting_dark.png" : "icon_setting_light.png"),
+        ),
       ),
     );
   }

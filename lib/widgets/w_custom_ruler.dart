@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:passport_photo_2/helpers/adjust_helper.dart';
+import 'package:pass1_/helpers/adjust_helper.dart';
 
 class WRulerCustom extends StatefulWidget {
   final Color color;
@@ -75,10 +75,10 @@ class _WRulerCustomState extends State<WRulerCustom> {
       if (_isScrollIncrease!) {
         int checkSnapNumber =
             AdjustHelpers.getNearestNumberAndDivisibleTargetNumber(
-          currentPosition,
-          division,
-          isGreatThan: _isScrollIncrease! == true,
-        );
+              currentPosition,
+              division,
+              isGreatThan: _isScrollIncrease! == true,
+            );
 
         if ((checkSnapNumber.toDouble() - currentPosition).abs() < 3) {
           newPosition = max(checkSnapNumber.toDouble(), currentPosition);
@@ -91,10 +91,10 @@ class _WRulerCustomState extends State<WRulerCustom> {
       } else {
         int checkSnapNumber =
             AdjustHelpers.getNearestNumberAndDivisibleTargetNumber(
-          currentPosition,
-          division,
-          isGreatThan: false,
-        );
+              currentPosition,
+              division,
+              isGreatThan: false,
+            );
         if ((currentPosition - checkSnapNumber.toDouble()).abs() < 3) {
           newPosition = min(checkSnapNumber.toDouble(), currentPosition);
           scrollController.position.correctPixels(newPosition);
@@ -112,8 +112,9 @@ class _WRulerCustomState extends State<WRulerCustom> {
 
   /// use to change subject
   void _jumpToNewRatio() {
-    scrollController
-        .jumpTo(widget.currentRatioValue * widget.dividers * 10 / 2);
+    scrollController.jumpTo(
+      widget.currentRatioValue * widget.dividers * 10 / 2,
+    );
   }
 
   int lastMilli = DateTime.now().millisecondsSinceEpoch;
@@ -176,13 +177,15 @@ class _WRulerCustomState extends State<WRulerCustom> {
                 child: ShaderMask(
                   blendMode: BlendMode.dstIn,
                   shaderCallback: (Rect bounds) {
-                    return LinearGradient(colors: [
-                      overlayColor.withValues(alpha: 0),
-                      overlayColor.withValues(alpha: 0.8),
-                      overlayColor,
-                      overlayColor.withValues(alpha: 0.8),
-                      overlayColor.withValues(alpha: 0),
-                    ]).createShader(bounds);
+                    return LinearGradient(
+                      colors: [
+                        overlayColor.withValues(alpha: 0),
+                        overlayColor.withValues(alpha: 0.8),
+                        overlayColor,
+                        overlayColor.withValues(alpha: 0.8),
+                        overlayColor.withValues(alpha: 0),
+                      ],
+                    ).createShader(bounds);
                   },
                   child: ListView.builder(
                     controller: scrollController,
@@ -204,23 +207,24 @@ class _WRulerCustomState extends State<WRulerCustom> {
                                   alignment: Alignment.bottomCenter,
                                   children: <Widget>[
                                     Container(
-                                      width: index ==
+                                      width:
+                                          index ==
                                               widget.instructionRatioValue *
                                                   widget.dividers
                                           ? 2
                                           : 1,
                                       height: index % 10 == 0
                                           ? index ==
-                                                  widget.instructionRatioValue *
-                                                      widget.dividers
-                                              ? 20
-                                              : 15
+                                                    widget.instructionRatioValue *
+                                                        widget.dividers
+                                                ? 20
+                                                : 15
                                           : 10,
                                       color: index % 10 == 0
                                           ? widget.color
                                           : widget.color.withValues(alpha: 0.5),
                                     ),
-                                    _buildCheckPoint(index)
+                                    _buildCheckPoint(index),
                                   ],
                                 ),
                               ),
@@ -241,7 +245,8 @@ class _WRulerCustomState extends State<WRulerCustom> {
               children: <Widget>[
                 Container(
                   width: 3,
-                  color: widget.checkPointColor ??
+                  color:
+                      widget.checkPointColor ??
                       Colors.orange.withValues(alpha: 0.4),
                 ),
               ],
@@ -256,7 +261,8 @@ class _WRulerCustomState extends State<WRulerCustom> {
     return Positioned.fill(
       child: AnimatedOpacity(
         duration: const Duration(milliseconds: 300),
-        opacity: (index == widget.instructionRatioValue * widget.dividers &&
+        opacity:
+            (index == widget.instructionRatioValue * widget.dividers &&
                 widget.currentRatioValue != widget.instructionRatioValue)
             ? 1
             : 0,
@@ -268,10 +274,11 @@ class _WRulerCustomState extends State<WRulerCustom> {
               width: 6,
               height: 6,
               decoration: BoxDecoration(
-                  color: widget.color,
-                  borderRadius: BorderRadius.circular(999)),
+                color: widget.color,
+                borderRadius: BorderRadius.circular(999),
+              ),
             ),
-            const SizedBox()
+            const SizedBox(),
           ],
         ),
       ),

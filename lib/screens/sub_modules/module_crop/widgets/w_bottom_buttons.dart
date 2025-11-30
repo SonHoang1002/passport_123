@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/navigator_route.dart';
-import 'package:passport_photo_2/widgets/w_button.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/widgets/w_button.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
 
 Widget buildBottomButtons(
-    BuildContext context, bool isDarkMode, Function() onSave) {
+  BuildContext context,
+  bool isDarkMode,
+  Function() onSave,
+) {
   final _size = MediaQuery.sizeOf(context);
   final bool _isDarkMode = isDarkMode;
   return Visibility(

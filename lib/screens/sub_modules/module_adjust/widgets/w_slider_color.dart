@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
 
 class SliderColor extends StatelessWidget {
   final double dotSize;

@@ -1,6 +1,6 @@
 // import 'package:flutter_gpu_filters_interface/flutter_gpu_filters_interface.dart';
 // import 'package:flutter_image_filters/flutter_image_filters.dart';
-// import 'package:passport_photo_2/helpers/log_custom.dart';
+// import 'package:pass1_/helpers/log_custom.dart';
 
 // /// Describes brightness manipulations
 // class BrightnessBackgroundShaderConfiguration extends ShaderConfiguration {

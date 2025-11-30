@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 
 class FlutterSizeHelpers {
   static bool checkSizeIsSmall(BuildContext context) {
@@ -62,8 +62,10 @@ class FlutterSizeHelpers {
   ///
   static Size getLimitScreenSize(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
-    size = Size(min(SIZE_EXAMPLE.width, size.width),
-        min(SIZE_EXAMPLE.height, size.height));
+    size = Size(
+      min(SIZE_EXAMPLE.width, size.width),
+      min(SIZE_EXAMPLE.height, size.height),
+    );
     return size;
   }
 
@@ -125,7 +127,8 @@ class FlutterSizeHelpers {
     bool isCompress = false,
   }) {
     consolelog(
-        "_videoEditorController.videoDimension $dimensionWidth -  $dimensionHeight");
+      "_videoEditorController.videoDimension $dimensionWidth -  $dimensionHeight",
+    );
     int mainWidth, mainHeight;
     if (dimensionWidth <= 0 || dimensionHeight <= 0 || !isCompress) {
       return [dimensionWidth, dimensionHeight];

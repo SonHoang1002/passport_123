@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/convert.dart';
-import 'package:passport_photo_2/helpers/random_number.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/random_number.dart';
+import 'package:pass1_/models/country_passport_model.dart';
 
 class ExportSizeModel {
   final int uid;
@@ -56,19 +56,31 @@ class ExportSizeModel {
       marginModel: marginModel.copyWith(
         mLeft: FlutterConvert.convertUnit(unit, targetUnit, marginModel.mLeft),
         mTop: FlutterConvert.convertUnit(unit, targetUnit, marginModel.mTop),
-        mRight:
-            FlutterConvert.convertUnit(unit, targetUnit, marginModel.mRight),
-        mBottom:
-            FlutterConvert.convertUnit(unit, targetUnit, marginModel.mBottom),
+        mRight: FlutterConvert.convertUnit(
+          unit,
+          targetUnit,
+          marginModel.mRight,
+        ),
+        mBottom: FlutterConvert.convertUnit(
+          unit,
+          targetUnit,
+          marginModel.mBottom,
+        ),
       ),
       size: Size(
         FlutterConvert.convertUnit(unit, targetUnit, size.width),
         FlutterConvert.convertUnit(unit, targetUnit, size.height),
       ),
-      spacingHorizontal:
-          FlutterConvert.convertUnit(unit, targetUnit, spacingHorizontal),
-      spacingVertical:
-          FlutterConvert.convertUnit(unit, targetUnit, spacingVertical),
+      spacingHorizontal: FlutterConvert.convertUnit(
+        unit,
+        targetUnit,
+        spacingHorizontal,
+      ),
+      spacingVertical: FlutterConvert.convertUnit(
+        unit,
+        targetUnit,
+        spacingVertical,
+      ),
       title: title,
     );
   }
@@ -115,22 +127,12 @@ class MarginModel {
   }
 
   EdgeInsets toEdgeInsets() {
-    EdgeInsets margin = EdgeInsets.fromLTRB(
-      mLeft,
-      mTop,
-      mRight,
-      mBottom,
-    );
+    EdgeInsets margin = EdgeInsets.fromLTRB(mLeft, mTop, mRight, mBottom);
     return margin;
   }
 
   List<double> toList() {
-    return [
-      mLeft,
-      mTop,
-      mRight,
-      mBottom,
-    ];
+    return [mLeft, mTop, mRight, mBottom];
   }
 
   MarginModel copyWith({
@@ -147,5 +149,15 @@ class MarginModel {
       mRight: mRight ?? this.mRight,
       mBottom: mBottom ?? this.mBottom,
     );
+  }
+
+  @override
+  String toString() {
+    return "MarginModel: "
+        "id: $id, "
+        "mLeft: $mLeft, "
+        "mTop: $mTop, "
+        "mRight: $mRight, "
+        "mBottom: $mBottom ";
   }
 }

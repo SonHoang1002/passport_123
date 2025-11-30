@@ -1,11 +1,9 @@
-import 'package:passport_photo_2/models/country_passport_model.dart';
+import 'package:pass1_/models/country_passport_model.dart';
 
 abstract class CountryState {
   final List<CountryModel> listCountry;
 
-  CountryState({
-    required this.listCountry,
-  });
+  CountryState({required this.listCountry});
 }
 
 class InitCountryState extends CountryState {
@@ -16,5 +14,5 @@ class UpdateCountryState extends CountryState {
   final List<CountryModel> listCountry;
 
   UpdateCountryState({required this.listCountry})
-      : super(listCountry: listCountry);
+    : super(listCountry: listCountry);
 }

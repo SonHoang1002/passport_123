@@ -1,27 +1,27 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:passport_photo_2/commons/extension.dart';
-import 'package:passport_photo_2/helpers/random_number.dart';
-import 'package:passport_photo_2/models/adjust_subject_model.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/models/export_size_model.dart';
-import 'package:passport_photo_2/models/image_item_model.dart';
-import 'package:passport_photo_2/models/instruction_model.dart';
-import 'package:passport_photo_2/models/step_model.dart';
+import 'package:pass1_/commons/extension.dart';
+import 'package:pass1_/helpers/random_number.dart';
+import 'package:pass1_/models/adjust_subject_model.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/models/export_size_model.dart';
+import 'package:pass1_/models/image_item_model.dart';
+import 'package:pass1_/models/instruction_model.dart';
+import 'package:pass1_/models/step_model.dart';
 import 'package:pdf/pdf.dart';
 
 const Map<int, String> DATA_SEGMENT_RESOLUTION_1 = {
   0: "600dpi",
   1: "1200dpi",
-  2: "Custom"
+  2: "Custom",
 };
 const List<double> LIST_MIN_MAX_RESOLUTION_1 = [300, 1800];
 
 const Map<int, String> DATA_SEGMENT_RESOLUTION_2 = {
   0: "300dpi",
   1: "600dpi",
-  2: "Custom"
+  2: "Custom",
 };
 const List<double> LIST_MIN_MAX_RESOLUTION_2 = [300, 600];
 
@@ -45,11 +45,13 @@ const String FONT_GOOGLESANS = "GoogleSans";
 // ignore: non_constant_identifier_names
 List<ItemImage> LIST_ITEM_IMAGE = [
   ItemImage(
-      path: "${PATH_PREFIX_IMAGE}image_example.jpg",
-      id: randomInt().toString()),
+    path: "${PATH_PREFIX_IMAGE}image_example.jpg",
+    id: randomInt().toString(),
+  ),
   ItemImage(
-      path: "${PATH_PREFIX_IMAGE}image_example.jpg",
-      id: randomInt().toString()),
+    path: "${PATH_PREFIX_IMAGE}image_example.jpg",
+    id: randomInt().toString(),
+  ),
 ];
 
 // ignore: non_constant_identifier_names
@@ -78,30 +80,22 @@ List<InstructionModel> LIST_INSTRUCTION_MODEL = [
 List<StepModel> LIST_STEP_SELECTION = [
   StepModel(
     id: 0,
-    listMediaSrc: [
-      "${PATH_PREFIX_ICON}icon_step_import.png",
-    ],
+    listMediaSrc: ["${PATH_PREFIX_ICON}icon_step_import.png"],
     title: "Import",
   ),
   StepModel(
     id: 1,
-    listMediaSrc: [
-      "${PATH_PREFIX_ICON}icon_step_adjust.png",
-    ],
+    listMediaSrc: ["${PATH_PREFIX_ICON}icon_step_adjust.png"],
     title: "Adjust",
   ),
   StepModel(
     id: 2,
-    listMediaSrc: [
-      "${PATH_PREFIX_ICON}icon_step_crop.png",
-    ],
+    listMediaSrc: ["${PATH_PREFIX_ICON}icon_step_crop.png"],
     title: "Crop",
   ),
   StepModel(
     id: 3,
-    listMediaSrc: [
-      "${PATH_PREFIX_ICON}icon_step_finish.png",
-    ],
+    listMediaSrc: ["${PATH_PREFIX_ICON}icon_step_finish.png"],
     title: "Finish",
   ),
 ];
@@ -210,7 +204,7 @@ List<AdjustSubjectModel> LIST_ADJUST_SUBJECT_MODEL = [
   ),
 ];
 
-const String titleInch =  "inch";
+const String titleInch = "inch";
 // ignore: non_constant_identifier_names
 const String titleCentimet = "cm";
 // ignore: non_constant_identifier_names
@@ -245,7 +239,7 @@ const String HEIC = "HEIC";
 const List<String> LIST_FORMAT_IMAGE = [JPG, PNG, WEBP, HEIC];
 
 // ignore: constant_identifier_names
-const List<String> LIST_SUPPORTED_TYPE = ["jpeg", "jpg", "png","heic"];
+const List<String> LIST_SUPPORTED_TYPE = ["jpeg", "jpg", "png", "heic"];
 
 // ignore: non_constant_identifier_names
 List<int> LIST_COPY_NUMBER_SELECTION = List.generate(101, (index) => index);
@@ -292,20 +286,29 @@ const EdgeInsets SHADOW_EDGE_INSET_RIGHT = EdgeInsets.fromLTRB(24, 20, 0, 0);
 
 // ignore: non_constant_identifier_names
 Paint PAINT_BLURRED = Paint()
-  ..imageFilter =
-      ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0, tileMode: TileMode.decal);
+  ..imageFilter = ImageFilter.blur(
+    sigmaX: 20.0,
+    sigmaY: 20.0,
+    tileMode: TileMode.decal,
+  );
 // ignore: non_constant_identifier_names
 Paint PAINT_BLURREDRED_SHADOW_LEFT = Paint()
-      ..imageFilter =
-          ImageFilter.blur(sigmaX: 15, sigmaY: 15, tileMode: TileMode.decal)
-    // ..colorFilter = ColorFilter.mode(red.withValues(alpha:0.15), BlendMode.srcIn)
-    ;
+  ..imageFilter = ImageFilter.blur(
+    sigmaX: 15,
+    sigmaY: 15,
+    tileMode: TileMode.decal,
+  )
+// ..colorFilter = ColorFilter.mode(red.withValues(alpha:0.15), BlendMode.srcIn)
+;
 // ignore: non_constant_identifier_names
 Paint PAINT_BLURREDRED_SHADOW_RIGHT = Paint()
-      ..imageFilter =
-          ImageFilter.blur(sigmaX: 30, sigmaY: 30, tileMode: TileMode.decal)
-    // ..colorFilter = ColorFilter.mode(red.withValues(alpha:0.1), BlendMode.srcIn)
-    ;
+  ..imageFilter = ImageFilter.blur(
+    sigmaX: 30,
+    sigmaY: 30,
+    tileMode: TileMode.decal,
+  )
+// ..colorFilter = ColorFilter.mode(red.withValues(alpha:0.1), BlendMode.srcIn)
+;
 
 // 0.03 - x - 2x
 
@@ -377,7 +380,7 @@ const Map<int, String> EXPORT_SEGMENT_OBJECT = {0: "Photo", 1: "Paper"};
 const Map<int, String> EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT = {
   0: "JPG",
   1: "PNG",
-  2: "PDF"
+  2: "PDF",
 };
 
 const double inch = 72.0;
@@ -389,8 +392,8 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
     id: 0,
     title: "A3",
     size: Size(
-      double.parse((29.7 * cm).roundWithUnit(fractionDigits:1)),
-      double.parse((42 * cm).roundWithUnit(fractionDigits:1)),
+      double.parse((29.7 * cm).roundWithUnit(fractionDigits: 1)),
+      double.parse((42 * cm).roundWithUnit(fractionDigits: 1)),
     ),
     marginModel: MarginModel.marginAll(1.0 * cm), //2
     unit: POINT,
@@ -402,8 +405,8 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
     id: 0,
     title: "A4",
     size: Size(
-      double.parse((21.0 * cm).roundWithUnit(fractionDigits:1)),
-      double.parse((29.7 * cm).roundWithUnit(fractionDigits:1)),
+      double.parse((21.0 * cm).roundWithUnit(fractionDigits: 1)),
+      double.parse((29.7 * cm).roundWithUnit(fractionDigits: 1)),
     ),
     marginModel: MarginModel.marginAll(1.0 * cm), //2
     spacingVertical: 0.5 / 10 * cm,
@@ -424,10 +427,7 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
     uid: randomInt(),
     id: 0,
     title: "JIS B5",
-    size: const Size(
-      7.17 * inch,
-      10.12 * inch,
-    ),
+    size: const Size(7.17 * inch, 10.12 * inch),
     marginModel: MarginModel.marginAll(1.0 * cm), //2
     spacingVertical: 0.5 / 10 * cm,
     spacingHorizontal: 0.5 / 10 * cm,
@@ -437,10 +437,7 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
     uid: randomInt(),
     id: 0,
     title: "Legal",
-    size: const Size(
-      8.5 * inch,
-      14.0 * inch,
-    ),
+    size: const Size(8.5 * inch, 14.0 * inch),
     marginModel: MarginModel.marginAll(1.0 * cm), //inch
     spacingVertical: 0.5 / 10 * cm,
     spacingHorizontal: 0.5 / 10 * cm,
@@ -450,10 +447,7 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
     uid: randomInt(),
     id: 0,
     title: "Tabloid",
-    size: const Size(
-      11 * inch,
-      17 * inch,
-    ),
+    size: const Size(11 * inch, 17 * inch),
     marginModel: MarginModel.marginAll(1.0 * cm), //2
     spacingVertical: 0.5 / 10 * cm,
     spacingHorizontal: 0.5 / 10 * cm,
@@ -463,10 +457,7 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
     uid: randomInt(),
     id: 0,
     title: "Letter",
-    size: const Size(
-      8.5 * inch,
-      11.0 * inch,
-    ),
+    size: const Size(8.5 * inch, 11.0 * inch),
     marginModel: MarginModel.marginAll(1.0 * cm), //inch
     spacingVertical: 0.5 / 10 * cm,
     spacingHorizontal: 0.5 / 10 * cm,
@@ -477,8 +468,8 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
     id: 0,
     title: "Custom Size...",
     size: Size(
-      double.parse((21.0 * cm).roundWithUnit(fractionDigits:1)),
-      double.parse((29.7 * cm).roundWithUnit(fractionDigits:1)),
+      double.parse((21.0 * cm).roundWithUnit(fractionDigits: 1)),
+      double.parse((29.7 * cm).roundWithUnit(fractionDigits: 1)),
     ),
     marginModel: MarginModel.marginAll(1.0 * cm),
     spacingVertical: 0.5 / 10 * cm,
@@ -487,7 +478,11 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
   ),
 ];
 
+// ignore: constant_identifier_names
+const double PRINT_MARGIN_AROUND_IMAGE_BY_POINT = 0.5 /10 / 2.54 * 72; // 0.5mm
 
+// ignore: constant_identifier_names
+const double PRINT_DEFAULT_DPI = 600;
 // a = |1 1 1 1 1|                          |5|
 //     |1 1 1 1 1|                          |6|
 //     |1 1 1 1 1|        x                 |7|                  

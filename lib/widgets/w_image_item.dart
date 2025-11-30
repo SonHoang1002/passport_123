@@ -1,8 +1,8 @@
-// import 'dart:io'; 
+// import 'dart:io';
 // import 'package:flutter/material.dart';
-// import 'package:passport_photo_2/commons/colors.dart';
-// import 'package:passport_photo_2/models/image_item_model.dart';
-// import 'package:passport_photo_2/widgets/w_text.dart';
+// import 'package:pass1_/commons/colors.dart';
+// import 'package:pass1_/models/image_item_model.dart';
+// import 'package:pass1_/widgets/w_text.dart';
 
 // class WImageItem extends StatelessWidget {
 //   final ItemImage item;

@@ -11,79 +11,87 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_image_filters/flutter_image_filters.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/extension.dart';
-import 'package:passport_photo_2/commons/shaders/black_to_transparent_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_exposure_shader.dart';
-import 'package:passport_photo_2/commons/shaders/brightness_custom.dart';
-import 'package:passport_photo_2/commons/shaders/combine_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_constrast_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_highlight_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_saturation_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_shadow_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_sharpen_shader.dart';
-import 'package:passport_photo_2/helpers/firebase_helpers.dart';
-import 'package:passport_photo_2/helpers/share_preferences_helpers.dart';
-import 'package:passport_photo_2/material_with_them.dart';
-import 'package:passport_photo_2/providers/blocs/adjust_subject_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/country_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/device_platform_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/extension.dart';
+import 'package:pass1_/commons/shaders/black_to_transparent_shader.dart';
+import 'package:pass1_/commons/shaders/custom_exposure_shader.dart';
+import 'package:pass1_/commons/shaders/brightness_custom.dart';
+import 'package:pass1_/commons/shaders/combine_shader.dart';
+import 'package:pass1_/commons/shaders/custom_constrast_shader.dart';
+import 'package:pass1_/commons/shaders/custom_highlight_shader.dart';
+import 'package:pass1_/commons/shaders/custom_saturation_shader.dart';
+import 'package:pass1_/commons/shaders/custom_shadow_shader.dart';
+import 'package:pass1_/commons/shaders/custom_sharpen_shader.dart';
+import 'package:pass1_/helpers/firebase_helpers.dart';
+import 'package:pass1_/helpers/share_preferences_helpers.dart';
+import 'package:pass1_/material_with_them.dart';
+import 'package:pass1_/providers/blocs/adjust_subject_bloc.dart';
+import 'package:pass1_/providers/blocs/country_bloc.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase
-      .initializeApp(); //options: DefaultFirebasePlatform.currentPlatform
-  await FirebaseAppCheck.instance
-      .activate(androidProvider: AndroidProvider.playIntegrity);
+  // await Firebase.initializeApp(); //options: DefaultFirebasePlatform.currentPlatform
+  // await FirebaseAppCheck.instance.activate(
+  //   androidProvider: AndroidProvider.playIntegrity,
+  // );
   // ignore: unused_local_variable
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  // FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   await FlutterDisplayMode.setHighRefreshRate();
   // ignore: unused_local_variable
   final DisplayMode m = await FlutterDisplayMode.active;
 
   FlutterImageFilters.register<CombineShaderCustomConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/combine_shaders.frag'));
+    () => ui.FragmentProgram.fromAsset('shaders/combine_shaders.frag'),
+  );
   FlutterImageFilters.register<CustomSharpenShaderConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/custom_sharpen.frag'));
+    () => ui.FragmentProgram.fromAsset('shaders/custom_sharpen.frag'),
+  );
   FlutterImageFilters.register<BlackToTransparentConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/black_to_transparent.frag'));
+    () => ui.FragmentProgram.fromAsset('shaders/black_to_transparent.frag'),
+  );
   // FlutterImageFilters.register<BrightnessBackgroundShaderConfiguration>(
   //     () => FragmentProgram.fromAsset('shaders/brightness_background.frag'));
   FlutterImageFilters.register<CustomContrastShaderConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/custom_constrast.frag'));
+    () => ui.FragmentProgram.fromAsset('shaders/custom_constrast.frag'),
+  );
   // FlutterImageFilters.register<CustomWhiteBalanceShaderConfiguration>(
   //     () => FragmentProgram.fromAsset('shaders/custom_white_balance.frag'));
   FlutterImageFilters.register<CustomBrightnessShaderConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/custom_brightness.frag'));
+    () => ui.FragmentProgram.fromAsset('shaders/custom_brightness.frag'),
+  );
   FlutterImageFilters.register<CustomHighlightShaderConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/custom_highlight.frag'));
+    () => ui.FragmentProgram.fromAsset('shaders/custom_highlight.frag'),
+  );
   FlutterImageFilters.register<CustomShadowShaderConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/custom_shadow.frag'));
+    () => ui.FragmentProgram.fromAsset('shaders/custom_shadow.frag'),
+  );
   // FlutterImageFilters.register<CustomHighlightShadowShaderConfiguration>(
   //     () => FragmentProgram.fromAsset('shaders/custom_highlight_shadow.frag'));
   FlutterImageFilters.register<CustomExposureShaderConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/custom_exposure.frag'));
-  FlutterImageFilters.register<CustomSaturationShaderConfiguration>(
-      () => ui.FragmentProgram.fromAsset('shaders/custom_saturation.frag'));
-
-  runApp(
-    MyApp(isOnBoard: await _isOnBoard()),
+    () => ui.FragmentProgram.fromAsset('shaders/custom_exposure.frag'),
   );
+  FlutterImageFilters.register<CustomSaturationShaderConfiguration>(
+    () => ui.FragmentProgram.fromAsset('shaders/custom_saturation.frag'),
+  );
+
+  runApp(MyApp(isOnBoard: await _isOnBoard()));
   // check dark mode
   Brightness themeMode =
       SchedulerBinding.instance.platformDispatcher.platformBrightness;
   bool darkMode = themeMode == Brightness.dark;
   redoSystemStyle(darkMode);
   // add new user who are using this app
-  await FirebaseHelpers().sendFirebaseAndroidId();
+  // await FirebaseHelpers().sendFirebaseAndroidId();
 }
 
 Future<bool> _isOnBoard() async {
-  final data =
-      MediaQueryData.fromView(ui.PlatformDispatcher.instance.views.first);
+  final data = MediaQueryData.fromView(
+    ui.PlatformDispatcher.instance.views.first,
+  );
   if (data.size.shortestSide < 550) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -107,10 +115,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<ThemeBloc>(create: ((context) => ThemeBloc())),
         BlocProvider<AdjustSubjectBloc>(
-            create: ((context) => AdjustSubjectBloc())),
+          create: ((context) => AdjustSubjectBloc()),
+        ),
         BlocProvider<CountryBloc>(create: ((context) => CountryBloc())),
         BlocProvider<DevicePlatformCubit>(
-            create: ((context) => DevicePlatformCubit())),
+          create: ((context) => DevicePlatformCubit()),
+        ),
       ],
       child: MaterialWithTheme(isOnBoard: isOnBoard),
     );
@@ -125,23 +135,26 @@ Future<void> redoSystemStyle(bool darkMode) async {
     // The commented out check below isn't required anymore since https://github.com/flutter/engine/pull/28616 is merged
     // if (edgeToEdge)
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: darkMode ? Brightness.dark : Brightness.light,
-      statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
-      systemNavigationBarColor: edgeToEdge
-          ? Colors.transparent
-          : darkMode
-              ? Colors.black
-              : Colors.transparent,
-      systemNavigationBarContrastEnforced: false,
-      systemNavigationBarIconBrightness:
-          darkMode ? Brightness.light : Brightness.dark,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: darkMode ? Brightness.dark : Brightness.light,
+        statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: edgeToEdge
+            ? Colors.transparent
+            : darkMode
+            ? Colors.black
+            : Colors.transparent,
+        systemNavigationBarContrastEnforced: false,
+        systemNavigationBarIconBrightness: darkMode
+            ? Brightness.light
+            : Brightness.dark,
+      ),
+    );
   } else {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    );
   }
 }
 
@@ -186,9 +199,7 @@ class _TestSharpenWidgetState extends State<TestSharpenWidget> {
     sliderMax = 10;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sharpen Test'),
-      ),
+      appBar: AppBar(title: const Text('Sharpen Test')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
@@ -206,15 +217,11 @@ class _TestSharpenWidgetState extends State<TestSharpenWidget> {
                         children: [
                           const Text(
                             'Sharpen:',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            style: TextStyle(color: Colors.white),
                           ),
                           Text(
                             sharpen.roundWithUnit(fractionDigits: 2),
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
@@ -237,10 +244,10 @@ class _TestSharpenWidgetState extends State<TestSharpenWidget> {
                     setState(() {});
                     _generatedRawImage = await _customSharpenShaderConfiguration
                         .export(_textureSource, _textureSource.size);
-                    Uint8List uint8listBg = (await _generatedRawImage!
-                            .toByteData(format: ui.ImageByteFormat.png))!
-                        .buffer
-                        .asUint8List();
+                    Uint8List uint8listBg =
+                        (await _generatedRawImage!.toByteData(
+                          format: ui.ImageByteFormat.png,
+                        ))!.buffer.asUint8List();
                     if (tempPath != null) {
                       await File(tempPath!).writeAsBytes(uint8listBg);
                     }
@@ -261,18 +268,15 @@ class _TestSharpenWidgetState extends State<TestSharpenWidget> {
                     child: Center(
                       child: _isGenerating != null
                           ? _isGenerating!
-                              ? const CircularProgressIndicator()
-                              :
-                              //  RawImage(
-                              //     image: _generatedRawImage!,
-                              Image.file(
-                                  File(tempPath!),
-                                  fit: BoxFit.cover,
-                                )
+                                ? const CircularProgressIndicator()
+                                :
+                                  //  RawImage(
+                                  //     image: _generatedRawImage!,
+                                  Image.file(File(tempPath!), fit: BoxFit.cover)
                           : const SizedBox(),
                     ),
                   ),
-                )
+                ),
               ],
             ),
     );

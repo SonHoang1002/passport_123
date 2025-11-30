@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/models/step_model.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/models/step_model.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 Widget buildStepSelection({
   required StepModel currentStep,

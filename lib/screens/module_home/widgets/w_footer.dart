@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_scanner/media_scanner.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/models/step_model.dart';
-import 'package:passport_photo_2/providers/blocs/device_platform_bloc.dart';
-import 'package:passport_photo_2/widgets/w_button.dart';
-import 'package:passport_photo_2/widgets/w_setting_navi_button.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/models/step_model.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/widgets/w_button.dart';
+import 'package:pass1_/widgets/w_setting_navi_button.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
 
 // ignore: must_be_immutable
 class WFooter extends StatelessWidget {

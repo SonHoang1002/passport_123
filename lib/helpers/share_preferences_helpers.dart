@@ -1,6 +1,6 @@
-import 'package:color_picker_android/commons/constants.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
+// import 'package:color_picker_android/commons/constants.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/models/country_passport_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
@@ -73,13 +73,13 @@ class SharedPreferencesHelper {
   Future<bool> updateColorSaved(List<String> listColor) async {
     pref ??= await SharedPreferences.getInstance();
     final result =
-        await pref!.setStringList(PREFERENCE_SAVED_COLOR_KEY, listColor);
+        await pref!.setStringList("PREFERENCE_SAVED_COLOR_KEY", listColor);
     return result;
   }
 
   Future<List<String>> getColorSaved() async {
     pref ??= await SharedPreferences.getInstance();
-    final result = pref!.getStringList(PREFERENCE_SAVED_COLOR_KEY);
+    final result = pref!.getStringList("PREFERENCE_SAVED_COLOR_KEY");
     return result ?? [];
   }
 

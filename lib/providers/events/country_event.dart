@@ -1,4 +1,4 @@
-import 'package:passport_photo_2/models/country_passport_model.dart';
+import 'package:pass1_/models/country_passport_model.dart';
 
 abstract class CountryEvent {
   CountryEvent();

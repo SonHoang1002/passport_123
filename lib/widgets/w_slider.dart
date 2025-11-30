@@ -1,10 +1,10 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/helpers/adjust_helper.dart';
-import 'package:passport_photo_2/helpers/contain_offset.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/helpers/adjust_helper.dart';
+import 'package:pass1_/helpers/contain_offset.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 
 class CustomSlider extends StatefulWidget {
   final Color? thumbColor;
@@ -61,10 +61,13 @@ class _CustomSliderState extends State<CustomSlider> {
   void _onTapUp(TapUpDetails details, double sliderWidth) {
     if (_isFocus) {
       double mainLength = sliderWidth - thumbSize.width / 2 - thumbSize.width;
-      Offset temp = _renderBoxSlider
-          .globalToLocal(details.globalPosition.translate(-thumbSize.width, 0));
+      Offset temp = _renderBoxSlider.globalToLocal(
+        details.globalPosition.translate(-thumbSize.width, 0),
+      );
       _offsetThumb = Offset(
-          clampDouble(temp.dx, -thumbSize.width / 2, mainLength), temp.dy);
+        clampDouble(temp.dx, -thumbSize.width / 2, mainLength),
+        temp.dy,
+      );
       _percent = clampDouble(_offsetThumb.dx / (mainLength), 0, 1);
       if (widget.onChanged != null) {
         widget.onChanged!((_percent) * (widget.max - widget.min) + widget.min);
@@ -74,7 +77,9 @@ class _CustomSliderState extends State<CustomSlider> {
   }
 
   void _onPanUpdateWithGlobalPosition(
-      DragUpdateDetails details, double sliderWidth) {
+    DragUpdateDetails details,
+    double sliderWidth,
+  ) {
     if (_isFocus) {
       bool isPanIncrease = details.delta.dx > 0;
       double mainLength = sliderWidth - thumbSize.width / 2 - thumbSize.width;
@@ -84,31 +89,33 @@ class _CustomSliderState extends State<CustomSlider> {
 
       double tempValue =
           clampDouble(offsetLocalPosition.dx / (mainLength), 0, 1) *
-                  (widget.max - widget.min) +
-              widget.min;
+              (widget.max - widget.min) +
+          widget.min;
       int checkSnapValue =
           AdjustHelpers.getNearestNumberAndDivisibleTargetNumber(
-        tempValue,
-        50,
-        isGreatThan: isPanIncrease,
-      );
+            tempValue,
+            50,
+            isGreatThan: isPanIncrease,
+          );
       double mainValue = tempValue;
 
       if ((checkSnapValue.toDouble() - tempValue).abs() < 5) {
         mainValue = checkSnapValue.toDouble();
         offsetLocalPosition = Offset(
-            (checkSnapValue.toDouble() - widget.min) /
-                (widget.max - widget.min) *
-                (mainLength),
-            offsetLocalPosition.dy);
+          (checkSnapValue.toDouble() - widget.min) /
+              (widget.max - widget.min) *
+              (mainLength),
+          offsetLocalPosition.dy,
+        );
         _isSnaping = true;
         Future.delayed(const Duration(milliseconds: 300), () {
           _isSnaping = false;
         });
       }
       Offset checkedOffset = Offset(
-          clampDouble(offsetLocalPosition.dx, -thumbSize.width / 2, mainLength),
-          offsetLocalPosition.dy);
+        clampDouble(offsetLocalPosition.dx, -thumbSize.width / 2, mainLength),
+        offsetLocalPosition.dy,
+      );
       _offsetThumb = checkedOffset;
       _percent = clampDouble(_offsetThumb.dx / (mainLength), 0, 1);
       if (widget.onChanged != null) {
@@ -126,31 +133,33 @@ class _CustomSliderState extends State<CustomSlider> {
 
       double tempValue =
           clampDouble(offsetLocalPosition.dx / (mainLength), 0, 1) *
-                  (widget.max - widget.min) +
-              widget.min;
+              (widget.max - widget.min) +
+          widget.min;
       int checkSnapValue =
           AdjustHelpers.getNearestNumberAndDivisibleTargetNumber(
-        tempValue,
-        100,
-        isGreatThan: isPanIncrease,
-      );
+            tempValue,
+            100,
+            isGreatThan: isPanIncrease,
+          );
       double mainValue = tempValue;
       // snap slider
       if ((checkSnapValue.toDouble() - tempValue).abs() < 5) {
         mainValue = checkSnapValue.toDouble();
         offsetLocalPosition = Offset(
-            (checkSnapValue.toDouble() - widget.min) /
-                (widget.max - widget.min) *
-                (mainLength),
-            offsetLocalPosition.dy);
+          (checkSnapValue.toDouble() - widget.min) /
+              (widget.max - widget.min) *
+              (mainLength),
+          offsetLocalPosition.dy,
+        );
         _isSnaping = true;
         Future.delayed(const Duration(milliseconds: 300), () {
           _isSnaping = false;
         });
       }
       Offset checkedOffset = Offset(
-          clampDouble(offsetLocalPosition.dx, -thumbSize.width / 2, mainLength),
-          offsetLocalPosition.dy);
+        clampDouble(offsetLocalPosition.dx, -thumbSize.width / 2, mainLength),
+        offsetLocalPosition.dy,
+      );
       _offsetThumb = checkedOffset;
       _percent = clampDouble(_offsetThumb.dx / (mainLength), 0, 1);
       if (widget.onChanged != null) {
@@ -163,7 +172,9 @@ class _CustomSliderState extends State<CustomSlider> {
   void _onCheckOffset(Offset globalOffset) {
     Offset startOffset = _renderBoxSlider.localToGlobal(Offset.zero);
     Offset endOffset = startOffset.translate(
-        _renderBoxSlider.size.width, _renderBoxSlider.size.height);
+      _renderBoxSlider.size.width,
+      _renderBoxSlider.size.height,
+    );
     if (containOffset(globalOffset, startOffset, endOffset)) {
       setState(() {
         _isFocus = true;
@@ -183,81 +194,86 @@ class _CustomSliderState extends State<CustomSlider> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-        key: _keySlider,
-        builder: (context, constraint) {
-          double maxWidth = constraint.maxWidth;
-          double activeWidth =
-              clampDouble(_offsetThumb.dx + thumbSize.width / 2, 0, maxWidth);
+      key: _keySlider,
+      builder: (context, constraint) {
+        double maxWidth = constraint.maxWidth;
+        double activeWidth = clampDouble(
+          _offsetThumb.dx + thumbSize.width / 2,
+          0,
+          maxWidth,
+        );
 
-          return GestureDetector(
-            onPanUpdate: (details) {
-              // check velocity
-              final deltaTime = (details.sourceTimeStamp?.inMilliseconds ?? 1) -
-                  (_lastTime?.inMilliseconds ?? 0);
-              final velocity = details.delta.distance / max(0.001, deltaTime);
-              print("velocity ${velocity}");
-              if (velocity > 0.1) {
+        return GestureDetector(
+          onPanUpdate: (details) {
+            // check velocity
+            final deltaTime =
+                (details.sourceTimeStamp?.inMilliseconds ?? 1) -
+                (_lastTime?.inMilliseconds ?? 0);
+            final velocity = details.delta.distance / max(0.001, deltaTime);
+            print("velocity ${velocity}");
+            if (velocity > 0.1) {
+              _onPanUpdateWithDelta(details, maxWidth);
+            } else {
+              if (!_isSnaping) {
                 _onPanUpdateWithDelta(details, maxWidth);
-              } else {
-                if (!_isSnaping) {
-                  _onPanUpdateWithDelta(details, maxWidth);
-                }
               }
+            }
 
-              _lastTime = details.sourceTimeStamp;
-            },
-            onPanStart: (details) {
-              consolelog("call onPanStart");
-              _onCheckOffset(details.globalPosition);
-            },
-            onPanEnd: (details) {
-              resetFocus();
-            },
-            onTapUp: (details) {
-              _onCheckOffset(details.globalPosition);
-              _onTapUp(details, maxWidth);
-              resetFocus();
-            },
-            child: Container(
-              color: transparent,
-              width: maxWidth,
-              height: 40,
-              padding: EdgeInsets.symmetric(horizontal: thumbSize.width / 2),
-              child: Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.centerLeft,
-                  children: [
-                    Container(
-                      height: 4,
-                      width: maxWidth,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(999),
-                        color:
-                            widget.inactiveColor ?? grey.withValues(alpha: 0.3),
-                      ),
+            _lastTime = details.sourceTimeStamp;
+          },
+          onPanStart: (details) {
+            consolelog("call onPanStart");
+            _onCheckOffset(details.globalPosition);
+          },
+          onPanEnd: (details) {
+            resetFocus();
+          },
+          onTapUp: (details) {
+            _onCheckOffset(details.globalPosition);
+            _onTapUp(details, maxWidth);
+            resetFocus();
+          },
+          child: Container(
+            color: transparent,
+            width: maxWidth,
+            height: 40,
+            padding: EdgeInsets.symmetric(horizontal: thumbSize.width / 2),
+            child: Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.centerLeft,
+              children: [
+                Container(
+                  height: 4,
+                  width: maxWidth,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(999),
+                    color: widget.inactiveColor ?? grey.withValues(alpha: 0.3),
+                  ),
+                ),
+                Container(
+                  height: 5,
+                  width: activeWidth,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(999),
+                    color: widget.activeColor ?? black,
+                  ),
+                ),
+                Positioned(
+                  left: _offsetThumb.dx,
+                  child: Container(
+                    height: thumbSize.height,
+                    width: thumbSize.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(999),
+                      color: widget.thumbColor ?? black,
                     ),
-                    Container(
-                      height: 5,
-                      width: activeWidth,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(999),
-                        color: widget.activeColor ?? black,
-                      ),
-                    ),
-                    Positioned(
-                      left: _offsetThumb.dx,
-                      child: Container(
-                        height: thumbSize.height,
-                        width: thumbSize.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(999),
-                          color: widget.thumbColor ?? black,
-                        ),
-                      ),
-                    ),
-                  ]),
+                  ),
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/convert.dart';
-import 'package:passport_photo_2/helpers/file_helpers.dart';
-import 'package:passport_photo_2/helpers/share_preferences_helpers.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/providers/blocs/country_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/device_platform_bloc.dart';
-import 'package:passport_photo_2/providers/events/country_event.dart';
-import 'package:passport_photo_2/screens/module_home/platforms/home_phone.dart';
-import 'package:passport_photo_2/screens/module_home/platforms/home_tablet.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/file_helpers.dart';
+import 'package:pass1_/helpers/share_preferences_helpers.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/providers/blocs/country_bloc.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/providers/events/country_event.dart';
+import 'package:pass1_/screens/module_home/platforms/home_phone.dart';
+import 'package:pass1_/screens/module_home/platforms/home_tablet.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class HomePageMain extends StatefulWidget {
   const HomePageMain({super.key});

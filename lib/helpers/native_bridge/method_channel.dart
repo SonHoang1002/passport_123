@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:passport_photo_2/a_test/pdf_function/generate_mimetype.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/file_helpers.dart';
-import 'package:passport_photo_2/helpers/firebase_helpers.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
+import 'package:pass1_/a_test/pdf_function/generate_mimetype.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/file_helpers.dart';
+import 'package:pass1_/helpers/firebase_helpers.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 
 class MyMethodChannel {
   static const platform = MethodChannel('com.tapuniverse.passportphoto');
@@ -45,8 +45,10 @@ class MyMethodChannel {
         "scale": scaleWH,
         "quality": quality,
       };
-      var resultResize =
-          await platform.invokeMethod("resizeAndResoluteImage", data);
+      var resultResize = await platform.invokeMethod(
+        "resizeAndResoluteImage",
+        data,
+      );
       if (resultResize == true) {
         return File(_outPath);
       } else {
@@ -73,7 +75,10 @@ class MyMethodChannel {
   }
 
   static Future<void> maskTwoImage(
-      String originalPath, String transparentPath, String outPath) async {
+    String originalPath,
+    String transparentPath,
+    String outPath,
+  ) async {
     try {
       bool result = await platform.invokeMethod("maskTwoImage", [
         originalPath,
@@ -95,8 +100,11 @@ class MyMethodChannel {
       final extension = inputPath.split(".").last;
       final formatIndex = LIST_FORMAT_IMAGE.indexOf(extension.toUpperCase());
       consolelog("inputPath ${inputPath}");
-      bool? result = await platform.invokeMethod(
-          "detectAndSeperateObject", [inputPath, outPath, formatIndex]);
+      bool? result = await platform.invokeMethod("detectAndSeperateObject", [
+        inputPath,
+        outPath,
+        formatIndex,
+      ]);
       return result;
     } catch (e) {
       print("detectAndSeperateObject error: $e");
@@ -116,8 +124,10 @@ class MyMethodChannel {
         "mimeType": mimeType,
       };
 
-      bool? result =
-          await platform.invokeMethod("action_create_document", nativeData);
+      bool? result = await platform.invokeMethod(
+        "action_create_document",
+        nativeData,
+      );
 
       return result ?? false;
     } catch (e) {
@@ -172,7 +182,7 @@ class MyMethodChannel {
         marginEdgeInsets.left,
         marginEdgeInsets.top,
         marginEdgeInsets.right,
-        marginEdgeInsets.bottom
+        marginEdgeInsets.bottom,
       ];
       Map<String, dynamic> nativeData = {
         "passportPath": passportPath,
@@ -203,9 +213,7 @@ class MyMethodChannel {
   }
 
   static Future<void> showToast(String message) async {
-    Map<String, dynamic> nativeData = {
-      "message": message,
-    };
+    Map<String, dynamic> nativeData = {"message": message};
     return await platform.invokeMethod('showToast', nativeData);
   }
 

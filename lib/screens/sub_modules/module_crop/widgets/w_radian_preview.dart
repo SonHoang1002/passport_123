@@ -1,12 +1,15 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/models/crop_model.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_crop/widgets/w_circle_degree_preview.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/models/crop_model.dart';
+import 'package:pass1_/screens/sub_modules/module_crop/widgets/w_circle_degree_preview.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 Widget buildPreviewRadianWidget(
-    BuildContext context, bool isDarkMode, CropModel? cropModel) {
+  BuildContext context,
+  bool isDarkMode,
+  CropModel? cropModel,
+) {
   double deltaRotate;
   int deltaDegree;
   if (cropModel != null) {
@@ -15,8 +18,10 @@ Widget buildPreviewRadianWidget(
   } else {
     deltaRotate = 0;
   }
-  deltaDegree =
-      max(-45.000001, min(45.000001, ((deltaRotate) * 90).toInt())).toInt();
+  deltaDegree = max(
+    -45.000001,
+    min(45.000001, ((deltaRotate) * 90).toInt()),
+  ).toInt();
   Color _textColor = Theme.of(context).textTheme.bodySmall!.color!;
   Color _activeColor = isDarkMode ? primaryDark1 : primaryLight1;
   Color _inactiveColor = isDarkMode ? white02 : black02;

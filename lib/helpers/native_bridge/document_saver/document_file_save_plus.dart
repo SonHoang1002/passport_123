@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:passport_photo_2/helpers/native_bridge/document_saver/document_saver_method_channel.dart';
+import 'package:pass1_/helpers/native_bridge/document_saver/document_saver_method_channel.dart';
 
 class DocumentFileSavePlus {
   Future<String?> get platformVersion {

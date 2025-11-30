@@ -4,9 +4,9 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/models/country_passport_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 ///
@@ -49,8 +49,11 @@ Future<List<dynamic>> exportCroppedImage({
   // Tính toán dịch chuyển canvas về điểm trung tâm và xoay
   // https://stackoverflow.com/questions/51323233/flutter-how-to-rotate-an-image-around-the-center-with-canvas#:~:text=We%20thus%20first%20move%20the,position%2C%20with%20the%20rotation%20applied.
   // and preview alpha ben trong phan assets/images/
-  final double r = sqrt(uiImageAjdusted.width * uiImageAjdusted.width +
-          uiImageAjdusted.height * uiImageAjdusted.height) /
+  final double r =
+      sqrt(
+        uiImageAjdusted.width * uiImageAjdusted.width +
+            uiImageAjdusted.height * uiImageAjdusted.height,
+      ) /
       2;
   final alpha = atan(uiImageAjdusted.height / uiImageAjdusted.width);
   final beta = alpha + rotation;
@@ -79,16 +82,15 @@ Future<List<dynamic>> exportCroppedImage({
     uiImageAjdusteHeight,
   );
 
-  final ByteData? adjustedBytes =
-      await croppedImage.toByteData(format: ui.ImageByteFormat.png);
+  final ByteData? adjustedBytes = await croppedImage.toByteData(
+    format: ui.ImageByteFormat.png,
+  );
 
   // save file
   final outPath =
       "${(await getExternalStorageDirectory())!.path}/$CROPPED_PROCESSING_IMAGE_NAME.png";
   final output = File(outPath);
-  File result = await output.writeAsBytes(
-    adjustedBytes!.buffer.asUint8List(),
-  );
+  File result = await output.writeAsBytes(adjustedBytes!.buffer.asUint8List());
   stopwatch.stop();
   consolelog("exportCroppedImage Time:  ${stopwatch.elapsedMilliseconds}");
   return [result, croppedImage];
@@ -129,8 +131,11 @@ Future<File?> exportCroppedImage1({
   // Tính toán dịch chuyển canvas về điểm trung tâm và xoay
   // https://stackoverflow.com/questions/51323233/flutter-how-to-rotate-an-image-around-the-center-with-canvas#:~:text=We%20thus%20first%20move%20the,position%2C%20with%20the%20rotation%20applied.
   // and preview alpha ben trong phan assets/images/
-  final double r = sqrt(uiImageAjdusted.width * uiImageAjdusted.width +
-          uiImageAjdusted.height * uiImageAjdusted.height) /
+  final double r =
+      sqrt(
+        uiImageAjdusted.width * uiImageAjdusted.width +
+            uiImageAjdusted.height * uiImageAjdusted.height,
+      ) /
       2;
   final alpha = atan(uiImageAjdusted.height / uiImageAjdusted.width);
   final beta = alpha + rotation;
@@ -154,16 +159,15 @@ Future<File?> exportCroppedImage1({
     frameSize.height * uiImageAjdusted.width ~/ imageSizePreview.width,
   );
 
-  final ByteData? adjustedBytes =
-      await croppedImage.toByteData(format: ui.ImageByteFormat.png);
+  final ByteData? adjustedBytes = await croppedImage.toByteData(
+    format: ui.ImageByteFormat.png,
+  );
 
   // save file
   final outPath =
       "${(await getExternalStorageDirectory())!.path}/$CROPPED_PROCESSING_IMAGE_NAME.png";
   final output = File(outPath);
-  File result = await output.writeAsBytes(
-    adjustedBytes!.buffer.asUint8List(),
-  );
+  File result = await output.writeAsBytes(adjustedBytes!.buffer.asUint8List());
   stopwatch.stop();
   consolelog("exportCroppedImage Time:  ${stopwatch.elapsedMilliseconds}");
   return result;

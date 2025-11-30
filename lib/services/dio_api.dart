@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/services.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Api {
@@ -18,14 +18,8 @@ class Api {
       final outputPath =
           "${(await getExternalStorageDirectory())!.path}/$outputName.png";
       Dio dio = Dio();
-      final jwt = JWT(
-        {
-          "iat": DateTime.now().microsecondsSinceEpoch,
-        },
-      );
-      final jwtToken = jwt.sign(
-        SecretKey(secretKey),
-      );
+      final jwt = JWT({"iat": DateTime.now().microsecondsSinceEpoch});
+      final jwtToken = jwt.sign(SecretKey(secretKey));
       var headers = {
         'Authorization': 'Bearer $jwtToken',
         "Content-Type": "image/png",
@@ -35,7 +29,7 @@ class Api {
           await MultipartFile.fromFile(
             filePath,
             filename: filePath.split("/").last,
-          )
+          ),
         ],
       });
       var response = await dio.request<Uint8List>(
@@ -58,7 +52,8 @@ class Api {
 
         stopwatch.stop();
         consolelog(
-            "stopwatch call from postBackgroundRemove function:  ${stopwatch.elapsedMilliseconds} - ${outputPath}");
+          "stopwatch call from postBackgroundRemove function:  ${stopwatch.elapsedMilliseconds} - ${outputPath}",
+        );
         return result;
       } else {
         consolelog("response.statusMessage: ${response.statusMessage}");
@@ -70,7 +65,9 @@ class Api {
   }
 
   Future getRequestBaseWithToken(
-      String path, Map<String, dynamic>? params) async {
+    String path,
+    Map<String, dynamic>? params,
+  ) async {
     try {
       Dio dio = Dio();
       var response = await dio.get(path, queryParameters: params);
@@ -101,7 +98,7 @@ class Api {
     } on DioError catch (e) {
       return {
         "status_code": e.response?.statusCode,
-        "content": e.response?.data
+        "content": e.response?.data,
       };
     }
   }

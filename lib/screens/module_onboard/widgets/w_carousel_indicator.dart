@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/models/instruction_model.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/models/instruction_model.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
 
 class WCarouselIndicator extends StatelessWidget {
   final List<InstructionModel> listInstructionModel;

@@ -2,9 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
 
 Widget buildSegmentControl({
   required BuildContext context,
@@ -24,39 +24,40 @@ Widget buildSegmentControl({
     isStretch: true,
     children: listSegment.map((key, value) {
       return MapEntry<int, Widget>(
-          key,
-          Container(
-              clipBehavior: Clip.none,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius0),
-              ),
-              margin: marginItem,
-              child: FittedBox(
-                child: AutoSizeText(
-                  value,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: _getTextColor(
-                      isDarkMode,
-                      groupValue,
-                      key,
-                      unactiveTextColor,
-                      activeTextColor,
-                    ),
-                    height: 13 / 20,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: FONT_GOOGLESANS,
-                  ),
+        key,
+        Container(
+          clipBehavior: Clip.none,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius0),
+          ),
+          margin: marginItem,
+          child: FittedBox(
+            child: AutoSizeText(
+              value,
+              maxLines: 1,
+              style: TextStyle(
+                color: _getTextColor(
+                  isDarkMode,
+                  groupValue,
+                  key,
+                  unactiveTextColor,
+                  activeTextColor,
                 ),
-              )
-              // WTextContent(
-              //   value: value,
-              //   textColor: _getTextColor(isDarkMode, groupValue, key),
-              //   textSize: 13,
-              //   textLineHeight: 20,
-              //   textFontWeight: FontWeight.w600,
-              // ),
-              ));
+                height: 13 / 20,
+                fontWeight: FontWeight.w600,
+                fontFamily: FONT_GOOGLESANS,
+              ),
+            ),
+          ),
+          // WTextContent(
+          //   value: value,
+          //   textColor: _getTextColor(isDarkMode, groupValue, key),
+          //   textSize: 13,
+          //   textLineHeight: 20,
+          //   textFontWeight: FontWeight.w600,
+          // ),
+        ),
+      );
     }),
     decoration: BoxDecoration(
       color: Theme.of(context).tabBarTheme.unselectedLabelColor!,

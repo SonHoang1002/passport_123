@@ -1,15 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/helpers/share_preferences_helpers.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/navigator_route.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/screens/module_home/home.dart';
-import 'package:passport_photo_2/screens/module_onboard/widgets/w_carousel_indicator.dart';
-import 'package:passport_photo_2/widgets/w_button.dart';
-import 'package:passport_photo_2/widgets/w_instruction_item.dart';
+import 'package:pass1_/helpers/share_preferences_helpers.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/module_home/home.dart';
+import 'package:pass1_/screens/module_onboard/widgets/w_carousel_indicator.dart';
+import 'package:pass1_/widgets/w_button.dart';
+import 'package:pass1_/widgets/w_instruction_item.dart';
 
 class OnBoardPage extends StatefulWidget {
   const OnBoardPage({super.key});

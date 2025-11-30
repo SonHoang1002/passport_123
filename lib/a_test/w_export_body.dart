@@ -3,25 +3,25 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:passport_photo_2/a_test/pdf_function/generate_mimetype.dart';
-import 'package:passport_photo_2/a_test/w_export_childs.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/convert.dart';
-import 'package:passport_photo_2/helpers/file_helpers.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/helpers/native_bridge/method_channel.dart';
-import 'package:passport_photo_2/helpers/navigator_route.dart';
-import 'package:passport_photo_2/helpers/random_number.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/models/export_size_model.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/providers/blocs/device_platform_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/screens/module_home/helpers/export_helpers.dart';
-import 'package:passport_photo_2/widgets/w_custom_about_dialog.dart';
-import 'package:passport_photo_2/widgets/w_custom_value_notifier.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
+import 'package:pass1_/a_test/pdf_function/generate_mimetype.dart';
+import 'package:pass1_/a_test/w_export_childs.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/file_helpers.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/helpers/random_number.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/models/export_size_model.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/module_home/helpers/export_helpers.dart';
+import 'package:pass1_/widgets/w_custom_about_dialog.dart';
+import 'package:pass1_/widgets/w_custom_value_notifier.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
 import 'package:share_plus/share_plus.dart';
 
 class WExportBody1 extends StatefulWidget {
@@ -61,8 +61,9 @@ class _WExportBody1State extends State<WExportBody1> {
   final ValueNotifier<double> _vSliderDpiResolutionPreview =
       ValueNotifier<double>(600);
 
-  final ValueNotifier<double> _vSliderDpiResolutionMain =
-      ValueNotifier<double>(600);
+  final ValueNotifier<double> _vSliderDpiResolutionMain = ValueNotifier<double>(
+    600,
+  );
 
   File? _convertedPhotoFile;
   List<File> _convertedPaperFiles = [];
@@ -72,10 +73,12 @@ class _WExportBody1State extends State<WExportBody1> {
 
   final List<GlobalKey> _keysFormat = [];
 
-  final ValueNotifier<List<double>> _vListMinMaxDpi =
-      ValueNotifier(LIST_MIN_MAX_RESOLUTION_1);
-  final ValueNotifier<Map<int, String>> _vDataSegmentResolution =
-      ValueNotifier(DATA_SEGMENT_RESOLUTION_1);
+  final ValueNotifier<List<double>> _vListMinMaxDpi = ValueNotifier(
+    LIST_MIN_MAX_RESOLUTION_1,
+  );
+  final ValueNotifier<Map<int, String>> _vDataSegmentResolution = ValueNotifier(
+    DATA_SEGMENT_RESOLUTION_1,
+  );
 
   final ValueNotifier<bool> _isCaculating = ValueNotifier(false);
 
@@ -101,9 +104,12 @@ class _WExportBody1State extends State<WExportBody1> {
     if (!_isCaculating.value) {
       _isCaculating.value = true;
     }
-
-    double? result = await _runGetFileSizeOnBackground();
-
+    Stopwatch stopwatch = Stopwatch()..start();
+    double? result;
+    result = 5;
+    // result = await _runGetFileSizeOnBackground();
+    stopwatch.stop();
+    consolelog("_handleGetFileSize call: ${stopwatch.elapsedMilliseconds}");
     if (_isCaculating.value) {
       _isCaculating.value = false;
     }
@@ -201,8 +207,9 @@ class _WExportBody1State extends State<WExportBody1> {
     required List<String> listFileName,
   }) async {
     if (files.isNotEmpty) {
-      ShareResult result =
-          await Share.shareXFiles(files.map((e) => XFile(e.path)).toList());
+      ShareResult result = await Share.shareXFiles(
+        files.map((e) => XFile(e.path)).toList(),
+      );
       return result.status == ShareResultStatus.success;
     } else {
       showCustomAboutDialog(
@@ -223,10 +230,9 @@ class _WExportBody1State extends State<WExportBody1> {
   }) async {
     if (listFile.isNotEmpty) {
       if (indexImageFormat == 2) {
-        await MyMethodChannel.createActionDocument(
-          [listFile[0].path],
-          indexImageFormat,
-        );
+        await MyMethodChannel.createActionDocument([
+          listFile[0].path,
+        ], indexImageFormat);
       } else {
         List<File?> resultFiles = [];
         for (var i = 0; i < listFile.length; i++) {
@@ -247,12 +253,7 @@ class _WExportBody1State extends State<WExportBody1> {
       String content = "Your photo is saved successfully.";
       String title = "Saved";
       // ignore: use_build_context_synchronously
-      showCustomAboutDialog(
-        context,
-        dialogWidth,
-        title,
-        content,
-      );
+      showCustomAboutDialog(context, dialogWidth, title, content);
     } else {
       showCustomAboutDialog(
         context,
@@ -299,7 +300,8 @@ class _WExportBody1State extends State<WExportBody1> {
     _size = MediaQuery.sizeOf(context);
     _size = Size(min(SIZE_EXAMPLE.width, _size.width), _size.height);
     _isPhone = BlocProvider.of<DevicePlatformCubit>(context).isPhone;
-    final currentPassport = widget.countrySelected
+    final currentPassport = widget
+        .countrySelected
         .listPassportModel[widget.countrySelected.indexSelectedPassport];
 
     if (currentPassport.unit == PIXEL) {
@@ -310,25 +312,24 @@ class _WExportBody1State extends State<WExportBody1> {
     } else {
       _listPassportDimensionByInch = [
         FlutterConvert.convertUnit(
-            currentPassport.unit, INCH, currentPassport.width),
+          currentPassport.unit,
+          INCH,
+          currentPassport.width,
+        ),
         FlutterConvert.convertUnit(
-            currentPassport.unit, INCH, currentPassport.height),
+          currentPassport.unit,
+          INCH,
+          currentPassport.height,
+        ),
       ];
     }
     consolelog("_listPassportDimensionByInch: $_listPassportDimensionByInch");
     Color backgroundColor = Theme.of(context).appBarTheme.backgroundColor!;
     return ClipRRect(
-      borderRadius: const BorderRadius.vertical(
-        top: Radius.circular(20),
-      ),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       child: Container(
         color: backgroundColor,
-        child: Stack(
-          children: [
-            _buildBlurBg(backgroundColor),
-            _buildBody(),
-          ],
-        ),
+        child: Stack(children: [_buildBlurBg(backgroundColor), _buildBody()]),
       ),
     );
   }
@@ -355,8 +356,10 @@ class _WExportBody1State extends State<WExportBody1> {
   }
 
   Widget _buildAnalyze() {
-    bool isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: true).isDarkMode;
+    bool isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: true,
+    ).isDarkMode;
     var countrySelected = widget.countrySelected;
     return Container(
       margin: const EdgeInsets.only(top: 15),
@@ -375,9 +378,9 @@ class _WExportBody1State extends State<WExportBody1> {
                 ),
                 WExports.buildAnalyzeDot(context, isDarkMode),
                 ValueListenableBuilder(
-                  valueListenable: ValuesListenablesCustom(valueListenables: [
-                    _vSliderDpiResolutionPreview,
-                  ]),
+                  valueListenable: ValuesListenablesCustom(
+                    valueListenables: [_vSliderDpiResolutionPreview],
+                  ),
                   builder: (context, _, child) {
                     return WExports.buildAnalyzeDimension(
                       context: context,
@@ -387,33 +390,35 @@ class _WExportBody1State extends State<WExportBody1> {
                       dpi: _vSliderDpiResolutionPreview.value,
                       indexImageFormat: indexImageFormat,
                       indexTab: indexTab,
+                      textColorWhenOverSize: red,
                     );
                   },
                 ),
                 WExports.buildAnalyzeDot(context, isDarkMode),
                 ValueListenableBuilder(
-                  valueListenable: ValuesListenablesCustom(valueListenables: [
-                    _vIndexImageFormat,
-                  ]),
+                  valueListenable: ValuesListenablesCustom(
+                    valueListenables: [_vIndexImageFormat],
+                  ),
                   builder: (context, _, child) {
                     return WExports.buildAnalyzeOutputFormat(
                       context,
                       isDarkMode,
-                      EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[
-                          indexImageFormat]!,
+                      EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[indexImageFormat]!,
                     );
                   },
                 ),
                 WExports.buildAnalyzeDot(context, isDarkMode),
                 ValueListenableBuilder(
-                  valueListenable: ValuesListenablesCustom(valueListenables: [
-                    _vIndexSegment,
-                    _vCopyCount,
-                    _vExportSize,
-                    _vIndexImageFormat,
-                    _vSliderCompressionPercent,
-                    _vSliderDpiResolutionMain,
-                  ]),
+                  valueListenable: ValuesListenablesCustom(
+                    valueListenables: [
+                      _vIndexSegment,
+                      _vCopyCount,
+                      _vExportSize,
+                      _vIndexImageFormat,
+                      _vSliderCompressionPercent,
+                      _vSliderDpiResolutionMain,
+                    ],
+                  ),
                   builder: (context, _, child) {
                     return FutureBuilder<double?>(
                       future: _handleGetFileSize(),
@@ -460,7 +465,7 @@ class _WExportBody1State extends State<WExportBody1> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -468,9 +473,9 @@ class _WExportBody1State extends State<WExportBody1> {
 
   Widget _buildSegments() {
     return ValueListenableBuilder(
-      valueListenable: ValuesListenablesCustom(valueListenables: [
-        _vIndexSegment,
-      ]),
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [_vIndexSegment],
+      ),
       builder: (context, _, child) {
         return WExports.buildSegments(
           context: context,
@@ -501,12 +506,14 @@ class _WExportBody1State extends State<WExportBody1> {
 
   Widget _buildPreview() {
     return ValueListenableBuilder(
-      valueListenable: ValuesListenablesCustom(valueListenables: [
-        _vIndexSegment,
-        _vExportSize,
-        _vCopyCount,
-        // _vSliderDpiResolutionMain
-      ]),
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [
+          _vIndexSegment,
+          _vExportSize,
+          _vCopyCount,
+          // _vSliderDpiResolutionMain
+        ],
+      ),
       builder: (context, _, child) {
         return WExports.buildPreview(
           context: context,
@@ -523,18 +530,20 @@ class _WExportBody1State extends State<WExportBody1> {
 
   Widget _buildFormats() {
     return ValueListenableBuilder(
-      valueListenable: ValuesListenablesCustom(valueListenables: [
-        _vCopyCount,
-        _vExportSize,
-        _vIndexSegment,
-        _vIndexFocusingFormat,
-        _vSliderCompressionPercent,
-        _vIndexImageFormat,
-        _vSliderDpiResolutionPreview,
-        _vIndexDpiFormat,
-        _vListMinMaxDpi,
-        _vDataSegmentResolution,
-      ]),
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [
+          _vCopyCount,
+          _vExportSize,
+          _vIndexSegment,
+          _vIndexFocusingFormat,
+          _vSliderCompressionPercent,
+          _vIndexImageFormat,
+          _vSliderDpiResolutionPreview,
+          _vIndexDpiFormat,
+          _vListMinMaxDpi,
+          _vDataSegmentResolution,
+        ],
+      ),
       builder: (context, _, child) {
         return WExports.buildFormats(
           isDisableDpiFormat: isDisableDpiFormat,
@@ -586,10 +595,12 @@ class _WExportBody1State extends State<WExportBody1> {
 
   Widget _buildButtons() {
     return ValueListenableBuilder(
-      valueListenable: ValuesListenablesCustom(valueListenables: [
-        _vIndexImageFormat,
-        // _isCaculating,
-      ]),
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [
+          _vIndexImageFormat,
+          // _isCaculating,
+        ],
+      ),
       builder: (context, _, child) {
         return WExports.buildButtons(
           context: context,

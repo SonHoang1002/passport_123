@@ -3,18 +3,19 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/convert.dart';
-import 'package:passport_photo_2/helpers/navigator_route.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/models/export_size_model.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_crop/widgets/w_dialog_unit_body.dart';
-import 'package:passport_photo_2/widgets/general_dialog/w_body_dialogs.dart';
-import 'package:passport_photo_2/widgets/general_dialog/w_general_dialog.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/models/export_size_model.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/sub_modules/module_crop/widgets/w_dialog_unit_body.dart';
+import 'package:pass1_/widgets/general_dialog/w_body_dialogs.dart';
+import 'package:pass1_/widgets/general_dialog/w_general_dialog.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 // ignore: must_be_immutable
 class WBodyDialogCustomSize extends StatefulWidget {
@@ -39,10 +40,14 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
   late Unit _currentUnit;
   final FocusNode _focusNodeWidth = FocusNode();
   late ExportSizeModel _currentExportSizeModel;
+  late String _previousWidthInputValue, _previousHeightInputValue;
+
   @override
   void initState() {
     super.initState();
     _currentExportSizeModel = widget.exportSizeModel.copyWith();
+    _previousWidthInputValue = widget.exportSizeModel.size.width.toString();
+    _previousHeightInputValue = widget.exportSizeModel.size.height.toString();
     _controllerWidth = TextEditingController(
       text: widget.exportSizeModel.size.width.toString(),
     );
@@ -59,6 +64,79 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
       baseOffset: 0,
       extentOffset: controller.text.length,
     );
+  }
+
+  void _onTapInput(int indexInput) {
+    bool isTapWidthInput = indexInput == 0;
+    bool isTapHeightInput = indexInput == 1;
+
+    if (isTapWidthInput) {
+      double? parsedHeight = double.tryParse(_controllerHeight.text.trim());
+      if (parsedHeight == null) {
+        _controllerHeight.text = _previousHeightInputValue;
+        MyMethodChannel.showToast(
+          "Invalid height value, return previous value.",
+        );
+      }
+      _handleFillSelectiontextField(_controllerHeight);
+    } else if (isTapHeightInput) {
+      double? parsedWidth = double.tryParse(_controllerWidth.text.trim());
+      if (parsedWidth == null) {
+        _controllerWidth.text = _previousWidthInputValue;
+        MyMethodChannel.showToast(
+          "Invalid width value, return previous value.",
+        );
+      }
+      _handleFillSelectiontextField(_controllerWidth);
+    } else {
+      throw Exception("khong ho tro");
+    }
+    _previousWidthInputValue = _controllerWidth.text.trim();
+    _previousHeightInputValue = _controllerHeight.text.trim();
+    setState(() {});
+  }
+
+  void _onSubmitted() {
+    /// Xử lý như thế nào với margin, limit như thế nà
+    ///
+    double? width = double.tryParse(_controllerWidth.text.trim());
+    double? height = double.tryParse(_controllerHeight.text.trim());
+
+    if (width == null) {
+      _controllerWidth.text = _previousWidthInputValue;
+      width = double.parse(_previousWidthInputValue);
+      // MyMethodChannel.showToast("Invalid width value, return previous value.");
+    }
+    if (height == null) {
+      _controllerHeight.text = _previousHeightInputValue;
+      height = double.parse(_previousHeightInputValue);
+      // MyMethodChannel.showToast("Invalid height value, return previous value.");
+    }
+
+    // if (width != null && height != null) {
+    //   double widthByPixel = FlutterConvert.convertUnit(
+    //     _currentUnit,
+    //     PIXEL,
+    //     width,
+    //   );
+    //   double heightByPixel = FlutterConvert.convertUnit(
+    //     _currentUnit,
+    //     PIXEL,
+    //     width,
+    //   );
+    //   if (width > 0 && height > 0) {
+    //     if (width > LIMITATION_DIMENSION_BY_PIXEl ||
+    //         height > LIMITATION_DIMENSION_BY_PIXEl) {
+    //       return;
+    //     }
+    //   }
+    // }
+
+    _currentExportSizeModel = _currentExportSizeModel.copyWith(
+      size: Size(width, height),
+    );
+    widget.onComplete(_currentExportSizeModel);
+    popNavigator(context);
   }
 
   @override
@@ -89,27 +167,33 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
               Column(
                 children: [
                   _buildInputWidget(
-                    keyWidth,
-                    "Width",
-                    _controllerWidth,
-                    _currentUnit,
-                    (renderBox) {
+                    unitKey: keyWidth,
+                    title: "Width",
+                    controller: _controllerWidth,
+                    currentUnit: _currentUnit,
+                    onTapUnitWidget: (renderBox) {
                       _showDialogUnit(renderBox);
+                    },
+                    onTapInput: () {
+                      _onTapInput(0);
                     },
                     focusNode: _focusNodeWidth,
                   ),
                   WSpacer(height: 10),
                   _buildInputWidget(
-                    keyHeight,
-                    "Height",
-                    _controllerHeight,
-                    _currentUnit,
-                    (renderBox) {
+                    unitKey: keyHeight,
+                    title: "Height",
+                    controller: _controllerHeight,
+                    currentUnit: _currentUnit,
+                    onTapUnitWidget: (renderBox) {
                       _showDialogUnit(renderBox);
+                    },
+                    onTapInput: () {
+                      _onTapInput(1);
                     },
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -117,12 +201,13 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
     );
   }
 
-  Widget _buildInputWidget(
-    GlobalKey unitKey,
-    String title,
-    TextEditingController controller,
-    Unit currentUnit,
-    void Function(RenderBox renderBox) onTapUnitWidget, {
+  Widget _buildInputWidget({
+    required GlobalKey unitKey,
+    required String title,
+    required TextEditingController controller,
+    required Unit currentUnit,
+    required void Function(RenderBox renderBox) onTapUnitWidget,
+    required void Function() onTapInput,
     FocusNode? focusNode,
   }) {
     return SizedBox(
@@ -151,34 +236,10 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
                 borderRadius: BorderRadius.circular(10),
                 child: TextField(
                   focusNode: focusNode,
-                  onTap: () {
-                    _handleFillSelectiontextField(controller);
-                  },
+                  onTap: onTapInput,
                   cursorColor: red,
                   onSubmitted: (value) {
-                    if (value.trim() == "") {
-                      controller.text = "0.0";
-                    }
-                    double? width =
-                        double.tryParse(_controllerWidth.value.text.trim());
-                    double? height =
-                        double.tryParse(_controllerHeight.value.text.trim());
-                    if (width != null && height != null) {
-
-                      double widthByPixel = FlutterConvert.convertUnit(_currentUnit, PIXEL, width);
-                      double heightByPixel = FlutterConvert.convertUnit(_currentUnit, PIXEL, width);
-                      if (width > 0 && height > 0) {
-                        if (width > LIMITATION_DIMENSION_BY_PIXEl ||
-                            height > LIMITATION_DIMENSION_BY_PIXEl) {
-                          return;
-                        }
-                        onChangeSize(
-                          sizeModel!.copyWith(size: Size(width, height)),
-                        );
-                      }
-                      widget.onComplete(_currentExportSizeModel);
-                      popNavigator(context);
-                    }
+                    _onSubmitted();
                   },
                   keyboardType: TextInputType.number,
                   controller: controller,
@@ -214,8 +275,9 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
             child: Container(
               key: unitKey,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: _isDarkMode ? white : black),
+                borderRadius: BorderRadius.circular(10),
+                color: _isDarkMode ? white : black,
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: Row(
                 children: [
@@ -225,18 +287,16 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
                     textLineHeight: 16,
                     textColor: !_isDarkMode ? white : black,
                   ),
-                  WSpacer(
-                    width: 5,
-                  ),
+                  WSpacer(width: 5),
                   Icon(
                     FontAwesomeIcons.caretDown,
                     size: 12,
                     color: !_isDarkMode ? white : black,
-                  )
+                  ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -249,36 +309,36 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
       isHaveKeyboard = true;
     }
     FocusManager.instance.primaryFocus?.unfocus();
-    Future.delayed(
-      Duration(milliseconds: isHaveKeyboard ? 400 : 0),
-      () {
-        double itemHeight = 40;
-        final startOffset = renderBox.localToGlobal(const Offset(0, 0));
-        Offset endOffset = startOffset.translate(-120 + renderBox.size.width,
-            -(LIST_UNIT.length - 1) * itemHeight - renderBox.size.height - 15);
-        showCustomDialogWithOffset(
-          context: context,
-          newScreen: BodyDialogCustom(
-            offset: endOffset,
-            dialogWidget: buildDialogUnitBody(
-              context: context,
-              currentUnit: _currentUnit,
-              onSelected: (value) {
-                if (_currentUnit == value) return;
-                _currentExportSizeModel =
-                    _currentExportSizeModel.changeUnit(value);
-                setState(() {
-                  _currentUnit = value;
-                });
-                popNavigator(context);
-              },
-              width: 120,
-              height: itemHeight,
-            ),
-            scaleAlignment: Alignment.bottomRight,
+    Future.delayed(Duration(milliseconds: isHaveKeyboard ? 400 : 0), () {
+      double itemHeight = 40;
+      final startOffset = renderBox.localToGlobal(const Offset(0, 0));
+      Offset endOffset = startOffset.translate(
+        -120 + renderBox.size.width,
+        -(LIST_UNIT.length - 1) * itemHeight - renderBox.size.height - 15,
+      );
+      showCustomDialogWithOffset(
+        context: context,
+        newScreen: BodyDialogCustom(
+          offset: endOffset,
+          dialogWidget: buildDialogUnitBody(
+            context: context,
+            currentUnit: _currentUnit,
+            onSelected: (value) {
+              if (_currentUnit == value) return;
+              _currentExportSizeModel = _currentExportSizeModel.changeUnit(
+                value,
+              );
+              setState(() {
+                _currentUnit = value;
+              });
+              popNavigator(context);
+            },
+            width: 120,
+            height: itemHeight,
           ),
-        );
-      },
-    );
+          scaleAlignment: Alignment.bottomRight,
+        ),
+      );
+    });
   }
 }

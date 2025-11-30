@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/widgets/w_instruction_item.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/widgets/w_instruction_item.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class Instructions extends StatelessWidget {
   const Instructions({super.key});

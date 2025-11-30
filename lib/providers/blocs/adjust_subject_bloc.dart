@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/models/adjust_subject_model.dart';
-import 'package:passport_photo_2/providers/events/adjust_subject_event.dart';
-import 'package:passport_photo_2/providers/states/adjust_subject_state.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/models/adjust_subject_model.dart';
+import 'package:pass1_/providers/events/adjust_subject_event.dart';
+import 'package:pass1_/providers/states/adjust_subject_state.dart';
 
 class AdjustSubjectBloc extends Bloc<AdjustSubjectEvent, AdjustSubjectState> {
   AdjustSubjectBloc() : super(InitAdjustSubjectState()) {
@@ -18,8 +18,11 @@ class AdjustSubjectBloc extends Bloc<AdjustSubjectEvent, AdjustSubjectState> {
       emit(UpdateAdjustSubjectState(listAdjustSubjectModel: list));
     });
     on<ResetAdjustSubjectEvent>((event, emit) {
-      emit(UpdateAdjustSubjectState(
-          listAdjustSubjectModel: LIST_ADJUST_SUBJECT_MODEL));
+      emit(
+        UpdateAdjustSubjectState(
+          listAdjustSubjectModel: LIST_ADJUST_SUBJECT_MODEL,
+        ),
+      );
     });
   }
 }

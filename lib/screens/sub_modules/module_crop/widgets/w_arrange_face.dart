@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/widgets/w_dash_line.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/widgets/w_dash_line.dart';
 
 class WFaceArrangeComponents extends StatelessWidget {
   final ProjectModel projectModel;
@@ -19,12 +19,18 @@ class WFaceArrangeComponents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentPassport = projectModel.countryModel!.currentPassport;
-    final offsetHead =
-        Offset(0, frameSize.height * (1 - currentPassport.ratioHead));
-    final offsetEyes =
-        Offset(0, frameSize.height * (1 - currentPassport.ratioEyes));
-    final offsetChin =
-        Offset(0, frameSize.height * (1 - currentPassport.ratioChin));
+    final offsetHead = Offset(
+      0,
+      frameSize.height * (1 - currentPassport.ratioHead),
+    );
+    final offsetEyes = Offset(
+      0,
+      frameSize.height * (1 - currentPassport.ratioEyes),
+    );
+    final offsetChin = Offset(
+      0,
+      frameSize.height * (1 - currentPassport.ratioChin),
+    );
     Color mainColor = black; //isDarkMode ? primaryDark1 : primaryLight1;
     return AnimatedOpacity(
       opacity: opacity,
@@ -49,9 +55,7 @@ class WFaceArrangeComponents extends StatelessWidget {
             top: offsetEyes.dy,
             child: SizedBox(
               width: frameSize.width * 0.8,
-              child: WLineDash(
-                color: mainColor.withValues(alpha: 0.4),
-              ),
+              child: WLineDash(color: mainColor.withValues(alpha: 0.4)),
             ),
           ),
           // eyes vertical line

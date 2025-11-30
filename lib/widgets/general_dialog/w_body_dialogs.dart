@@ -1,11 +1,11 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/navigator_route.dart';
-import 'package:passport_photo_2/widgets/w_divider.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/widgets/w_divider.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class BodyDialogCustom extends StatefulWidget {
   final Offset offset;
@@ -58,23 +58,23 @@ class _BodyDialogCustomState extends State<BodyDialogCustom>
   Widget build(BuildContext context) {
     return Material(
       color: transparent,
-      child: Stack(children: [
-        Positioned.fill(
+      child: Stack(
+        children: [
+          Positioned.fill(
             child: GestureDetector(
-          onTap: () {
-            controller.reverse().then((_) {
-              if (widget.onTapBackground != null) {
-                widget.onTapBackground!();
-              } else {
-                popNavigator(context);
-              }
-            });
-          },
-          child: Container(
-            color: const Color.fromRGBO(0, 0, 0, 0.03),
+              onTap: () {
+                controller.reverse().then((_) {
+                  if (widget.onTapBackground != null) {
+                    widget.onTapBackground!();
+                  } else {
+                    popNavigator(context);
+                  }
+                });
+              },
+              child: Container(color: const Color.fromRGBO(0, 0, 0, 0.03)),
+            ),
           ),
-        )),
-        Positioned(
+          Positioned(
             top: widget.offset.dy + 50,
             left: widget.offset.dx,
             child: ScaleTransition(
@@ -91,20 +91,25 @@ class _BodyDialogCustomState extends State<BodyDialogCustom>
                   ),
                   Positioned.fill(
                     child: Container(
-                        decoration: const BoxDecoration(boxShadow: [
+                      decoration: const BoxDecoration(
+                        boxShadow: [
                           BoxShadow(
                             color: black015,
                             spreadRadius: 0,
                             blurRadius: 60,
                             offset: Offset(0, 0),
                           ),
-                        ]),
-                        child: widget.dialogWidget),
+                        ],
+                      ),
+                      child: widget.dialogWidget,
+                    ),
                   ),
                 ],
               ),
-            ))
-      ]),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -181,7 +186,8 @@ class _DialogBodyState extends State<DialogBody> {
         color:
             widget.backgroundColor ?? Theme.of(context).dialogBackgroundColor,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: widget.boxShadows ??
+        boxShadow:
+            widget.boxShadows ??
             const [
               BoxShadow(
                 blurRadius: 60,
@@ -200,9 +206,7 @@ class _DialogBodyState extends State<DialogBody> {
               widget.itemReplaceWidgets != null
                   ? Container(
                       margin: EdgeInsets.zero,
-                      child: Column(
-                        children: widget.itemReplaceWidgets!,
-                      ),
+                      child: Column(children: widget.itemReplaceWidgets!),
                     )
                   : SizedBox(
                       height: heightOfContent,
@@ -211,77 +215,72 @@ class _DialogBodyState extends State<DialogBody> {
                             ? null
                             : const NeverScrollableScrollPhysics(),
                         child: Column(
-                          children: widget.listItem.indexed.map(
-                            (e) {
-                              int index = e.$1;
-                              return GestureDetector(
-                                onTap: () {
-                                  widget.onSelected(e.$2);
-                                },
-                                child: Container(
-                                  color: transparent,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const SizedBox(),
-                                      Container(
-                                        constraints: BoxConstraints(
-                                            maxWidth: widget.dialogWidth * 0.8),
-                                        alignment: Alignment.centerLeft,
-                                        height: widget.itemHeight,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              widget.textAlignCenter == false
-                                                  ? MainAxisAlignment
-                                                      .spaceBetween
-                                                  : MainAxisAlignment.center,
-                                          children: [
-                                            WTextContent(
-                                              value: e.$2,
-                                              textSize: 12,
-                                              textLineHeight: 15,
-                                              textFontWeight: FontWeight.w500,
-                                              textOverflow:
-                                                  TextOverflow.ellipsis,
-                                              textMaxLength: 2,
-                                              textColor:
-                                                  widget.selectedValue == e
-                                                      ? widget.selectedTextColor
-                                                      : widget.textColor,
-                                            ),
-                                            if (widget.listMediaString != null)
-                                              Image.asset(
-                                                  widget
-                                                      .listMediaString![index],
-                                                  height: 20,
-                                                  width: 20,
-                                                  color: Theme.of(context)
-                                                      .iconTheme
-                                                      .color
-                                                  // isDarkMode ? white07 : black07,
-                                                  ),
-                                            if (widget.selectedValue == e)
-                                              widget.selectedWidget ??
-                                                  const SizedBox()
-                                          ],
-                                        ),
+                          children: widget.listItem.indexed.map((e) {
+                            int index = e.$1;
+                            return GestureDetector(
+                              onTap: () {
+                                widget.onSelected(e.$2);
+                              },
+                              child: Container(
+                                color: transparent,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const SizedBox(),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: widget.dialogWidth * 0.8,
                                       ),
-                                      (index != widget.listItem.length - 1)
-                                          ? WDivider(
-                                              width: widget.dialogWidth,
-                                              color: Theme.of(context)
-                                                  .dividerTheme
-                                                  .color,
-                                              height: dividerHeight,
-                                            )
-                                          : const SizedBox()
-                                    ],
-                                  ),
+                                      alignment: Alignment.centerLeft,
+                                      height: widget.itemHeight,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            widget.textAlignCenter == false
+                                            ? MainAxisAlignment.spaceBetween
+                                            : MainAxisAlignment.center,
+                                        children: [
+                                          WTextContent(
+                                            value: e.$2,
+                                            textSize: 12,
+                                            textLineHeight: 15,
+                                            textFontWeight: FontWeight.w500,
+                                            textOverflow: TextOverflow.ellipsis,
+                                            textMaxLength: 2,
+                                            textColor: widget.selectedValue == e.$2
+                                                ? widget.selectedTextColor
+                                                : widget.textColor,
+                                          ),
+                                          if (widget.listMediaString != null)
+                                            Image.asset(
+                                              widget.listMediaString![index],
+                                              height: 20,
+                                              width: 20,
+                                              color: Theme.of(
+                                                context,
+                                              ).iconTheme.color,
+                                              // isDarkMode ? white07 : black07,
+                                            ),
+                                          if (widget.selectedValue == e.$2)
+                                            widget.selectedWidget ??
+                                                const SizedBox(),
+                                        ],
+                                      ),
+                                    ),
+                                    (index != widget.listItem.length - 1)
+                                        ? WDivider(
+                                            width: widget.dialogWidth,
+                                            color: Theme.of(
+                                              context,
+                                            ).dividerTheme.color,
+                                            height: dividerHeight,
+                                          )
+                                        : const SizedBox(),
+                                  ],
                                 ),
-                              );
-                            },
-                          ).toList(),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ),
@@ -322,10 +321,7 @@ class _CustomDialogBodyState extends State<CustomDialogBody>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    scaleAnimation = CurvedAnimation(
-      parent: controller,
-      curve: CUBIC_CURVE,
-    );
+    scaleAnimation = CurvedAnimation(parent: controller, curve: CUBIC_CURVE);
     controller.addListener(() {
       setState(() {});
     });
@@ -346,18 +342,19 @@ class _CustomDialogBodyState extends State<CustomDialogBody>
       child: Stack(
         children: [
           Positioned.fill(
-              child: GestureDetector(
-            onTap: () {
-              controller.reverse().then((_) {
-                if (widget.onTapBackground != null) {
-                  widget.onTapBackground!();
-                } else {
-                  popNavigator(context);
-                }
-              });
-            },
-            child: Container(color: const Color.fromRGBO(0, 0, 0, 0.03)),
-          )),
+            child: GestureDetector(
+              onTap: () {
+                controller.reverse().then((_) {
+                  if (widget.onTapBackground != null) {
+                    widget.onTapBackground!();
+                  } else {
+                    popNavigator(context);
+                  }
+                });
+              },
+              child: Container(color: const Color.fromRGBO(0, 0, 0, 0.03)),
+            ),
+          ),
           Positioned(
             top: widget.offset.dy + 50,
             left: widget.offset.dx,
@@ -391,7 +388,7 @@ class _CustomDialogBodyState extends State<CustomDialogBody>
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

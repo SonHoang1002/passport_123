@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:passport_photo_2/helpers/adjust_helper.dart';
+import 'package:pass1_/helpers/adjust_helper.dart';
 
 class WRulerCustom extends StatefulWidget {
   final Color color;

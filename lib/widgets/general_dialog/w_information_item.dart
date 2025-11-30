@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 Widget buildDialogInformationItem(
   BuildContext context,
@@ -35,7 +35,8 @@ Widget buildDialogInformationItem(
                 FittedBox(
                   child: WTextContent(
                     value: value,
-                    textColor: textColor ??
+                    textColor:
+                        textColor ??
                         Theme.of(context).textTheme.displayLarge!.color,
                     textFontWeight: textFontWeight,
                     textLineHeight: textLineHeight,
@@ -43,13 +44,12 @@ Widget buildDialogInformationItem(
                     textSize: textSize,
                   ),
                 ),
-                WSpacer(
-                  width: 10,
-                ),
+                WSpacer(width: 10),
                 FittedBox(
                   child: WTextContent(
                     value: subTitle,
-                    textColor: textColor ??
+                    textColor:
+                        textColor ??
                         Theme.of(context).textTheme.displayLarge!.color,
                     textFontWeight: textFontWeight,
                     textLineHeight: textLineHeight,

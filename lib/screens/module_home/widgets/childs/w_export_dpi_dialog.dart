@@ -1,11 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/extension.dart';
-import 'package:passport_photo_2/widgets/w_custom_value_notifier.dart';
-import 'package:passport_photo_2/widgets/w_segment_custom.dart';
-import 'package:passport_photo_2/widgets/w_slider1.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/extension.dart';
+import 'package:pass1_/widgets/w_custom_value_notifier.dart';
+import 'package:pass1_/widgets/w_segment_custom.dart';
+import 'package:pass1_/widgets/w_slider1.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 // ignore: must_be_immutable
 class WExportDpiDialog extends StatefulWidget {

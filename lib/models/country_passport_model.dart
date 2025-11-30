@@ -1,12 +1,13 @@
 import 'package:flutter/rendering.dart';
-import 'package:passport_photo_2/commons/constants.dart';
+import 'package:pass1_/commons/constants.dart';
 
 class Unit {
   final int id;
   final String title;
   final String value;
   Unit({required this.id, this.title = "", this.value = ""});
-  String getInfor() {
+  @override
+  String toString() {
     return "Unit: (title: $title, value: $value)";
   }
 }
@@ -60,7 +61,7 @@ class PassportModel {
 
   @override
   String toString() {
-    return "id: $id, title: $title, height: $height, width: $width, ratioHead: $ratioHead, ratioEyes: $ratioEyes, ratioChin: $ratioChin, unit: ${unit.getInfor()}";
+    return "id: $id, title: $title, height: $height, width: $width, ratioHead: $ratioHead, ratioEyes: $ratioEyes, ratioChin: $ratioChin, unit: ${unit}";
   }
 }
 
@@ -104,26 +105,28 @@ class CountryModel {
     return "id: $id, title: $title, listPassportModel.length: ${listPassportModel.length}, selectedPassport: $indexSelectedPassport";
   }
 
-  static CountryModel createCustomCountryModel(
-      {required double width,
-      required double height,
-      required double ratioHead,
-      required double ratioEyes,
-      required double ratioChin,
-      required Unit currentUnit}) {
+  static CountryModel createCustomCountryModel({
+    required double width,
+    required double height,
+    required double ratioHead,
+    required double ratioEyes,
+    required double ratioChin,
+    required Unit currentUnit,
+  }) {
     return CountryModel(
       id: ID_CUSTOM_COUNTRY_MODEL,
       title: "Country",
       listPassportModel: [
         PassportModel(
-            id: ID_CUSTOM_COUNTRY_MODEL,
-            title: "Custom ${width}x$height${currentUnit.title}",
-            height: height,
-            width: width,
-            ratioHead: ratioHead,
-            ratioEyes: ratioEyes,
-            ratioChin: ratioChin,
-            unit: currentUnit),
+          id: ID_CUSTOM_COUNTRY_MODEL,
+          title: "Custom ${width}x$height${currentUnit.title}",
+          height: height,
+          width: width,
+          ratioHead: ratioHead,
+          ratioEyes: ratioEyes,
+          ratioChin: ratioChin,
+          unit: currentUnit,
+        ),
       ],
     );
   }

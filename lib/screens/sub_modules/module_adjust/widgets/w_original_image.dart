@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/models/project_model.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/models/project_model.dart';
 
 Widget buildImageOriginal({
   required ProjectModel projectModel,

@@ -3,9 +3,9 @@ import 'dart:isolate';
 import 'package:flutter_image_filters/flutter_image_filters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:passport_photo_2/commons/shaders/brightness_custom.dart';
-import 'package:passport_photo_2/helpers/export_images/export_adjusted.dart';
-import 'package:passport_photo_2/models/project_model.dart';
+import 'package:pass1_/commons/shaders/brightness_custom.dart';
+import 'package:pass1_/helpers/export_images/export_adjusted.dart';
+import 'package:pass1_/models/project_model.dart';
 
 class FlutterIsolates {
   static Future<File?> handleExportAdjust(
@@ -27,7 +27,7 @@ class FlutterIsolates {
           shaderExportConfiguration,
           objectOffset,
           adjustSize,
-        ]
+        ],
       ]);
       File? response = await receivePort.first;
       return response;

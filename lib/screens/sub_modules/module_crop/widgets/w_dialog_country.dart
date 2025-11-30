@@ -3,22 +3,22 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/caculate_text_size.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/helpers/navigator_route.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/providers/blocs/device_platform_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_crop/widgets/w_crop_guides/w_crop_guide_phone.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_crop/widgets/w_crop_guides/w_crop_guide_tablet.dart';
-import 'package:passport_photo_2/widgets/general_dialog/w_body_dialogs.dart';
-import 'package:passport_photo_2/widgets/general_dialog/w_general_dialog.dart';
-import 'package:passport_photo_2/widgets/general_dialog/w_information_item.dart';
-import 'package:passport_photo_2/widgets/w_divider.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/caculate_text_size.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/sub_modules/module_crop/widgets/w_crop_guides/w_crop_guide_phone.dart';
+import 'package:pass1_/screens/sub_modules/module_crop/widgets/w_crop_guides/w_crop_guide_tablet.dart';
+import 'package:pass1_/widgets/general_dialog/w_body_dialogs.dart';
+import 'package:pass1_/widgets/general_dialog/w_general_dialog.dart';
+import 'package:pass1_/widgets/general_dialog/w_information_item.dart';
+import 'package:pass1_/widgets/w_divider.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class WDialogCountry extends StatefulWidget {
   final CountryModel countrySelected;
@@ -52,24 +52,26 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
     bool isPhone = BlocProvider.of<DevicePlatformCubit>(context).isPhone;
     if (isPhone) {
       pushCustomVerticalMaterialPageRoute(
-          context,
-          WCustomCropGuidePhone(
-            countrySelected: widget.countrySelected,
-            onUpdateCountry: (model) {
-              widget.onSelect(model);
-            },
-            screenSize: _size,
-          ));
+        context,
+        WCustomCropGuidePhone(
+          countrySelected: widget.countrySelected,
+          onUpdateCountry: (model) {
+            widget.onSelect(model);
+          },
+          screenSize: _size,
+        ),
+      );
     } else {
       pushCustomVerticalMaterialPageRoute(
-          context,
-          WCustomCropGuideTablet(
-            countrySelected: widget.countrySelected,
-            onUpdateCountry: (model) {
-              widget.onSelect(model);
-            },
-            screenSize: _size,
-          ));
+        context,
+        WCustomCropGuideTablet(
+          countrySelected: widget.countrySelected,
+          onUpdateCountry: (model) {
+            widget.onSelect(model);
+          },
+          screenSize: _size,
+        ),
+      );
     }
   }
 
@@ -116,17 +118,16 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
     String contentMaxLength = _getMaxContentWidth(widget.countrySelected);
 
     final contentWidth = measureTextSize(
-        contentMaxLength,
-        const TextStyle(
-          fontSize: 12,
-          height: 15,
-          fontWeight: FontWeight.w700,
-        )).width;
+      contentMaxLength,
+      const TextStyle(fontSize: 12, height: 15, fontWeight: FontWeight.w700),
+    ).width;
 
     double rWidth = contentWidth + 30;
     if (contentMaxLength.length > 42) {
-      currentEndOffset = currentEndOffset.translate(-rWidth - 10 - 15 - 10,
-          0); // tru padding cua dialog(10), padding ben trong(15)s
+      currentEndOffset = currentEndOffset.translate(
+        -rWidth - 10 - 15 - 10,
+        0,
+      ); // tru padding cua dialog(10), padding ben trong(15)s
     } else {
       currentEndOffset = currentEndOffset.translate(-rWidth - 10 - 15, 0);
     }
@@ -144,14 +145,15 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
           countrySelected: widget.countrySelected,
           // context,
           onSelected: (value) {
-            final indexSelectedPassport =
-                widget.countrySelected.listPassportModel.indexWhere(
-              (element) {
-                return element.id == value.id;
-              },
-            );
+            final indexSelectedPassport = widget
+                .countrySelected
+                .listPassportModel
+                .indexWhere((element) {
+                  return element.id == value.id;
+                });
             consolelog(
-                "showCustomDialogWithOffset - selected passport index: $indexSelectedPassport");
+              "showCustomDialogWithOffset - selected passport index: $indexSelectedPassport",
+            );
             if (indexSelectedPassport != -1) {
               final newSelectedCountry = widget.countrySelected.copyWith(
                 indexSelectedPassport: indexSelectedPassport,
@@ -174,19 +176,21 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
     double mainWidth = min(_size.width, SIZE_EXAMPLE.width);
     maxWidthText = mainWidth > MIN_SIZE.width ? 170 : 140;
     TextStyle titleStyle = TextStyle(
-        decoration: TextDecoration.none,
-        fontSize: mainWidth > MIN_SIZE.width ? 13 : 11,
-        color: white,
-        fontWeight: FontWeight.w600,
-        fontFamily: FONT_GOOGLESANS,
-        height: 16 / 13);
+      decoration: TextDecoration.none,
+      fontSize: mainWidth > MIN_SIZE.width ? 13 : 11,
+      color: white,
+      fontWeight: FontWeight.w600,
+      fontFamily: FONT_GOOGLESANS,
+      height: 16 / 13,
+    );
     if (widget.isOpen) {
       _showButtons = true;
     }
     final isDarkMode = BlocProvider.of<ThemeBloc>(context).isDarkMode;
     String textAll = "", mainText = "";
     if (widget.countrySelected.listPassportModel.isNotEmpty) {
-      PassportModel selectedPassport = widget.countrySelected
+      PassportModel selectedPassport = widget
+          .countrySelected
           .listPassportModel[widget.countrySelected.indexSelectedPassport];
       textAll = "${widget.countrySelected.emoji} ${selectedPassport.title}";
     }
@@ -195,8 +199,10 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
     if (textValueSize.width > maxWidthText) {
       Size kichThuocDauBaCham = measureTextSize("...", titleStyle);
       Size kichThuocChuViDu = measureTextSize("a", titleStyle);
-      Size kichThuocLaCo =
-          measureTextSize(widget.countrySelected.emoji, titleStyle);
+      Size kichThuocLaCo = measureTextSize(
+        widget.countrySelected.emoji,
+        titleStyle,
+      );
       int soLuongChuPhaiTruBoThayTheChoLaCo =
           kichThuocLaCo.width ~/ kichThuocChuViDu.width;
       double chieuDaiPhanConLai =
@@ -210,58 +216,62 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
     }
     double lengthOfMainText = measureTextSize(mainText, titleStyle).width;
 
-    return LayoutBuilder(builder: (context, constraint) {
-      return AnimatedContainer(
-        curve: CUBIC_CURVE,
-        duration: const Duration(milliseconds: 500),
-        clipBehavior: Clip.hardEdge,
-        height: widget.isOpen ? 150 : 35,
-        width: widget.isOpen
-            ? mainWidth
-            : mainWidth > MIN_SIZE.width
-                ? (lengthOfMainText + 65)
-                : (lengthOfMainText + 125),
-        alignment: Alignment.bottomCenter,
-        transformAlignment: Alignment.topCenter,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(32),
-          color: black,
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: widget.isOpen ? 15 : 10,
-          vertical: widget.isOpen ? 14 : (mainWidth > MIN_SIZE.width ? 9 : 6.5),
-        ),
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                WTextContent(
-                  value: mainText,
-                  textFontWeight: titleStyle.fontWeight,
-                  textSize: 13,
-                  textLineHeight: 16,
-                  textColor: titleStyle.color,
-                  textAlign: TextAlign.start,
-                ),
-                WSpacer(width: 7),
-                widget.isOpen // _isShowEditButton
-                    ? GestureDetector(
-                        onTap: () {
-                          _onShowCropGuideBottomSheet();
-                        },
-                        child: Container(
-                          height: 36,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(999),
-                            color: isDarkMode ? primaryDark1 : primaryDark1,
-                          ),
-                          child: Row(
+    return LayoutBuilder(
+      builder: (context, constraint) {
+        return AnimatedContainer(
+          curve: CUBIC_CURVE,
+          duration: const Duration(milliseconds: 500),
+          clipBehavior: Clip.hardEdge,
+          height: widget.isOpen ? 150 : 35,
+          width: widget.isOpen
+              ? mainWidth
+              : mainWidth > MIN_SIZE.width
+              ? (lengthOfMainText + 65)
+              : (lengthOfMainText + 125),
+          alignment: Alignment.bottomCenter,
+          transformAlignment: Alignment.topCenter,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32),
+            color: black,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: widget.isOpen ? 15 : 10,
+            vertical: widget.isOpen
+                ? 14
+                : (mainWidth > MIN_SIZE.width ? 9 : 6.5),
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  WTextContent(
+                    value: mainText,
+                    textFontWeight: titleStyle.fontWeight,
+                    textSize: 13,
+                    textLineHeight: 16,
+                    textColor: titleStyle.color,
+                    textAlign: TextAlign.start,
+                  ),
+                  WSpacer(width: 7),
+                  widget
+                          .isOpen // _isShowEditButton
+                      ? GestureDetector(
+                          onTap: () {
+                            _onShowCropGuideBottomSheet();
+                          },
+                          child: Container(
+                            height: 36,
+                            width: 90,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(999),
+                              color: isDarkMode ? primaryDark1 : primaryDark1,
+                            ),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 WTextContent(
@@ -274,70 +284,77 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
                                 Image.asset(
                                   "${PATH_PREFIX_ICON}icon_edit_crop_guide.png",
                                   height: 20,
-                                )
-                              ]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : const Icon(
+                          FontAwesomeIcons.caretDown,
+                          size: 15,
+                          color: white,
+                        ),
+                ],
+              ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 450),
+                opacity: widget.isOpen ? 1 : 0,
+                onEnd: () {
+                  setState(() {
+                    _showButtons = false;
+                  });
+                },
+                child: (_showButtons)
+                    ? Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: [
+                            _buildButtonWidget(
+                              key: _keyCountry,
+                              title: widget.countrySelected.title,
+                              onTap: () {
+                                _onSelectCountry();
+                              },
+                            ),
+                            WSpacer(width: 10),
+                            _buildButtonWidget(
+                              key: _keyPassport,
+                              title:
+                                  widget
+                                      .countrySelected
+                                      .listPassportModel
+                                      .isNotEmpty
+                                  ? widget.countrySelected.currentPassport.id ==
+                                            ID_CUSTOM_COUNTRY_MODEL
+                                        ? "Document"
+                                        : widget
+                                              .countrySelected
+                                              .listPassportModel[widget
+                                                  .countrySelected
+                                                  .indexSelectedPassport]
+                                              .title
+                                  : "",
+                              onTap: () {
+                                if (widget
+                                    .countrySelected
+                                    .listPassportModel
+                                    .isEmpty) {
+                                  return;
+                                }
+                                _onSelectPassport();
+                              },
+                            ),
+                          ],
                         ),
                       )
-                    : const Icon(
-                        FontAwesomeIcons.caretDown,
-                        size: 15,
-                        color: white,
-                      )
-              ],
-            ),
-            AnimatedOpacity(
-              duration: const Duration(milliseconds: 450),
-              opacity: widget.isOpen ? 1 : 0,
-              onEnd: () {
-                setState(() {
-                  _showButtons = false;
-                });
-              },
-              child: (_showButtons)
-                  ? Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      child: Flex(
-                        direction: Axis.horizontal,
-                        children: [
-                          _buildButtonWidget(
-                            key: _keyCountry,
-                            title: widget.countrySelected.title,
-                            onTap: () {
-                              _onSelectCountry();
-                            },
-                          ),
-                          WSpacer(width: 10),
-                          _buildButtonWidget(
-                            key: _keyPassport,
-                            title: widget.countrySelected.listPassportModel
-                                    .isNotEmpty
-                                ? widget.countrySelected.currentPassport.id ==
-                                        ID_CUSTOM_COUNTRY_MODEL
-                                    ? "Document"
-                                    : widget
-                                        .countrySelected
-                                        .listPassportModel[widget
-                                            .countrySelected
-                                            .indexSelectedPassport]
-                                        .title
-                                : "",
-                            onTap: () {
-                              if (widget
-                                  .countrySelected.listPassportModel.isEmpty) {
-                                return;
-                              }
-                              _onSelectPassport();
-                            },
-                          )
-                        ],
-                      ),
-                    )
-                  : const SizedBox(),
-            )
-          ],
-        ),
-      );
-    });
+                    : const SizedBox(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildButtonWidget({
@@ -362,18 +379,19 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
               title.length > 12
                   ? Expanded(
                       child: AutoSizeText(
-                      title,
-                      maxFontSize: 15,
-                      minFontSize: 15,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        height: 16 / 15,
-                        color: white,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: FONT_GOOGLESANS,
+                        title,
+                        maxFontSize: 15,
+                        minFontSize: 15,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          height: 16 / 15,
+                          color: white,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: FONT_GOOGLESANS,
+                        ),
                       ),
-                    ))
+                    )
                   : AutoSizeText(
                       title,
                       maxFontSize: 15,
@@ -389,11 +407,7 @@ class _DialogCountryWidgetState extends State<WDialogCountry>
                       ),
                     ),
               WSpacer(width: 10),
-              const Icon(
-                FontAwesomeIcons.caretDown,
-                size: 15,
-                color: white,
-              )
+              const Icon(FontAwesomeIcons.caretDown, size: 15, color: white),
             ],
           ),
         ),
@@ -431,8 +445,9 @@ class _DialogCountryBodyState extends State<DialogCountryBody> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (mounted) {
-        int indexOfSelectedCountry = widget.listCountryModel
-            .indexWhere((element) => element.id == widget.countrySelected.id);
+        int indexOfSelectedCountry = widget.listCountryModel.indexWhere(
+          (element) => element.id == widget.countrySelected.id,
+        );
         if (indexOfSelectedCountry != -1) {
           controller.animateTo(
             indexOfSelectedCountry * 40 +
@@ -453,32 +468,24 @@ class _DialogCountryBodyState extends State<DialogCountryBody> {
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.sizeOf(context);
-    final isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: false).isDarkMode;
+    final isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: false,
+    ).isDarkMode;
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Stack(
         children: [
           Positioned.fill(
-            child: Container(
-              color: Theme.of(context).dividerTheme.color,
-            ),
+            child: Container(color: Theme.of(context).dividerTheme.color),
           ),
-          _buildCountryList1(
-            _size,
-            isDarkMode,
-            widget.dialogWidth ?? 200,
-          ),
+          _buildCountryList1(_size, isDarkMode, widget.dialogWidth ?? 200),
         ],
       ),
     );
   }
 
-  Widget _buildCountryList(
-    Size size,
-    bool isDarkMode,
-    double? rWidth,
-  ) {
+  Widget _buildCountryList(Size size, bool isDarkMode, double? rWidth) {
     consolelog("rWidthrWidth =  $rWidth");
     return SizedBox(
       height: size.height * 0.4,
@@ -486,7 +493,8 @@ class _DialogCountryBodyState extends State<DialogCountryBody> {
         controller: controller,
         child: Column(
           children: widget.listCountryModel.indexed.map((e) {
-            Color bgColor = widget.backgroundColor ??
+            Color bgColor =
+                widget.backgroundColor ??
                 Theme.of(context).dialogBackgroundColor;
             Color textColor = isDarkMode ? white : black;
             if (e.$2.id == widget.countrySelected.id) {
@@ -495,15 +503,17 @@ class _DialogCountryBodyState extends State<DialogCountryBody> {
             BoxDecoration boxDecoration = BoxDecoration(color: bgColor);
             if (e.$1 == 0) {
               boxDecoration = BoxDecoration(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
                 color: bgColor,
               );
             }
             if (e.$1 == widget.listCountryModel.length - 1) {
               boxDecoration = BoxDecoration(
-                borderRadius:
-                    const BorderRadius.vertical(bottom: Radius.circular(20)),
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(20),
+                ),
                 color: bgColor,
               );
             }
@@ -520,10 +530,7 @@ class _DialogCountryBodyState extends State<DialogCountryBody> {
                   subTitle: e.$2.emoji,
                 ),
                 if (e.$1 != widget.listCountryModel.length - 1)
-                  WDivider(
-                    height: 0.5,
-                    width: rWidth,
-                  ),
+                  WDivider(height: 0.5, width: rWidth),
               ],
             );
           }).toList(),
@@ -532,11 +539,7 @@ class _DialogCountryBodyState extends State<DialogCountryBody> {
     );
   }
 
-  Widget _buildCountryList1(
-    Size size,
-    bool isDarkMode,
-    double? rWidth,
-  ) {
+  Widget _buildCountryList1(Size size, bool isDarkMode, double? rWidth) {
     consolelog("dialogItemHeight = $rWidth");
     return SizedBox(
       height: dialogHeight,
@@ -557,14 +560,16 @@ class _DialogCountryBodyState extends State<DialogCountryBody> {
           BoxDecoration boxDecoration = BoxDecoration(color: bgColor);
           if (index == 0) {
             boxDecoration = BoxDecoration(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
               color: bgColor,
             );
           } else if (index == widget.listCountryModel.length - 1) {
             boxDecoration = BoxDecoration(
-              borderRadius:
-                  const BorderRadius.vertical(bottom: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(20),
+              ),
               color: bgColor,
             );
           }
@@ -583,10 +588,7 @@ class _DialogCountryBodyState extends State<DialogCountryBody> {
                 subTitle: e.emoji,
               ),
               if (index != widget.listCountryModel.length - 1)
-                WDivider(
-                  height: dividerHeight,
-                  width: rWidth,
-                ),
+                WDivider(height: dividerHeight, width: rWidth),
             ],
           );
         },
@@ -638,8 +640,10 @@ class _DialogPassportBodyState extends State<DialogPassportBody> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.sizeOf(context);
     final rWidth = widget.dialogWidth;
-    final isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: false).isDarkMode;
+    final isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: false,
+    ).isDarkMode;
 
     List<CountryModel> model = widget.listCountryModel.where((element) {
       return widget.countrySelected.id == element.id;
@@ -653,70 +657,73 @@ class _DialogPassportBodyState extends State<DialogPassportBody> {
       child: Stack(
         children: [
           Positioned.fill(
-              child: Container(
-            color: Theme.of(context).dividerTheme.color,
-          )),
-          LayoutBuilder(builder: (context, constraint) {
-            double mainHeight = min(
+            child: Container(color: Theme.of(context).dividerTheme.color),
+          ),
+          LayoutBuilder(
+            builder: (context, constraint) {
+              double mainHeight = min(
                 _size.height * 0.4,
-                40 *
-                    listPassport.length
-                        .toDouble()); // 40 la height cua moi item
-            return SizedBox(
-              height: mainHeight,
-              child: SingleChildScrollView(
-                controller: controller,
-                child: Column(
-                  children: listPassport.indexed.map((e) {
-                    final index = e.$1;
-                    // thay doi color
-                    Color bgColor = widget.backgroundColor ??
-                        Theme.of(context).dialogBackgroundColor;
-                    Color textColor = isDarkMode ? white : black;
-                    if (index == widget.countrySelected.indexSelectedPassport) {
-                      textColor = blue;
-                    }
+                40 * listPassport.length.toDouble(),
+              ); // 40 la height cua moi item
+              return SizedBox(
+                height: mainHeight,
+                child: SingleChildScrollView(
+                  controller: controller,
+                  child: Column(
+                    children: listPassport.indexed.map((e) {
+                      final index = e.$1;
+                      // thay doi color
+                      Color bgColor =
+                          widget.backgroundColor ??
+                          Theme.of(context).dialogBackgroundColor;
+                      Color textColor = isDarkMode ? white : black;
+                      if (index ==
+                          widget.countrySelected.indexSelectedPassport) {
+                        textColor = blue;
+                      }
 
-                    // them divider, bo bon cac canh
-                    BoxDecoration boxDecoration = BoxDecoration(color: bgColor);
-                    if (index == 0) {
-                      boxDecoration = BoxDecoration(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(20)),
+                      // them divider, bo bon cac canh
+                      BoxDecoration boxDecoration = BoxDecoration(
                         color: bgColor,
                       );
-                    }
-                    if (index == listPassport.length - 1) {
-                      boxDecoration = BoxDecoration(
-                        borderRadius: const BorderRadius.vertical(
-                            bottom: Radius.circular(20)),
-                        color: bgColor,
-                      );
-                    }
-                    return Column(
-                      children: [
-                        buildDialogInformationItem(
-                          context,
-                          e.$2.title,
-                          () => widget.onSelected(e.$2),
-                          boxDecoration: boxDecoration,
-                          width: rWidth,
-                          height: 40,
-                          textColor: textColor,
-                          textMaxLength: widget.textMaxLength,
-                        ),
-                        if (index != listPassport.length - 1)
-                          WDivider(
-                            height: 0.5,
-                            width: rWidth,
+                      if (index == 0) {
+                        boxDecoration = BoxDecoration(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(20),
                           ),
-                      ],
-                    );
-                  }).toList(),
+                          color: bgColor,
+                        );
+                      }
+                      if (index == listPassport.length - 1) {
+                        boxDecoration = BoxDecoration(
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(20),
+                          ),
+                          color: bgColor,
+                        );
+                      }
+                      return Column(
+                        children: [
+                          buildDialogInformationItem(
+                            context,
+                            e.$2.title,
+                            () => widget.onSelected(e.$2),
+                            boxDecoration: boxDecoration,
+                            width: rWidth,
+                            height: 40,
+                            textColor: textColor,
+                            textMaxLength: widget.textMaxLength,
+                          ),
+                          if (index != listPassport.length - 1)
+                            WDivider(height: 0.5, width: rWidth),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            },
+          ),
         ],
       ),
     );

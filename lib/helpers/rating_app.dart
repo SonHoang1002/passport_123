@@ -1,4 +1,4 @@
-import 'package:passport_photo_2/helpers/firebase_helpers.dart';
+import 'package:pass1_/helpers/firebase_helpers.dart';
 
 Future<String> handleRatingApp() async {
   try {

@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/models/instruction_model.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/models/instruction_model.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class InstructionItem extends StatelessWidget {
   final int index;
@@ -20,8 +20,10 @@ class InstructionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: true).isDarkMode;
+    final isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: true,
+    ).isDarkMode;
     final _size = MediaQuery.sizeOf(context);
     return Column(
       children: [
@@ -57,12 +59,10 @@ class InstructionItem extends StatelessWidget {
                   color: Theme.of(context).textTheme.displayLarge!.color,
                 ),
               ),
-            )
+            ),
           ],
         ),
-        WSpacer(
-          height: 25,
-        ),
+        WSpacer(height: 25),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -91,9 +91,7 @@ class InstructionItem extends StatelessWidget {
                 ],
               ),
             ),
-            WSpacer(
-              width: 20,
-            ),
+            WSpacer(width: 20),
             Container(
               height: 210,
               width: 155,
@@ -103,10 +101,7 @@ class InstructionItem extends StatelessWidget {
                   Container(
                     height: 155,
                     width: 155,
-                    child: Image.asset(
-                      model.pathImageDone,
-                      fit: BoxFit.cover,
-                    ),
+                    child: Image.asset(model.pathImageDone, fit: BoxFit.cover),
                   ),
                   SizedBox(
                     height: 32,

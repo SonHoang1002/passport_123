@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:passport_photo_2/providers/events/theme_event.dart';
-import 'package:passport_photo_2/providers/states/theme_state.dart'; 
+import 'package:pass1_/providers/events/theme_event.dart';
+import 'package:pass1_/providers/states/theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(InitThemeState()) {
@@ -39,5 +39,4 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       return state.themeMode == ThemeMode.dark;
     }
   }
-
 }

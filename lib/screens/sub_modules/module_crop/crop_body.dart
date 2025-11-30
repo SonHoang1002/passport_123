@@ -3,28 +3,28 @@ import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/a_test/size_helpers.dart';
-import 'package:passport_photo_2/helpers/contain_offset.dart';
-import 'package:passport_photo_2/helpers/export_images/export_cropped.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/helpers/native_bridge/method_channel.dart';
-import 'package:passport_photo_2/helpers/share_preferences_helpers.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/models/step_model.dart';
-import 'package:passport_photo_2/providers/blocs/device_platform_bloc.dart';
-import 'package:passport_photo_2/screens/module_home/widgets/w_footer.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_crop/widgets/w_arrange_face.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_crop/widgets/w_radian_preview.dart';
-import 'package:passport_photo_2/widgets/w_custom_painter.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/models/crop_model.dart';
-import 'package:passport_photo_2/providers/blocs/country_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_crop/widgets/w_dialog_country.dart';
-import 'package:passport_photo_2/widgets/w_circular.dart';
-import 'package:passport_photo_2/widgets/w_custom_ruler.dart';
+import 'package:pass1_/a_test/size_helpers.dart';
+import 'package:pass1_/helpers/contain_offset.dart';
+import 'package:pass1_/helpers/export_images/export_cropped.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
+import 'package:pass1_/helpers/share_preferences_helpers.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/models/step_model.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/screens/module_home/widgets/w_footer.dart';
+import 'package:pass1_/screens/sub_modules/module_crop/widgets/w_arrange_face.dart';
+import 'package:pass1_/screens/sub_modules/module_crop/widgets/w_radian_preview.dart';
+import 'package:pass1_/widgets/w_custom_painter.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/models/crop_model.dart';
+import 'package:pass1_/providers/blocs/country_bloc.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/sub_modules/module_crop/widgets/w_dialog_country.dart';
+import 'package:pass1_/widgets/w_circular.dart';
+import 'package:pass1_/widgets/w_custom_ruler.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BodyCrop extends StatefulWidget {
@@ -70,8 +70,9 @@ class _BodyCropState extends State<BodyCrop>
   // keys
   final GlobalKey _keyCrop = GlobalKey(debugLabel: "_keyCrop");
   final GlobalKey _keyImage = GlobalKey(debugLabel: "_keyImage");
-  final GlobalKey _keyCountryDialog =
-      GlobalKey(debugLabel: "_keyCountryDialog");
+  final GlobalKey _keyCountryDialog = GlobalKey(
+    debugLabel: "_keyCountryDialog",
+  );
   // another
   late Size _cropHoleSize, _cropHoleSizeOriginal;
   bool _isOpenCountryDialog = false, _isImageFullScreen = false;
@@ -84,7 +85,9 @@ class _BodyCropState extends State<BodyCrop>
     super.initState();
     _transformImageController = TransformationController(widget.matrix4);
     animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
     _listCountryModel = BlocProvider.of<CountryBloc>(context).state.listCountry;
     if (_listCountryModel.isEmpty) {
       _listCountryModel = LIST_COUNTRY_PASSPORT;
@@ -97,8 +100,8 @@ class _BodyCropState extends State<BodyCrop>
     _isPhone = BlocProvider.of<DevicePlatformCubit>(context).isPhone;
     double singleSize = widget.screenSize.height > MIN_SIZE.height
         ? _isPhone
-            ? 274
-            : 300
+              ? 274
+              : 300
         : widget.screenSize.width * _mainRatio;
     double width = singleSize;
     double height = singleSize;
@@ -131,14 +134,14 @@ class _BodyCropState extends State<BodyCrop>
         imageHeight = _cropHoleSize.height;
         imageWidth = ratioWH * imageHeight;
       } else {
-        imageHeight =
-            imageWidth = max(_cropHoleSize.width, _cropHoleSize.height);
+        imageHeight = imageWidth = max(
+          _cropHoleSize.width,
+          _cropHoleSize.height,
+        );
       }
-      Size imageSize = Size(
-        imageWidth,
-        imageHeight,
-      );
-      _cropModel = widget.projectModel.cropModel ??
+      Size imageSize = Size(imageWidth, imageHeight);
+      _cropModel =
+          widget.projectModel.cropModel ??
           CropModel(
             id: 0,
             instructionRotateValue: 0.5,
@@ -157,13 +160,16 @@ class _BodyCropState extends State<BodyCrop>
       uiImageAjdusted: widget.projectModel.uiImageAdjusted!,
       countryModel: widget.projectModel.countryModel!,
       scaleByInteractView: _transformImageController.value.getMaxScaleOnAxis(),
-      rotation: max(
-              -45.000001,
-              min(
-                  45.000001,
-                  ((_cropModel!.currentRotateValue -
-                          _cropModel!.instructionRotateValue) *
-                      90))) *
+      rotation:
+          max(
+            -45.000001,
+            min(
+              45.000001,
+              ((_cropModel!.currentRotateValue -
+                      _cropModel!.instructionRotateValue) *
+                  90),
+            ),
+          ) *
           pi /
           180,
       matrix: _transformImageController.value,
@@ -183,16 +189,12 @@ class _BodyCropState extends State<BodyCrop>
 
     File? scaleCroppedFile = await _handleGenerateScaledCroppedImage(
       result[0],
-      Size(
-        result[1].width.toDouble(),
-        result[1].height.toDouble(),
-      ),
+      Size(result[1].width.toDouble(), result[1].height.toDouble()),
     );
-    ui.Image image1 =
-        await decodeImageFromList(scaleCroppedFile!.readAsBytesSync());
-    widget.onUpdateProject(
-      widget.projectModel..scaledCroppedImage = image1,
+    ui.Image image1 = await decodeImageFromList(
+      scaleCroppedFile!.readAsBytesSync(),
     );
+    widget.onUpdateProject(widget.projectModel..scaledCroppedImage = image1);
   }
 
   Future<File?> _handleGenerateScaledCroppedImage(
@@ -220,10 +222,13 @@ class _BodyCropState extends State<BodyCrop>
   void _onTapUp(TapUpDetails details) {
     final RenderBox renderBoxCountryDialog =
         _keyCountryDialog.currentContext!.findRenderObject() as RenderBox;
-    final startOffset =
-        renderBoxCountryDialog.localToGlobal(const Offset(0, 0));
+    final startOffset = renderBoxCountryDialog.localToGlobal(
+      const Offset(0, 0),
+    );
     final endOffset = startOffset.translate(
-        renderBoxCountryDialog.size.width, renderBoxCountryDialog.size.height);
+      renderBoxCountryDialog.size.width,
+      renderBoxCountryDialog.size.height,
+    );
     if (containOffset(details.globalPosition, startOffset, endOffset)) {
       if (!_isOpenCountryDialog) {
         _isOpenCountryDialog = true;
@@ -249,7 +254,8 @@ class _BodyCropState extends State<BodyCrop>
       _cropModel!.currentRotateValue = value;
       final deltaRotate = value - _cropModel!.instructionRotateValue;
       final scale = ((deltaRotate) * 90).clamp(-45, 45);
-      _cropModel!.scale = max(ratio, 1 / ratio) *
+      _cropModel!.scale =
+          max(ratio, 1 / ratio) *
           cos((45 - scale.abs()) * pi / 180) /
           (cos(45 * pi / 180));
     }
@@ -271,7 +277,8 @@ class _BodyCropState extends State<BodyCrop>
       }
     }
     CountryModel newCountryModel = widget.projectModel.countryModel!;
-    final ratioWH = newCountryModel.currentPassport.width /
+    final ratioWH =
+        newCountryModel.currentPassport.width /
         newCountryModel.currentPassport.height;
     double newWidth = _cropHoleSizeOriginal.width,
         newHeight = _cropHoleSizeOriginal.height;
@@ -299,10 +306,14 @@ class _BodyCropState extends State<BodyCrop>
   void _onInteractionUpdate(ScaleUpdateDetails details) {}
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: false).isDarkMode;
-    bool isPhone =
-        BlocProvider.of<DevicePlatformCubit>(context, listen: false).isPhone;
+    bool isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: false,
+    ).isDarkMode;
+    bool isPhone = BlocProvider.of<DevicePlatformCubit>(
+      context,
+      listen: false,
+    ).isPhone;
     return GestureDetector(
       onTapUp: (details) {
         _onTapUp(details);
@@ -343,9 +354,7 @@ class _BodyCropState extends State<BodyCrop>
                             AnimatedOpacity(
                               opacity: _isImageFullScreen ? 1 : 0,
                               duration: const Duration(milliseconds: 300),
-                              child: _buildImage(
-                                clipBehavior: Clip.none,
-                              ),
+                              child: _buildImage(clipBehavior: Clip.none),
                             ),
                             // goo hole
                             AnimatedOpacity(
@@ -353,8 +362,9 @@ class _BodyCropState extends State<BodyCrop>
                               duration: const Duration(milliseconds: 300),
                               child: CustomPaint(
                                 painter: HolePainter(
-                                  backgroundColor:
-                                      Theme.of(context).scaffoldBackgroundColor,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).scaffoldBackgroundColor,
                                   targetSize: _cropHoleSize,
                                 ),
                                 size: MediaQuery.sizeOf(context),
@@ -362,7 +372,9 @@ class _BodyCropState extends State<BodyCrop>
                             ),
                             // dat hinh anh o day de lang nghe cu chi cua nguoi dung -> sau do ap dung vao anh ben tren de rotate, scale, tranform,...
                             _buildImage(
-                                clipBehavior: Clip.hardEdge, key: _keyImage),
+                              clipBehavior: Clip.hardEdge,
+                              key: _keyImage,
+                            ),
                             // rectangle frame
                             CustomPaint(
                               painter: FrameHolePainter(
@@ -396,11 +408,15 @@ class _BodyCropState extends State<BodyCrop>
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 buildPreviewRadianWidget(
-                                    context, isDarkMode, _cropModel),
+                                  context,
+                                  isDarkMode,
+                                  _cropModel,
+                                ),
                                 WRulerCustom(
                                   color: isDarkMode ? white : black,
-                                  checkPointColor:
-                                      isDarkMode ? primaryDark1 : primaryLight1,
+                                  checkPointColor: isDarkMode
+                                      ? primaryDark1
+                                      : primaryLight1,
                                   instructionRatioValue:
                                       _cropModel?.instructionRotateValue ?? 0.5,
                                   currentRatioValue:
@@ -412,7 +428,7 @@ class _BodyCropState extends State<BodyCrop>
                                   onEnd: (value) {
                                     _onShowFullImage(false);
                                   },
-                                )
+                                ),
                               ],
                             ),
                           ],
@@ -446,7 +462,7 @@ class _BodyCropState extends State<BodyCrop>
                   },
                   footerHeight: isPhone ? null : 166,
                   isHaveSettingButton: isPhone ? true : false,
-                )
+                ),
               ],
             ),
           ],
@@ -463,7 +479,8 @@ class _BodyCropState extends State<BodyCrop>
     if (_cropModel == null) {
       degree = 0.0;
     } else {
-      degree = (_cropModel!.currentRotateValue -
+      degree =
+          (_cropModel!.currentRotateValue -
               _cropModel!.instructionRotateValue) /
           4; // *90/360
     }
@@ -472,10 +489,12 @@ class _BodyCropState extends State<BodyCrop>
       width: _cropHoleSize.width,
       child: InteractiveViewer(
         boundaryMargin: EdgeInsets.symmetric(
-          horizontal:
-              _cropModel != null ? (_cropModel!.size.width * 3 / 4) : 500,
-          vertical:
-              _cropModel != null ? (_cropModel!.size.height * 3 / 4) : 500,
+          horizontal: _cropModel != null
+              ? (_cropModel!.size.width * 3 / 4)
+              : 500,
+          vertical: _cropModel != null
+              ? (_cropModel!.size.height * 3 / 4)
+              : 500,
         ),
         transformationController: _transformImageController,
         clipBehavior: clipBehavior,
@@ -494,27 +513,28 @@ class _BodyCropState extends State<BodyCrop>
           child: RotationTransition(
             turns: AlwaysStoppedAnimation(degree),
             child: Transform.scale(
-                scale: 1,
-                child: widget.uiImageAdjusted != null
-                    ? RawImage(
-                        image: widget.uiImageAdjusted!,
-                        key: key,
-                        height: _cropModel?.size.height,
-                        width: _cropModel?.size.width,
-                        fit: BoxFit.fill,
-                      )
-                    : Image.memory(
-                        key: key,
-                        widget.projectModel.selectedFile!.readAsBytesSync(),
-                        gaplessPlayback: true,
-                        height: _cropModel?.size.height,
-                        width: _cropModel?.size.width,
-                        frameBuilder:
-                            (context, child, frame, wasSynchronouslyLoaded) {
-                          return child;
-                        },
-                        fit: BoxFit.fill,
-                      )),
+              scale: 1,
+              child: widget.uiImageAdjusted != null
+                  ? RawImage(
+                      image: widget.uiImageAdjusted!,
+                      key: key,
+                      height: _cropModel?.size.height,
+                      width: _cropModel?.size.width,
+                      fit: BoxFit.fill,
+                    )
+                  : Image.memory(
+                      key: key,
+                      widget.projectModel.selectedFile!.readAsBytesSync(),
+                      gaplessPlayback: true,
+                      height: _cropModel?.size.height,
+                      width: _cropModel?.size.width,
+                      frameBuilder:
+                          (context, child, frame, wasSynchronouslyLoaded) {
+                            return child;
+                          },
+                      fit: BoxFit.fill,
+                    ),
+            ),
           ),
         ),
       ),

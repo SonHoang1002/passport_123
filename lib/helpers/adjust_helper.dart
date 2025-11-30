@@ -2,17 +2,17 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/commons/shaders/brightness_custom.dart';
-import 'package:passport_photo_2/commons/shaders/combine_shader.dart';
-import 'package:passport_photo_2/helpers/export_images/export_adjusted.dart';
-import 'package:passport_photo_2/models/project_model.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/commons/shaders/brightness_custom.dart';
+import 'package:pass1_/commons/shaders/combine_shader.dart';
+import 'package:pass1_/helpers/export_images/export_adjusted.dart';
+import 'package:pass1_/models/project_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AdjustHelpers {
   // tim so lon nhat chia het cho targetDivisor va nho hon so da cho
-// tim so nho nhat chia het cho targetDivisor va lon hon( hoac nho hon ) so da cho
+  // tim so nho nhat chia het cho targetDivisor va lon hon( hoac nho hon ) so da cho
   static int getNearestNumberAndDivisibleTargetNumber(
     double currentNumber,
     int targetDivisor, {
@@ -51,8 +51,8 @@ class AdjustHelpers {
     required List<double> listValueForShader,
   }) async {
     Size? _newSizeConvertedImage;
-    RenderObject? renderObject =
-        keyConvertedImage.currentContext?.findRenderObject();
+    RenderObject? renderObject = keyConvertedImage.currentContext
+        ?.findRenderObject();
     if (renderObject != null) {
       _newSizeConvertedImage = (renderObject as RenderBox).size;
     }
@@ -64,28 +64,24 @@ class AdjustHelpers {
     //     combineShaderCustomConfiguration.copyWith(newListValueForShader);
     // customCombineShader.log();
     List<ui.Image> results = await Future.wait([
-      onExportBackground(
-        projectModel,
-        brightnessShaderConfiguration,
-      ),
+      onExportBackground(projectModel, brightnessShaderConfiguration),
       onExportObject(
         combineShaderCustomConfiguration,
         projectModel.bgRemovedFile!,
-      )
+      ),
     ]);
     ui.Image adjustedBgFile = results[0];
-    Uint8List uint8listBg =
-        (await adjustedBgFile.toByteData(format: ui.ImageByteFormat.png))!
-            .buffer
-            .asUint8List();
-    File("${(await getExternalStorageDirectory())!.path}/bg.png")
-        .writeAsBytesSync(uint8listBg);
+    Uint8List uint8listBg = (await adjustedBgFile.toByteData(
+      format: ui.ImageByteFormat.png,
+    ))!.buffer.asUint8List();
+    File(
+      "${(await getExternalStorageDirectory())!.path}/bg.png",
+    ).writeAsBytesSync(uint8listBg);
 
     ui.Image adjustObjectFile = results[1];
-    Uint8List uint8listObj =
-        (await adjustObjectFile.toByteData(format: ui.ImageByteFormat.png))!
-            .buffer
-            .asUint8List();
+    Uint8List uint8listObj = (await adjustObjectFile.toByteData(
+      format: ui.ImageByteFormat.png,
+    ))!.buffer.asUint8List();
     String scaledObjectPath =
         "${(await getExternalStorageDirectory())!.path}/scaled_object.png";
     File(scaledObjectPath).writeAsBytesSync(uint8listObj);
@@ -100,39 +96,42 @@ class AdjustHelpers {
     Size size = imageSize;
 
     ui.Image? result = await exportAdjustedImage(
-        adjustedBgFile,
-        adjustObjectFile,
-        objectOffset,
-        _newSizeConvertedImage ?? newSizeConvertedImage,
-        needBlurAndShadow: [1, 2, 3].contains(indexBackgroundSelected),
-        listOffsetBlur: [
-          Offset(
-            SHADOW_EDGE_INSET_LEFT.left /
-                standardOriginalImageFramePreviewSize.width *
-                size.width,
-            SHADOW_EDGE_INSET_LEFT.top /
-                standardOriginalImageFramePreviewSize.height *
-                size.height,
+      adjustedBgFile,
+      adjustObjectFile,
+      objectOffset,
+      _newSizeConvertedImage ?? newSizeConvertedImage,
+      needBlurAndShadow: [1, 2, 3].contains(indexBackgroundSelected),
+      listOffsetBlur: [
+        Offset(
+          SHADOW_EDGE_INSET_LEFT.left /
+              standardOriginalImageFramePreviewSize.width *
+              size.width,
+          SHADOW_EDGE_INSET_LEFT.top /
+              standardOriginalImageFramePreviewSize.height *
+              size.height,
+        ),
+        Offset(
+          SHADOW_EDGE_INSET_RIGHT.left /
+              standardOriginalImageFramePreviewSize.width *
+              size.width,
+          SHADOW_EDGE_INSET_RIGHT.top /
+              standardOriginalImageFramePreviewSize.height *
+              size.height,
+        ),
+      ],
+      listPaint: [
+        (paintBlurShadowLeft ?? PAINT_BLURREDRED_SHADOW_LEFT)
+          ..colorFilter = ColorFilter.mode(
+            black.withValues(alpha: projectModel.listBlurShadow[0]),
+            BlendMode.srcIn,
           ),
-          Offset(
-            SHADOW_EDGE_INSET_RIGHT.left /
-                standardOriginalImageFramePreviewSize.width *
-                size.width,
-            SHADOW_EDGE_INSET_RIGHT.top /
-                standardOriginalImageFramePreviewSize.height *
-                size.height,
+        (paintBlurShadowRight ?? PAINT_BLURREDRED_SHADOW_RIGHT)
+          ..colorFilter = ColorFilter.mode(
+            black.withValues(alpha: projectModel.listBlurShadow[1]),
+            BlendMode.srcIn,
           ),
-        ],
-        listPaint: [
-          (paintBlurShadowLeft ?? PAINT_BLURREDRED_SHADOW_LEFT)
-            ..colorFilter = ColorFilter.mode(
-                black.withValues(alpha: projectModel.listBlurShadow[0]),
-                BlendMode.srcIn),
-          (paintBlurShadowRight ?? PAINT_BLURREDRED_SHADOW_RIGHT)
-            ..colorFilter = ColorFilter.mode(
-                black.withValues(alpha: projectModel.listBlurShadow[1]),
-                BlendMode.srcIn),
-        ]);
+      ],
+    );
 
     onUpdateProject(projectModel..uiImageAdjusted = result);
   }

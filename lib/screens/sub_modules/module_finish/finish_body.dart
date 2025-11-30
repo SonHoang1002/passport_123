@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/native_bridge/method_channel.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/models/step_model.dart';
-import 'package:passport_photo_2/providers/blocs/device_platform_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/screens/module_home/widgets/w_footer.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/models/step_model.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/module_home/widgets/w_footer.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class BodyFinish extends StatefulWidget {
   final StepModel currentStep;
@@ -67,10 +67,14 @@ class _BodyFinishState extends State<BodyFinish> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: true).isDarkMode;
-    bool isPhone =
-        BlocProvider.of<DevicePlatformCubit>(context, listen: false).isPhone;
+    final bool isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: true,
+    ).isDarkMode;
+    bool isPhone = BlocProvider.of<DevicePlatformCubit>(
+      context,
+      listen: false,
+    ).isPhone;
     return Column(
       children: [
         Expanded(
@@ -82,8 +86,10 @@ class _BodyFinishState extends State<BodyFinish> {
                   color: isDarkMode ? blockDark : blockLight,
                   borderRadius: BorderRadius.circular(999),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -95,19 +101,13 @@ class _BodyFinishState extends State<BodyFinish> {
                       textColor: isDarkMode ? greenColorDark : greenColorLight,
                     ),
                     WSpacer(width: 5),
-                    Image.asset(
-                      "${PATH_PREFIX_ICON}icon_tick.png",
-                      height: 20,
-                    )
+                    Image.asset("${PATH_PREFIX_ICON}icon_tick.png", height: 20),
                   ],
                 ),
               ),
               Stack(
                 children: [
-                  Positioned.fill(
-                      child: Container(
-                    color: black,
-                  )),
+                  Positioned.fill(child: Container(color: black)),
                   Container(
                     constraints: const BoxConstraints(
                       minHeight: 100,
@@ -126,17 +126,23 @@ class _BodyFinishState extends State<BodyFinish> {
                     child: widget.projectModel.croppedFile != null
                         ? Image.memory(
                             widget.projectModel.croppedFile!.readAsBytesSync(),
-                            frameBuilder: (context, child, frame,
-                                wasSynchronouslyLoaded) {
-                            return child;
-                          })
+                            frameBuilder:
+                                (
+                                  context,
+                                  child,
+                                  frame,
+                                  wasSynchronouslyLoaded,
+                                ) {
+                                  return child;
+                                },
+                          )
                         : RawImage(
                             image: (widget.projectModel.uiImageAdjusted!),
                           ),
                   ),
                 ],
               ),
-              const SizedBox()
+              const SizedBox(),
               // WTextContent(value: "${_valueSlider}"),
               // Container(
               //   width: 400,
@@ -166,7 +172,7 @@ class _BodyFinishState extends State<BodyFinish> {
           onPrint: widget.onPrint,
           footerHeight: isPhone ? null : 166,
           isHaveSettingButton: isPhone ? true : false,
-        )
+        ),
       ],
     );
   }

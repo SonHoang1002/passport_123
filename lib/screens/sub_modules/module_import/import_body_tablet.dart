@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:media_scanner/media_scanner.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/native_bridge/method_channel.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/models/step_model.dart';
-import 'package:passport_photo_2/screens/module_home/widgets/w_footer.dart';
-import 'package:passport_photo_2/widgets/bottom_sheet/show_bottom_sheet.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/screens/module_instruction/instruction.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/models/step_model.dart';
+import 'package:pass1_/screens/module_home/widgets/w_footer.dart';
+import 'package:pass1_/widgets/bottom_sheet/show_bottom_sheet.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/module_instruction/instruction.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class BodyImportTablet extends StatefulWidget {
   final StepModel currentStep;
@@ -55,11 +55,10 @@ class _BodyImportTabletState extends State<BodyImportTablet>
 
   _animatedOpacity() {
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 350));
-    _opacityAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(_controller);
+      vsync: this,
+      duration: const Duration(milliseconds: 350),
+    );
+    _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
     _controller.forward();
   }
 
@@ -88,9 +87,10 @@ class _BodyImportTabletState extends State<BodyImportTablet>
               GestureDetector(
                 onTap: () {
                   showCustomBottomSheetWithClose(
-                      context: context,
-                      child: const Instructions(),
-                      height: _size.height * 0.94);
+                    context: context,
+                    child: const Instructions(),
+                    height: _size.height * 0.94,
+                  );
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
@@ -99,8 +99,9 @@ class _BodyImportTabletState extends State<BodyImportTablet>
                   ),
                   margin: const EdgeInsets.only(top: 20, bottom: 15),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(999),
-                      color: Theme.of(context).badgeTheme.backgroundColor),
+                    borderRadius: BorderRadius.circular(999),
+                    color: Theme.of(context).badgeTheme.backgroundColor,
+                  ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -110,8 +111,9 @@ class _BodyImportTabletState extends State<BodyImportTablet>
                         textSize: 14,
                         textLineHeight: 16,
                         textFontWeight: FontWeight.w600,
-                        textColor:
-                            Theme.of(context).textTheme.displayMedium!.color,
+                        textColor: Theme.of(
+                          context,
+                        ).textTheme.displayMedium!.color,
                       ),
                       Container(
                         height: 20,
@@ -126,7 +128,7 @@ class _BodyImportTabletState extends State<BodyImportTablet>
                                   ? "icon_instruction_question_dark.png"
                                   : "icon_instruction_question_light.png"),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -142,115 +144,116 @@ class _BodyImportTabletState extends State<BodyImportTablet>
                   ),
                   // preview image
                   AnimatedBuilder(
-                      animation: _opacityAnimation,
-                      builder: (context, child) {
-                        return Opacity(
-                          opacity: _opacityAnimation.value,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // have selected image
-                              Visibility(
-                                visible:
-                                    widget.projectModel.selectedFile != null,
-                                maintainSize: true,
-                                maintainState: true,
-                                maintainAnimation: true,
-                                child: Container(
-                                  constraints: _size.height <= MIN_SIZE.height
-                                      ? const BoxConstraints(
-                                          minHeight: 100,
-                                          minWidth: 100,
-                                          maxHeight: 170,
-                                          maxWidth: 170,
-                                        )
-                                      : const BoxConstraints(
-                                          minHeight: 120,
-                                          minWidth: 120,
-                                          maxHeight: 270,
-                                          maxWidth: 270,
-                                        ),
-                                  // height: 270,
-                                  // width: 270,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 20),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: _buildImagePreview(),
-                                  ),
-                                ),
-                              ),
-                              // don't have selected image
-                              Visibility(
-                                maintainSize: true,
-                                maintainState: true,
-                                maintainAnimation: true,
-                                visible:
-                                    widget.projectModel.selectedFile == null,
-                                child: Container(
-                                  constraints: _size.height <= MIN_SIZE.height
-                                      ? const BoxConstraints(
-                                          minHeight: 100,
-                                          minWidth: 100,
-                                          maxHeight: 170,
-                                          maxWidth: 170,
-                                        )
-                                      : null,
-                                  height: 270,
-                                  width: 270,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 20),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: _isDarkMode ? white003 : black003,
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .badgeTheme
-                                          .backgroundColor!,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: SizedBox(
-                                      height: 48,
-                                      width: 48,
-                                      child: Image.asset(
-                                        PATH_PREFIX_ICON +
-                                            (_isDarkMode
-                                                ? "icon_image_preview_dark.png"
-                                                : "icon_image_preview_light.png"),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                  // picker options
-                  AnimatedBuilder(
-                      animation: _opacityAnimation,
-                      builder: (context, child) {
-                        return SizedBox(
-                          height: 110,
-                          child: Center(
-                            child: Opacity(
-                              opacity: _opacityAnimation.value,
+                    animation: _opacityAnimation,
+                    builder: (context, child) {
+                      return Opacity(
+                        opacity: _opacityAnimation.value,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            // have selected image
+                            Visibility(
+                              visible: widget.projectModel.selectedFile != null,
+                              maintainSize: true,
+                              maintainState: true,
+                              maintainAnimation: true,
                               child: Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                child:
-                                    (widget.projectModel.selectedFile != null)
-                                        ? _buildClearPhotoWidget()
-                                        : _buildImportOptions(),
+                                constraints: _size.height <= MIN_SIZE.height
+                                    ? const BoxConstraints(
+                                        minHeight: 100,
+                                        minWidth: 100,
+                                        maxHeight: 170,
+                                        maxWidth: 170,
+                                      )
+                                    : const BoxConstraints(
+                                        minHeight: 120,
+                                        minWidth: 120,
+                                        maxHeight: 270,
+                                        maxWidth: 270,
+                                      ),
+                                // height: 270,
+                                // width: 270,
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 20,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: _buildImagePreview(),
+                                ),
                               ),
                             ),
+                            // don't have selected image
+                            Visibility(
+                              maintainSize: true,
+                              maintainState: true,
+                              maintainAnimation: true,
+                              visible: widget.projectModel.selectedFile == null,
+                              child: Container(
+                                constraints: _size.height <= MIN_SIZE.height
+                                    ? const BoxConstraints(
+                                        minHeight: 100,
+                                        minWidth: 100,
+                                        maxHeight: 170,
+                                        maxWidth: 170,
+                                      )
+                                    : null,
+                                height: 270,
+                                width: 270,
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 20,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: _isDarkMode ? white003 : black003,
+                                  border: Border.all(
+                                    color: Theme.of(
+                                      context,
+                                    ).badgeTheme.backgroundColor!,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: SizedBox(
+                                    height: 48,
+                                    width: 48,
+                                    child: Image.asset(
+                                      PATH_PREFIX_ICON +
+                                          (_isDarkMode
+                                              ? "icon_image_preview_dark.png"
+                                              : "icon_image_preview_light.png"),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  // picker options
+                  AnimatedBuilder(
+                    animation: _opacityAnimation,
+                    builder: (context, child) {
+                      return SizedBox(
+                        height: 110,
+                        child: Center(
+                          child: Opacity(
+                            opacity: _opacityAnimation.value,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: (widget.projectModel.selectedFile != null)
+                                  ? _buildClearPhotoWidget()
+                                  : _buildImportOptions(),
+                            ),
                           ),
-                        );
-                      }),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
-              const SizedBox()
+              const SizedBox(),
             ],
           ),
         ),
@@ -265,7 +268,7 @@ class _BodyImportTabletState extends State<BodyImportTablet>
           },
           isHaveSettingButton: false,
           footerHeight: 166,
-        )
+        ),
       ],
     );
   }
@@ -283,23 +286,24 @@ class _BodyImportTabletState extends State<BodyImportTablet>
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
         child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                height: 24,
-                width: 24,
-                child: Image.asset(
-                  "${PATH_PREFIX_ICON}icon_clear.png",
-                  color: Theme.of(context).textTheme.bodySmall!.color,
-                ),
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              height: 24,
+              width: 24,
+              child: Image.asset(
+                "${PATH_PREFIX_ICON}icon_clear.png",
+                color: Theme.of(context).textTheme.bodySmall!.color,
               ),
-              WTextContent(
-                value: "CLEAR PHOTO",
-                textSize: 13,
-                textLineHeight: 16,
-              )
-            ]),
+            ),
+            WTextContent(
+              value: "CLEAR PHOTO",
+              textSize: 13,
+              textLineHeight: 16,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -318,8 +322,9 @@ class _BodyImportTabletState extends State<BodyImportTablet>
             title: "GALLERY",
             textColor: black,
             onTap: () async {
-              final result =
-                  await ImagePicker().pickImage(source: ImageSource.gallery);
+              final result = await ImagePicker().pickImage(
+                source: ImageSource.gallery,
+              );
               if (result != null) {
                 widget.onUpdateImage(File(result.path));
               }
@@ -335,8 +340,9 @@ class _BodyImportTabletState extends State<BodyImportTablet>
               if (result != null && result.files.isNotEmpty) {
                 String filePath = result.files[0].path!;
                 String extension = filePath.split(".").last;
-                bool isSupported =
-                    LIST_SUPPORTED_TYPE.contains(extension.toLowerCase());
+                bool isSupported = LIST_SUPPORTED_TYPE.contains(
+                  extension.toLowerCase(),
+                );
                 if (isSupported) {
                   widget.onUpdateImage(File(filePath));
                 } else {
@@ -354,8 +360,9 @@ class _BodyImportTabletState extends State<BodyImportTablet>
             title: "CAMERA",
             textColor: _isDarkMode ? white : black,
             onTap: () async {
-              final result =
-                  await ImagePicker().pickImage(source: ImageSource.camera);
+              final result = await ImagePicker().pickImage(
+                source: ImageSource.camera,
+              );
               if (result != null) {
                 widget.onUpdateImage(File(result.path));
               }
@@ -389,10 +396,7 @@ class _BodyImportTabletState extends State<BodyImportTablet>
               child: SizedBox(
                 height: 32,
                 width: 32,
-                child: Image.asset(
-                  mediaSrc,
-                  color: iconColor,
-                ),
+                child: Image.asset(mediaSrc, color: iconColor),
               ),
             ),
           ),
@@ -402,17 +406,14 @@ class _BodyImportTabletState extends State<BodyImportTablet>
               borderRadius: BorderRadius.circular(20),
               color: backgroundColor,
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 4,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             child: WTextContent(
               value: title,
               textSize: 12,
               textLineHeight: 16,
               textColor: textColor,
             ),
-          )
+          ),
         ],
       ),
     );
@@ -421,13 +422,12 @@ class _BodyImportTabletState extends State<BodyImportTablet>
   Widget _buildImagePreview() {
     File? imageFile;
     if (widget.projectModel.scaledSelectedImage != null) {
-      return RawImage(
-        image: widget.projectModel.scaledSelectedImage,
-      );
+      return RawImage(image: widget.projectModel.scaledSelectedImage);
     }
     if (widget.projectModel.selectedFile != null ||
         widget.projectModel.scaledSelectedFile != null) {
-      imageFile = widget.projectModel.scaledSelectedFile ??
+      imageFile =
+          widget.projectModel.scaledSelectedFile ??
           widget.projectModel.selectedFile;
     }
 

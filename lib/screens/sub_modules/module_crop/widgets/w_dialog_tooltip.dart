@@ -2,12 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/commons/extension.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/commons/extension.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class BodyDialogCropGuideTooltip extends StatefulWidget {
   final Unit currentUnit;
@@ -44,9 +44,11 @@ class _BodyDialogCropGuideTooltipState
   void initState() {
     super.initState();
     _controllerPercent = TextEditingController(
-        text: widget.percentValue.roundWithUnit(fractionDigits: 2));
+      text: widget.percentValue.roundWithUnit(fractionDigits: 2),
+    );
     _controllerUnit = TextEditingController(
-        text: widget.unitValue.roundWithUnit(fractionDigits: 2));
+      text: widget.unitValue.roundWithUnit(fractionDigits: 2),
+    );
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controllerPercent.selection = TextSelection(
         baseOffset: 0,
@@ -59,8 +61,10 @@ class _BodyDialogCropGuideTooltipState
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: false).isDarkMode;
+    final isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: false,
+    ).isDarkMode;
     return Container(
       width: widget.dialogSize.width,
       height: widget.dialogSize.height,
@@ -75,13 +79,8 @@ class _BodyDialogCropGuideTooltipState
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 20,
-                    sigmaY: 20,
-                  ),
-                  child: Container(
-                    color: transparent,
-                  ),
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  child: Container(color: transparent),
                 ),
               ),
             ),
@@ -133,8 +132,9 @@ class _BodyDialogCropGuideTooltipState
         break;
       case 1: // thay doi unit -> thay doi %
         newPercentValue = newUnitValue / widget.passportHeight * 100;
-        _controllerPercent.value =
-            TextEditingValue(text: newPercentValue.toString());
+        _controllerPercent.value = TextEditingValue(
+          text: newPercentValue.toString(),
+        );
         break;
       default:
     }
@@ -193,22 +193,24 @@ class _BodyDialogCropGuideTooltipState
           ),
           decoration: InputDecoration(
             hintText: "",
-            contentPadding:
-                const EdgeInsets.only(left: 10, right: 10, bottom: 14),
+            contentPadding: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              bottom: 14,
+            ),
             enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: transparent, width: 2),
-                borderRadius: BorderRadius.circular(10)),
+              borderSide: const BorderSide(color: transparent, width: 2),
+              borderRadius: BorderRadius.circular(10),
+            ),
             focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: blue, width: 2),
-                borderRadius: BorderRadius.circular(10)),
+              borderSide: const BorderSide(color: blue, width: 2),
+              borderRadius: BorderRadius.circular(10),
+            ),
             fillColor: isDarkMode ? white003 : black003,
             filled: true,
             suffix: Container(
               margin: const EdgeInsets.only(left: 10),
-              child: WTextContent(
-                value: suffixValue,
-                textSize: 13,
-              ),
+              child: WTextContent(value: suffixValue, textSize: 13),
             ),
             border: OutlineInputBorder(
               borderSide: const BorderSide(color: blue),

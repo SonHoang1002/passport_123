@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:passport_photo_2/commons/constants.dart'; 
+import 'package:pass1_/commons/constants.dart';
 
-Future<double> getFileSize(
-  File file, 
-) async {
-  if (file.existsSync()) { 
+Future<double> getFileSize(File file) async {
+  if (file.existsSync()) {
     int fileSizeInBytes = await file.length();
     double fileSizeInKB = (fileSizeInBytes / MB_TO_KB);
     return fileSizeInKB;
@@ -13,4 +11,3 @@ Future<double> getFileSize(
     return 0.0;
   }
 }
- 

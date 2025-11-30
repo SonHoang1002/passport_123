@@ -1,38 +1,38 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'package:color_picker_android/color_picker_flutter.dart';
-import 'package:color_picker_android/helpers/convert.dart';
+// import 'package:color_picker_android/color_picker_flutter.dart';
+// import 'package:color_picker_android/helpers/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_filters/flutter_image_filters.dart';
-import 'package:passport_photo_2/commons/shaders/brightness_custom.dart';
-import 'package:passport_photo_2/commons/shaders/combine_shader.dart';
-import 'package:passport_photo_2/helpers/adjust_helper.dart';
-import 'package:passport_photo_2/helpers/convert.dart';
-import 'package:passport_photo_2/helpers/generate_preview_image.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/helpers/share_preferences_helpers.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/models/step_model.dart';
-import 'package:passport_photo_2/providers/blocs/device_platform_bloc.dart';
-import 'package:passport_photo_2/screens/module_home/widgets/w_footer.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_adjust/helpers/ratio_to_shader.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_adjust/widgets/w_original_image.dart';
-import 'package:passport_photo_2/widgets/w_circular.dart';
-import 'package:passport_photo_2/widgets/w_custom_ruler.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/contain_offset.dart';
-import 'package:passport_photo_2/helpers/navigator_route.dart';
-import 'package:passport_photo_2/models/adjust_subject_model.dart';
-import 'package:passport_photo_2/providers/blocs/adjust_subject_bloc.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/providers/events/adjust_subject_event.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_adjust/widgets/w_adjust.dart';
-import 'package:passport_photo_2/screens/sub_modules/module_adjust/widgets/w_slider_color.dart';
-import 'package:passport_photo_2/widgets/w_segment_custom.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
+import 'package:pass1_/commons/shaders/brightness_custom.dart';
+import 'package:pass1_/commons/shaders/combine_shader.dart';
+import 'package:pass1_/helpers/adjust_helper.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/generate_preview_image.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/helpers/share_preferences_helpers.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/models/step_model.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/screens/module_home/widgets/w_footer.dart';
+import 'package:pass1_/screens/sub_modules/module_adjust/helpers/ratio_to_shader.dart';
+import 'package:pass1_/screens/sub_modules/module_adjust/widgets/w_original_image.dart';
+import 'package:pass1_/widgets/w_circular.dart';
+import 'package:pass1_/widgets/w_custom_ruler.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/contain_offset.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/models/adjust_subject_model.dart';
+import 'package:pass1_/providers/blocs/adjust_subject_bloc.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/providers/events/adjust_subject_event.dart';
+import 'package:pass1_/screens/sub_modules/module_adjust/widgets/w_adjust.dart';
+import 'package:pass1_/screens/sub_modules/module_adjust/widgets/w_slider_color.dart';
+import 'package:pass1_/widgets/w_segment_custom.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 // ignore: must_be_immutable
@@ -293,58 +293,58 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
   }
 
   void _onSelectBackground(dynamic newBackground) async {
-    // open sheet background
-    if (_listBackground.last == newBackground) {
-      // lay cac mau da luu trong SharedPreferences
-      List<String> listColorString =
-          await SharedPreferencesHelper().getColorSaved();
-      List<Color> listSavedColor =
-          listColorString.map((e) => convertHexStringToColor(e)).toList();
-      dynamic currentColor = widget.projectModel.background;
-      if (currentColor is File ||
-          currentColor is String ||
-          currentColor == null) {
-        currentColor = isDarkMode ? black : white;
-      }
-      // ignore: use_build_context_synchronously
-      showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return ColorPickerTablet(
-              currentColor: currentColor,
-              onDone: (value) {
-                _indexBackgroundSelected = _listBackground.length - 1;
-                _onUpdateBackgroundProperty(value);
-                setState(() {});
-                popNavigator(context);
-              },
-              listColorSaved: listSavedColor,
-              isLightMode: !isDarkMode,
-              onColorSave: (color) async {
-                if (color == null) return;
-                if (listSavedColor.contains(color)) {
-                  listSavedColor = List.from(listSavedColor
-                      .where((element) => element != color)
-                      .toList());
-                } else {
-                  listSavedColor = [color, ...List.from(listSavedColor)];
-                }
-                await SharedPreferencesHelper().updateColorSaved(listSavedColor
-                    .map((e) => convertColorToHexString(e))
-                    .toList());
-              },
-            );
-          },
-          isScrollControlled: true,
-          backgroundColor: transparent);
-      return;
-    }
-    final index = _listBackground.indexOf(newBackground);
-    if (index != -1) {
-      _indexBackgroundSelected = index;
-    }
-    _onUpdateBackgroundProperty(newBackground);
-    setState(() {});
+    // // open sheet background
+    // if (_listBackground.last == newBackground) {
+    //   // lay cac mau da luu trong SharedPreferences
+    //   List<String> listColorString =
+    //       await SharedPreferencesHelper().getColorSaved();
+    //   List<Color> listSavedColor =
+    //       listColorString.map((e) => convertHexStringToColor(e)).toList();
+    //   dynamic currentColor = widget.projectModel.background;
+    //   if (currentColor is File ||
+    //       currentColor is String ||
+    //       currentColor == null) {
+    //     currentColor = isDarkMode ? black : white;
+    //   }
+    //   // ignore: use_build_context_synchronously
+    //   showModalBottomSheet(
+    //       context: context,
+    //       builder: (context) {
+    //         return ColorPickerTablet(
+    //           currentColor: currentColor,
+    //           onDone: (value) {
+    //             _indexBackgroundSelected = _listBackground.length - 1;
+    //             _onUpdateBackgroundProperty(value);
+    //             setState(() {});
+    //             popNavigator(context);
+    //           },
+    //           listColorSaved: listSavedColor,
+    //           isLightMode: !isDarkMode,
+    //           onColorSave: (color) async {
+    //             if (color == null) return;
+    //             if (listSavedColor.contains(color)) {
+    //               listSavedColor = List.from(listSavedColor
+    //                   .where((element) => element != color)
+    //                   .toList());
+    //             } else {
+    //               listSavedColor = [color, ...List.from(listSavedColor)];
+    //             }
+    //             await SharedPreferencesHelper().updateColorSaved(listSavedColor
+    //                 .map((e) => convertColorToHexString(e))
+    //                 .toList());
+    //           },
+    //         );
+    //       },
+    //       isScrollControlled: true,
+    //       backgroundColor: transparent);
+    //   return;
+    // }
+    // final index = _listBackground.indexOf(newBackground);
+    // if (index != -1) {
+    //   _indexBackgroundSelected = index;
+    // }
+    // _onUpdateBackgroundProperty(newBackground);
+    // setState(() {});
   }
 
   void _onUpdateOffset(Offset globalPosition) {

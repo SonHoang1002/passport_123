@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
+import 'package:pass1_/commons/colors.dart';
 
 class CustomLoadingIndicator extends StatelessWidget {
   const CustomLoadingIndicator({super.key});

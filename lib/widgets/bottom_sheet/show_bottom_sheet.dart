@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/navigator_route.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
 
 void showCustomBottomSheetWithClose({
   required BuildContext context,
@@ -15,44 +15,49 @@ void showCustomBottomSheetWithClose({
   showModalBottomSheet(
     context: context,
     builder: (context) {
-      final isDarkMode =
-          BlocProvider.of<ThemeBloc>(context, listen: false).isDarkMode;
+      final isDarkMode = BlocProvider.of<ThemeBloc>(
+        context,
+        listen: false,
+      ).isDarkMode;
       return Container(
-          height: height,
-          decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(20))),
-          child: Column(
-            children: [
-              if (isHaveCloseButton)
-                Container(
-                  alignment: Alignment.centerRight,
-                  margin: const EdgeInsets.only(right: 15, top: 20),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (onClose != null) {
-                        onClose();
-                      } else {
-                        popNavigator(context);
-                      }
-                    },
-                    child: Container(
-                      height: 28,
-                      width: 28,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Image.asset(PATH_PREFIX_ICON +
+        height: height,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          children: [
+            if (isHaveCloseButton)
+              Container(
+                alignment: Alignment.centerRight,
+                margin: const EdgeInsets.only(right: 15, top: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    if (onClose != null) {
+                      onClose();
+                    } else {
+                      popNavigator(context);
+                    }
+                  },
+                  child: Container(
+                    height: 28,
+                    width: 28,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Image.asset(
+                      PATH_PREFIX_ICON +
                           (isDarkMode
                               ? "icon_close_dark.png"
-                              : "icon_close_light.png")),
+                              : "icon_close_light.png"),
                     ),
                   ),
                 ),
-              Expanded(child: child),
-            ],
-          ));
+              ),
+            Expanded(child: child),
+          ],
+        ),
+      );
     },
     isScrollControlled: true,
   );
@@ -72,9 +77,7 @@ void showCustomBottomSheetWithDragIcon({
         height: height,
         decoration: const BoxDecoration(
           color: transparent,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
           children: [

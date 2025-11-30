@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_filters/flutter_image_filters.dart';
-import 'package:passport_photo_2/commons/shaders/black_to_transparent_shader.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/helpers/native_bridge/method_channel.dart';
+import 'package:pass1_/commons/shaders/black_to_transparent_shader.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
 import 'package:path_provider/path_provider.dart';
 
 class RemoveBackgroundHelpers {

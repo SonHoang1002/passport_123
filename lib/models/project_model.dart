@@ -1,8 +1,8 @@
 import 'dart:io';
 import "dart:ui" as ui;
-import 'package:passport_photo_2/helpers/file_helpers.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/models/crop_model.dart';
+import 'package:pass1_/helpers/file_helpers.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/models/crop_model.dart';
 
 class ProjectModel {
   /// from import

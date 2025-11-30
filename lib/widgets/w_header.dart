@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/models/step_model.dart';
-import 'package:passport_photo_2/screens/module_home/widgets/w_home.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/models/step_model.dart';
+import 'package:pass1_/screens/module_home/widgets/w_home.dart';
 
 class WHeader extends StatelessWidget {
   final StepModel currentStep;
@@ -46,12 +46,15 @@ class WHeader extends StatelessWidget {
             direction: Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: LIST_STEP_SELECTION.map((e) {
-              Color iconBackground =
-                  Theme.of(context).badgeTheme.backgroundColor!;
-              Color stepColor =
-                  Theme.of(context).searchViewTheme.backgroundColor!;
-              Color textColor =
-                  Theme.of(context).textTheme.displayMedium!.color!;
+              Color iconBackground = Theme.of(
+                context,
+              ).badgeTheme.backgroundColor!;
+              Color stepColor = Theme.of(
+                context,
+              ).searchViewTheme.backgroundColor!;
+              Color textColor = Theme.of(
+                context,
+              ).textTheme.displayMedium!.color!;
               bool isActive = currentStep.id == e.id;
               if (isActive) {
                 if (isDarkMode) {

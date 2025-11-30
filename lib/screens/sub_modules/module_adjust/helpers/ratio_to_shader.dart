@@ -1,4 +1,4 @@
-import 'package:passport_photo_2/models/adjust_subject_model.dart';
+import 'package:pass1_/models/adjust_subject_model.dart';
 
 /// Return [
 ///   convertedExposure * 2,

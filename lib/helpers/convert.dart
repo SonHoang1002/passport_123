@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/commons/extension.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/commons/extension.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/models/country_passport_model.dart';
 
 /// [Input] is KB , [Output] is KB or MB
 class FlutterConvert {
@@ -98,7 +98,7 @@ class FlutterConvert {
     double dpi,
     bool isUseForPrint,
   ) {
-    double inch; 
+    double inch;
     if (isUseForPrint) {
       if (inputUnit == PIXEL) {
         inch = inputValue / dpi;
@@ -172,28 +172,39 @@ class FlutterConvert {
       // cach 2
 
       //// get country list
-      final String responseCountry =
-          await rootBundle.loadString('assets/datas/country_list.json');
-      final List<String> listCountry =
-          json.decode(responseCountry).cast<String>();
+      final String responseCountry = await rootBundle.loadString(
+        'assets/datas/country_list.json',
+      );
+      final List<String> listCountry = json
+          .decode(responseCountry)
+          .cast<String>();
 
       // get passport list
-      final String responsePassport =
-          await rootBundle.loadString('assets/datas/passport_list.json');
-      final List<Map<String, dynamic>> listPassportData =
-          json.decode(responsePassport).cast<Map<String, dynamic>>().toList();
+      final String responsePassport = await rootBundle.loadString(
+        'assets/datas/passport_list.json',
+      );
+      final List<Map<String, dynamic>> listPassportData = json
+          .decode(responsePassport)
+          .cast<Map<String, dynamic>>()
+          .toList();
 
       // get flags list
-      final String responseFlags =
-          await rootBundle.loadString('assets/datas/flags.json');
-      final List<Map<String, dynamic>> listFlagsData =
-          json.decode(responseFlags).cast<Map<String, dynamic>>().toList();
+      final String responseFlags = await rootBundle.loadString(
+        'assets/datas/flags.json',
+      );
+      final List<Map<String, dynamic>> listFlagsData = json
+          .decode(responseFlags)
+          .cast<Map<String, dynamic>>()
+          .toList();
 
       List<CountryModel> results = [];
 
       for (int i = 0; i < listCountry.length; i++) {
-        CountryModel countryModel =
-            CountryModel(id: i, title: listCountry[i], listPassportModel: []);
+        CountryModel countryModel = CountryModel(
+          id: i,
+          title: listCountry[i],
+          listPassportModel: [],
+        );
         List<PassportModel> listPassport = [];
         for (int y = 0; y < listPassportData.length; y++) {
           final item = listPassportData[y];

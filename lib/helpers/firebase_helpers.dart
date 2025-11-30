@@ -1,7 +1,7 @@
 import 'package:android_id/android_id.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 
 class FirebaseHelpers {
   Future<DocumentReference<Map<String, dynamic>>> _getAndroidDocument(

@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/native_bridge/method_channel.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<File?> generateSmallImage(

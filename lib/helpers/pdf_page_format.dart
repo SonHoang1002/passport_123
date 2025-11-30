@@ -1,7 +1,7 @@
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/helpers/convert.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/models/country_passport_model.dart';
 import 'package:pdf/pdf.dart';
 
 PdfPageFormat? getPdfPageFormat(PassportModel currentPassport) {

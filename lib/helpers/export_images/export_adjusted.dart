@@ -1,17 +1,16 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter_image_filters/flutter_image_filters.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/commons/shaders/brightness_custom.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/models/project_model.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/commons/shaders/brightness_custom.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/models/project_model.dart';
 
 Future<Image?> exportAdjustedImage(
   Image uiImageBg, // original size
   Image uiImageObject, // scaled size
   Offset offsetObject,
-  Size previewFrame, // khung hien thi anh,
-  {
+  Size previewFrame, { // khung hien thi anh,
   bool needBlurAndShadow = false,
   List<Offset> listOffsetBlur = const [],
   List<Paint> listPaint = const [],
@@ -35,10 +34,7 @@ Future<Image?> exportAdjustedImage(
     double scaleCanvasHeight = uiImageBg.height / uiImageObject.height;
 
     canvas.save();
-    canvas.scale(
-      scaleCanvasWidth,
-      scaleCanvasHeight,
-    );
+    canvas.scale(scaleCanvasWidth, scaleCanvasHeight);
     // draw blur with scale size
     if (needBlurAndShadow) {
       for (int i = 0; i < listOffsetBlur.length; i++) {
@@ -71,7 +67,8 @@ Future<Image?> exportAdjustedImage(
       uiImageBg.height,
     );
     consolelog(
-        "adjustedImage adjustedImage ${adjustedImage.width} - ${adjustedImage.height}");
+      "adjustedImage adjustedImage ${adjustedImage.width} - ${adjustedImage.height}",
+    );
     return adjustedImage;
   } catch (e) {
     print("exportAdjustedImage error: $e");
@@ -82,8 +79,7 @@ Future<Image?> exportAdjustedImage(
 
 Future<Image> onExportObject(
   ShaderConfiguration shaderConfiguration,
-  File originalImage, // scaled size
-  {
+  File originalImage, { // scaled size
   TextureSource? textureConverted,
 }) async {
   final textureOnlyObject = await TextureSource.fromFile(originalImage);
@@ -113,11 +109,14 @@ Future<Image> onExportBackground(
   CustomBrightnessShaderConfiguration brightnessShaderConfiguration,
 ) async {
   final stopwatch = Stopwatch()..start();
-  final textureOriginal =
-      await TextureSource.fromFile(projectModel.selectedFile!); // original size
+  final textureOriginal = await TextureSource.fromFile(
+    projectModel.selectedFile!,
+  ); // original size
 
   final bg = projectModel.background;
-  consolelog("onExportAdjust call bgbg: ${brightnessShaderConfiguration.getBrightness}");
+  consolelog(
+    "onExportAdjust call bgbg: ${brightnessShaderConfiguration.getBrightness}",
+  );
   Image image;
   if (bg is Color) {
     // shaderConfiguration = FillColorConfiguration()..color = bg;
@@ -126,12 +125,14 @@ Future<Image> onExportBackground(
     Paint paint = Paint()..color = bg;
     canvas.drawPaint(paint);
     image = await recorder.endRecording().toImage(
-          textureOriginal.size.width.toInt(),
-          textureOriginal.size.height.toInt(),
-        );
-  } else { 
-      image = await brightnessShaderConfiguration
-          .export(textureOriginal, textureOriginal.size);
+      textureOriginal.size.width.toInt(),
+      textureOriginal.size.height.toInt(),
+    );
+  } else {
+    image = await brightnessShaderConfiguration.export(
+      textureOriginal,
+      textureOriginal.size,
+    );
   }
 
   // final ByteData? byteData =

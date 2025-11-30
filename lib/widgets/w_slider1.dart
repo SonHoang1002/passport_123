@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import "dart:math" as math;
 
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 
 // ignore: must_be_immutable
 class WSlider1 extends StatelessWidget {
@@ -104,12 +104,13 @@ class CustomRoundedRectSliderTrackShape extends SliderTrackShape
     with BaseSliderTrackShape {
   const CustomRoundedRectSliderTrackShape();
   @override
-  Rect getPreferredRect(
-      {required RenderBox parentBox,
-      Offset offset = Offset.zero,
-      required SliderThemeData sliderTheme,
-      bool isEnabled = false,
-      bool isDiscrete = false}) {
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
     double trackHeight = 4.5;
     double trackLeft = 15.0;
     double trackTop = offset.dy + (parentBox.size.height - trackHeight) / 2;
@@ -136,11 +137,13 @@ class CustomRoundedRectSliderTrackShape extends SliderTrackShape
     }
 
     final ColorTween activeTrackColorTween = ColorTween(
-        begin: sliderTheme.disabledActiveTrackColor,
-        end: sliderTheme.activeTrackColor);
+      begin: sliderTheme.disabledActiveTrackColor,
+      end: sliderTheme.activeTrackColor,
+    );
     final ColorTween inactiveTrackColorTween = ColorTween(
-        begin: sliderTheme.disabledInactiveTrackColor,
-        end: sliderTheme.inactiveTrackColor);
+      begin: sliderTheme.disabledInactiveTrackColor,
+      end: sliderTheme.inactiveTrackColor,
+    );
     final Paint activePaint = Paint()
       ..color = activeTrackColorTween.evaluate(enableAnimation)!;
     final Paint inactivePaint = Paint()
@@ -164,8 +167,9 @@ class CustomRoundedRectSliderTrackShape extends SliderTrackShape
       isDiscrete: isDiscrete,
     );
     final Radius trackRadius = Radius.circular(trackRect.height / 2);
-    final Radius activeTrackRadius =
-        Radius.circular((trackRect.height + additionalActiveTrackHeight) / 2);
+    final Radius activeTrackRadius = Radius.circular(
+      (trackRect.height + additionalActiveTrackHeight) / 2,
+    );
 
     context.canvas.drawRRect(
       RRect.fromLTRBAndCorners(
@@ -206,15 +210,17 @@ class CustomRoundedRectSliderTrackShape extends SliderTrackShape
       rightTrackPaint,
     );
 
-    final bool showSecondaryTrack = (secondaryOffset != null) &&
+    final bool showSecondaryTrack =
+        (secondaryOffset != null) &&
         ((textDirection == TextDirection.ltr)
             ? (secondaryOffset.dx > thumbCenter.dx)
             : (secondaryOffset.dx < thumbCenter.dx));
 
     if (showSecondaryTrack) {
       final ColorTween secondaryTrackColorTween = ColorTween(
-          begin: sliderTheme.disabledSecondaryActiveTrackColor,
-          end: sliderTheme.secondaryActiveTrackColor);
+        begin: sliderTheme.disabledSecondaryActiveTrackColor,
+        end: sliderTheme.secondaryActiveTrackColor,
+      );
       final Paint secondaryTrackPaint = Paint()
         ..color = secondaryTrackColorTween.evaluate(enableAnimation)!;
       if (textDirection == TextDirection.ltr) {

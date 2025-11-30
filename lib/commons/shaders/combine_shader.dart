@@ -1,25 +1,25 @@
 import 'package:flutter_image_filters/flutter_image_filters.dart';
-import 'package:passport_photo_2/commons/shaders/custom_constrast_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_exposure_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_highlight_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_saturation_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_shadow_shader.dart';
-import 'package:passport_photo_2/commons/shaders/custom_sharpen_shader.dart';
-import 'package:passport_photo_2/helpers/convert.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
+import 'package:pass1_/commons/shaders/custom_constrast_shader.dart';
+import 'package:pass1_/commons/shaders/custom_exposure_shader.dart';
+import 'package:pass1_/commons/shaders/custom_highlight_shader.dart';
+import 'package:pass1_/commons/shaders/custom_saturation_shader.dart';
+import 'package:pass1_/commons/shaders/custom_shadow_shader.dart';
+import 'package:pass1_/commons/shaders/custom_sharpen_shader.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 
 class CombineShaderCustomConfiguration extends BunchShaderConfiguration {
   CombineShaderCustomConfiguration()
-      : super([
-          CustomExposureShaderConfiguration(),
-          CustomContrastShaderConfiguration(),
-          CustomSaturationShaderConfiguration(),
-          CustomShadowShaderConfiguration(),
-          CustomHighlightShaderConfiguration(),
-          // CustomHighlightShadowShaderConfiguration(),
-          WhiteBalanceShaderConfiguration2(),
-          CustomSharpenShaderConfiguration(),
-        ]);
+    : super([
+        CustomExposureShaderConfiguration(),
+        CustomContrastShaderConfiguration(),
+        CustomSaturationShaderConfiguration(),
+        CustomShadowShaderConfiguration(),
+        CustomHighlightShaderConfiguration(),
+        // CustomHighlightShadowShaderConfiguration(),
+        WhiteBalanceShaderConfiguration2(),
+        CustomSharpenShaderConfiguration(),
+      ]);
   CustomExposureShaderConfiguration get _exposure =>
       configuration(at: 0) as CustomExposureShaderConfiguration;
   CustomContrastShaderConfiguration get _contrast =>
@@ -111,20 +111,36 @@ class CombineShaderCustomConfiguration extends BunchShaderConfiguration {
 
   void updateValues(List<double> listValue) {
     exposure = (listValue[0]);
-    contrast =
-        FlutterConvert.convertMappingRange(listValue[1], -0.5, 0.5, 0, 2);
-    saturation =
-        FlutterConvert.convertMappingRange(listValue[2], -0.5, 0.5, 0, 2);
+    contrast = FlutterConvert.convertMappingRange(
+      listValue[1],
+      -0.5,
+      0.5,
+      0,
+      2,
+    );
+    saturation = FlutterConvert.convertMappingRange(
+      listValue[2],
+      -0.5,
+      0.5,
+      0,
+      2,
+    );
     shadow = listValue[3];
     highlight =
         FlutterConvert.convertMappingRange(listValue[4], 0, 1, 0, 1) + 1;
-    double newTemp =
-        FlutterConvert.convertMappingRange(listValue[5], -0.5, 0.5, -1, 1);
+    double newTemp = FlutterConvert.convertMappingRange(
+      listValue[5],
+      -0.5,
+      0.5,
+      -1,
+      1,
+    );
     temperature = newTemp;
     tint = newTemp;
     sharpen = listValue[6];
     consolelog(
-        "CombineShaderCustomConfiguration: updateValues: $newTemp, listValue[5] = ${listValue[5]}");
+      "CombineShaderCustomConfiguration: updateValues: $newTemp, listValue[5] = ${listValue[5]}",
+    );
     update();
   }
 
@@ -141,33 +157,57 @@ class CombineShaderCustomConfiguration extends BunchShaderConfiguration {
   }
 
   Map<String, dynamic> get getValues => {
-        "contrast": contrast,
-        "exposure": exposure,
-        "saturation": saturation,
-        "temperature": temperature,
-        "tint": tint,
-        "highlight": highlight,
-        "shadow": shadow,
-        "sharpen": sharpen,
-      };
+    "contrast": contrast,
+    "exposure": exposure,
+    "saturation": saturation,
+    "temperature": temperature,
+    "tint": tint,
+    "highlight": highlight,
+    "shadow": shadow,
+    "sharpen": sharpen,
+  };
 
-  CombineShaderCustomConfiguration copyWith(
-    List<double> listValueForShader,
-  ) {
+  CombineShaderCustomConfiguration copyWith(List<double> listValueForShader) {
     return CombineShaderCustomConfiguration()
       ..exposure = (listValueForShader[0])
       ..contrast = FlutterConvert.convertMappingRange(
-          listValueForShader[1], -0.5, 0.5, 0, 2)
+        listValueForShader[1],
+        -0.5,
+        0.5,
+        0,
+        2,
+      )
       ..saturation = FlutterConvert.convertMappingRange(
-          listValueForShader[2], -0.5, 0.5, 0, 2)
+        listValueForShader[2],
+        -0.5,
+        0.5,
+        0,
+        2,
+      )
       ..shadow = listValueForShader[3]
-      ..highlight = FlutterConvert.convertMappingRange(
-              listValueForShader[4], 0, 1, 0, 1) +
+      ..highlight =
+          FlutterConvert.convertMappingRange(
+            listValueForShader[4],
+            0,
+            1,
+            0,
+            1,
+          ) +
           1
       ..temperature = FlutterConvert.convertMappingRange(
-          listValueForShader[5], -0.5, 0.5, -1, 1)
+        listValueForShader[5],
+        -0.5,
+        0.5,
+        -1,
+        1,
+      )
       ..tint = FlutterConvert.convertMappingRange(
-          listValueForShader[5], -0.5, 0.5, -1, 1)
+        listValueForShader[5],
+        -0.5,
+        0.5,
+        -1,
+        1,
+      )
       ..sharpen = listValueForShader[6];
   }
 

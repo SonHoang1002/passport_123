@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:passport_photo_2/commons/colors.dart';
+import 'package:pass1_/commons/colors.dart';
 
 class MyThemes {
   static final lightTheme = ThemeData(
     bottomAppBarTheme: const BottomAppBarThemeData(color: blockLight),
-    tabBarTheme: const TabBarThemeData(
-      unselectedLabelColor: black005,
-    ),
-    appBarTheme: AppBarTheme(
-      backgroundColor: white05,
-    ),
+    tabBarTheme: const TabBarThemeData(unselectedLabelColor: black005),
+    appBarTheme: AppBarTheme(backgroundColor: white05),
     // input back ground
     scaffoldBackgroundColor: const Color.fromRGBO(245, 246, 254, 1),
     badgeTheme: const BadgeThemeData(backgroundColor: black005),
@@ -36,9 +32,8 @@ class MyThemes {
     ),
   );
   static final darkTheme = ThemeData(
-      appBarTheme: AppBarTheme(
-      backgroundColor:  
-      const Color.fromRGBO(39, 39, 39, 0.5),
+    appBarTheme: AppBarTheme(
+      backgroundColor: const Color.fromRGBO(39, 39, 39, 0.5),
     ),
     bottomAppBarTheme: const BottomAppBarThemeData(color: blockDark),
     scaffoldBackgroundColor: const Color.fromRGBO(34, 34, 37, 1),

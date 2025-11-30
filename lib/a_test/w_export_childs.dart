@@ -1,23 +1,23 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passport_photo_2/a_test/size_helpers.dart';
-import 'package:passport_photo_2/a_test/w_preview_export.dart';
-import 'package:passport_photo_2/commons/colors.dart';
-import 'package:passport_photo_2/commons/constants.dart';
-import 'package:passport_photo_2/commons/extension.dart';
-import 'package:passport_photo_2/helpers/convert.dart';
-import 'package:passport_photo_2/helpers/log_custom.dart';
-import 'package:passport_photo_2/models/country_passport_model.dart';
-import 'package:passport_photo_2/models/export_size_model.dart';
-import 'package:passport_photo_2/models/project_model.dart';
-import 'package:passport_photo_2/providers/blocs/theme_bloc.dart';
-import 'package:passport_photo_2/screens/module_home/helpers/export_helpers.dart';
-import 'package:passport_photo_2/widgets/general_dialog/w_body_dialogs.dart';
-import 'package:passport_photo_2/widgets/w_button.dart';
-import 'package:passport_photo_2/widgets/w_segment_custom.dart';
-import 'package:passport_photo_2/widgets/w_spacer.dart';
-import 'package:passport_photo_2/widgets/w_text.dart';
+import 'package:pass1_/a_test/size_helpers.dart';
+import 'package:pass1_/a_test/w_preview_export.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/commons/extension.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/models/export_size_model.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/module_home/helpers/export_helpers.dart';
+import 'package:pass1_/widgets/general_dialog/w_body_dialogs.dart';
+import 'package:pass1_/widgets/w_button.dart';
+import 'package:pass1_/widgets/w_segment_custom.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
+import 'package:pass1_/widgets/w_text.dart';
 
 class WExports {
   static Widget buildBlurBackground(double height, Color? color) {
@@ -25,13 +25,8 @@ class WExports {
       height: height,
       child: ClipRRect(
         child: BackdropFilter(
-          filter: ui.ImageFilter.blur(
-            sigmaX: 20,
-            sigmaY: 20,
-          ),
-          child: Container(
-            color: color ?? red.withValues(alpha: 0.2),
-          ),
+          filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(color: color ?? red.withValues(alpha: 0.2)),
         ),
       ),
     );
@@ -88,10 +83,7 @@ class WExports {
     }
     Size frameSize = Size(newWidth, newHeight);
     return Container(
-      constraints: const BoxConstraints(
-        minHeight: 100,
-        minWidth: 100,
-      ),
+      constraints: const BoxConstraints(minHeight: 100, minWidth: 100),
       width: frameSize.width,
       height: frameSize.height,
       child: indexSelectedSegment == 0
@@ -107,9 +99,7 @@ class WExports {
 
   static Widget buildImagePreview(ProjectModel projectModel) {
     if (projectModel.scaledCroppedImage != null) {
-      return RawImage(
-        image: projectModel.scaledCroppedImage!,
-      );
+      return RawImage(image: projectModel.scaledCroppedImage!);
     } else {
       if (projectModel.croppedFile != null) {
         return Image.memory(
@@ -119,9 +109,7 @@ class WExports {
           },
         );
       } else {
-        return RawImage(
-          image: projectModel.uiImageAdjusted!,
-        );
+        return RawImage(image: projectModel.uiImageAdjusted!);
       }
     }
   }
@@ -153,8 +141,10 @@ class WExports {
     void Function(double dpi)? onChangeDPIResolutionEnd,
   }) {
     consolelog("screenSize.width ${screenSize.width}");
-    bool isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: true).isDarkMode;
+    bool isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: true,
+    ).isDarkMode;
     Color bgColor = !isDarkMode ? white05 : black05;
     Color disableColor = isDarkMode ? white05 : black05;
     return Container(
@@ -183,6 +173,7 @@ class WExports {
                       ExportHelpers.onChangeCopyCount(
                         context: context,
                         keyCopy: keysFormat[0],
+                        copyNumber: copyNumber,
                         onChangeCopyCount: (int count) {
                           if (onChangeCopy != null) {
                             onChangeCopy(count);
@@ -234,49 +225,51 @@ class WExports {
             direction: Axis.horizontal,
             children: [
               Flexible(
-                child: Builder(builder: (context) {
-                  String title =
-                      "${EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[indexImageFormat]}: ${compressionPercent.toStringAsFixed(0)}%";
-                  if (indexImageFormat == 1) {
-                    title = "PNG";
-                  }
-                  return _buildFormatItem(
-                    key: keysFormat[2],
-                    context: context,
-                    bgColor: bgColor,
-                    isFocus: indexFocusingFormat == 2,
-                    title: title,
-                    isDisable: false,
-                    onTap: () {
-                      onTapFormat(2);
-                      // change compression
-                      ExportHelpers.onChangeCompression(
-                        context: context,
-                        key: keysFormat[2],
-                        onTapOutside: () {
-                          onTapFormat(null);
-                        },
-                        currentCompression: compressionPercent,
-                        currentIndexImageFormat: indexImageFormat,
-                        onChangeCompression: (percent) {
-                          if (onChangeCompressionPercent != null) {
-                            onChangeCompressionPercent(percent);
-                          }
-                        },
-                        onChangeImageFormat: (prevFormat, nextFormat) {
-                          if (onChangeImageFormat != null) {
-                            onChangeImageFormat(nextFormat);
-                          }
-                        },
-                        onCompressionEnd: (value) {
-                          if (onCompressionEnd != null) {
-                            onCompressionEnd(value);
-                          }
-                        },
-                      );
-                    },
-                  );
-                }),
+                child: Builder(
+                  builder: (context) {
+                    String title =
+                        "${EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[indexImageFormat]}: ${compressionPercent.toStringAsFixed(0)}%";
+                    if (indexImageFormat == 1) {
+                      title = "PNG";
+                    }
+                    return _buildFormatItem(
+                      key: keysFormat[2],
+                      context: context,
+                      bgColor: bgColor,
+                      isFocus: indexFocusingFormat == 2,
+                      title: title,
+                      isDisable: false,
+                      onTap: () {
+                        onTapFormat(2);
+                        // change compression
+                        ExportHelpers.onChangeCompression(
+                          context: context,
+                          key: keysFormat[2],
+                          onTapOutside: () {
+                            onTapFormat(null);
+                          },
+                          currentCompression: compressionPercent,
+                          currentIndexImageFormat: indexImageFormat,
+                          onChangeCompression: (percent) {
+                            if (onChangeCompressionPercent != null) {
+                              onChangeCompressionPercent(percent);
+                            }
+                          },
+                          onChangeImageFormat: (prevFormat, nextFormat) {
+                            if (onChangeImageFormat != null) {
+                              onChangeImageFormat(nextFormat);
+                            }
+                          },
+                          onCompressionEnd: (value) {
+                            if (onCompressionEnd != null) {
+                              onCompressionEnd(value);
+                            }
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
               WSpacer(width: 10),
               Flexible(
@@ -336,15 +329,18 @@ class WExports {
     required void Function() onSaveTo,
     required void Function() onSaveToLibrary,
   }) {
-    bool isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: true).isDarkMode;
+    bool isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: true,
+    ).isDarkMode;
     bool isSmallSize = FlutterSizeHelpers.checkSizeIsSmall(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       width: screenSize.width,
-      margin:
-          EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 20),
+      margin: EdgeInsets.only(
+        bottom: MediaQuery.paddingOf(context).bottom + 20,
+      ),
       child: Flex(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -365,7 +361,8 @@ class WExports {
           Flexible(
             child: WButtonFilled(
               height: 54,
-              message: indexImageFormat ==
+              message:
+                  indexImageFormat ==
                       EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT.length - 1
                   ? "Save to File"
                   : "Save to Library",
@@ -386,6 +383,7 @@ class WExports {
     required BuildContext context,
     required List<String> listValue,
     required Function(String value) onSelected,
+    required String selectedValue,
     String? currentValue,
     double? width,
     double? height,
@@ -395,6 +393,8 @@ class WExports {
   }) {
     return DialogBody(
       listItem: listValue,
+      selectedValue: selectedValue,
+      selectedTextColor: blue,
       dialogWidth: 188,
       itemHeight: itemHeight,
       onSelected: (value) {
@@ -427,9 +427,7 @@ class WExports {
           key: key,
           height: 56,
           width: double.infinity,
-          decoration: BoxDecoration(
-            color: bgColor,
-          ),
+          decoration: BoxDecoration(color: bgColor),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -452,14 +450,12 @@ class WExports {
                     Icons.arrow_drop_down_rounded,
                     size: 28,
                     color: Theme.of(context).textTheme.bodySmall!.color,
-                  )
+                  ),
                 ],
               ),
               if (isDisable)
                 Positioned.fill(
-                  child: Container(
-                    color: disableColor?.withAlpha(50),
-                  ),
+                  child: Container(color: disableColor?.withAlpha(50)),
                 ),
             ],
           ),
@@ -476,10 +472,12 @@ class WExports {
     final selectedPassport = countrySelected
         .listPassportModel[countrySelected.indexSelectedPassport];
     consolelog("selectedPassport.height ${selectedPassport.height}");
-    String widthString =
-        (selectedPassport.width).roundWithUnit(fractionDigits: 1);
-    String heightString =
-        (selectedPassport.height).roundWithUnit(fractionDigits: 1);
+    String widthString = (selectedPassport.width).roundWithUnit(
+      fractionDigits: 1,
+    );
+    String heightString = (selectedPassport.height).roundWithUnit(
+      fractionDigits: 1,
+    );
     String widthDecimalAfterDot = widthString.split(".").last;
     String heightDecimalAfterDot = heightString.split(".").last;
     if (widthDecimalAfterDot == "0") {
@@ -491,11 +489,7 @@ class WExports {
     consolelog("widthString $widthString");
     String message =
         "${widthString}x$heightString${selectedPassport.unit.title}";
-    return _buildText(
-      context,
-      isDarkMode,
-      message,
-    );
+    return _buildText(context, isDarkMode, message);
   }
 
   static Widget buildAnalyzeDimension({
@@ -508,7 +502,7 @@ class WExports {
     required bool isDarkMode,
     required int indexImageFormat,
     required int indexTab,
-    // Color? textColorWhenOverSize,
+    Color? textColorWhenOverSize,
   }) {
     String message = "--";
     bool isOverflowSize = ExportHelpers().checkOverFlowSize(
@@ -523,7 +517,7 @@ class WExports {
       // Size sizeToPreviewByPixel = Size(
       //   FlutterConvert.convertUnit(
       //       currentPassport.unit, PIXEL, currentPassport.width),
-      //   FlutterConvert.convertUnit(
+      //   FlutterConvert.convertUnit( 
       //       currentPassport.unit, PIXEL, currentPassport.height),
       // );
       bool isTabPhoto = indexTab == 0;
@@ -535,13 +529,15 @@ class WExports {
               passportWidthByPixelWithDpi = currentPassport.width;
               passportHeightByPixelWithDpi = currentPassport.height;
             } else {
-              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+              passportWidthByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.width,
                   ) *
                   dpi;
-              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+              passportHeightByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.height,
@@ -554,13 +550,15 @@ class WExports {
               passportWidthByPixelWithDpi = currentPassport.width;
               passportHeightByPixelWithDpi = currentPassport.height;
             } else {
-              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+              passportWidthByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.width,
                   ) *
                   dpi;
-              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+              passportHeightByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.height,
@@ -573,13 +571,15 @@ class WExports {
               passportWidthByPixelWithDpi = currentPassport.width;
               passportHeightByPixelWithDpi = currentPassport.height;
             } else {
-              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+              passportWidthByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.width,
                   ) *
                   dpi;
-              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+              passportHeightByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.height,
@@ -597,13 +597,15 @@ class WExports {
               passportWidthByPixelWithDpi = currentPassport.width;
               passportHeightByPixelWithDpi = currentPassport.height;
             } else {
-              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+              passportWidthByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.width,
                   ) *
                   dpi;
-              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+              passportHeightByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.height,
@@ -616,13 +618,15 @@ class WExports {
               passportWidthByPixelWithDpi = currentPassport.width;
               passportHeightByPixelWithDpi = currentPassport.height;
             } else {
-              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+              passportWidthByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.width,
                   ) *
                   dpi;
-              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+              passportHeightByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.height,
@@ -635,13 +639,15 @@ class WExports {
               passportWidthByPixelWithDpi = currentPassport.width;
               passportHeightByPixelWithDpi = currentPassport.height;
             } else {
-              passportWidthByPixelWithDpi = FlutterConvert.convertUnit(
+              passportWidthByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.width,
                   ) *
                   dpi;
-              passportHeightByPixelWithDpi = FlutterConvert.convertUnit(
+              passportHeightByPixelWithDpi =
+                  FlutterConvert.convertUnit(
                     currentPassport.unit,
                     INCH,
                     currentPassport.height,
@@ -663,7 +669,7 @@ class WExports {
       context,
       isDarkMode,
       message,
-      // textColor: textColorWhenOverSize,
+      textColor: textColorWhenOverSize,
     );
   }
 
