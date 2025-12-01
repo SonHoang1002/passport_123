@@ -52,8 +52,10 @@ class _HomePagePhoneState extends State<HomePageTablet>
   bool _isShowFooterMask =
       false; // ngan chan hieu ung slider cuar tab phan footer
   late ProjectModel _projectModel;
-  late final TabController _tabController =
-      TabController(length: 4, vsync: this);
+  late final TabController _tabController = TabController(
+    length: 4,
+    vsync: this,
+  );
   // adjust properties
   Offset? _offsetTrackerBrightness;
   TransformationController _transformationAdjustController =
@@ -74,8 +76,10 @@ class _HomePagePhoneState extends State<HomePageTablet>
   Future<void> _onUpdateSelectedImage(File? file) async {
     if (file != null) {
       var decodedImage = await decodeImageFromList(file.readAsBytesSync());
-      _imageSelectedSize = Size(double.parse(decodedImage.width.toString()),
-          double.parse(decodedImage.height.toString()));
+      _imageSelectedSize = Size(
+        double.parse(decodedImage.width.toString()),
+        double.parse(decodedImage.height.toString()),
+      );
     } else {
       _offsetTrackerBrightness = null;
       _projectModel.resetAllImage();
@@ -86,8 +90,10 @@ class _HomePagePhoneState extends State<HomePageTablet>
       _resetCropProperties();
     }
     _projectModel.selectedFile = file;
-    List<dynamic> listScaled =
-        await _handleGenerateScaleSelectedImage(file, _imageSelectedSize);
+    List<dynamic> listScaled = await _handleGenerateScaleSelectedImage(
+      file,
+      _imageSelectedSize,
+    );
     if (listScaled.isNotEmpty) {
       _projectModel
         ..scaledSelectedFile = listScaled[0]
@@ -134,7 +140,7 @@ class _HomePagePhoneState extends State<HomePageTablet>
 
       File? resizeImage =
           (await resizeImageBeforeAPI(_projectModel.selectedFile!.path)) ??
-              _projectModel.selectedFile!;
+          _projectModel.selectedFile!;
       bool isHasNetworkConnection =
           await MyMethodChannel.checkNetworkConnection();
       if (isHasNetworkConnection) {
@@ -145,8 +151,8 @@ class _HomePagePhoneState extends State<HomePageTablet>
           // local -  note.txt
           final newConvertedImage = await RemoveBackgroundHelpers()
               .cutBackgroundRemoverWithMethodChannelWithOriginalSize(
-            _projectModel.selectedFile!.path,
-          );
+                _projectModel.selectedFile!.path,
+              );
           if (newConvertedImage != null) {
             _projectModel.bgRemovedFile = newConvertedImage;
           }
@@ -230,15 +236,16 @@ class _HomePagePhoneState extends State<HomePageTablet>
       height = min(800, _size.height * 0.9);
     }
     showCustomBottomSheetWithDragIcon(
-        context: context,
-        child: WExportBody1(
-          projectModel: _projectModel,
-          height: height,
-          countrySelected: _projectModel.countryModel!,
-          imageCropped: _projectModel.croppedFile!,
-          onUpdateModel: (file) {},
-        ),
-        height: height);
+      context: context,
+      child: WExportBody1(
+        projectModel: _projectModel,
+        height: height,
+        countrySelected: _projectModel.countryModel!,
+        imageCropped: _projectModel.croppedFile!,
+        onUpdateModel: (file) {},
+      ),
+      height: height,
+    );
   }
 
   Future<void> _onPrint() async {
@@ -246,10 +253,11 @@ class _HomePagePhoneState extends State<HomePageTablet>
     showCustomBottomSheetWithDragIcon(
       context: context,
       child: WPrintBody(
-          height: height,
-          countrySelected: _projectModel.countryModel!,
-          croppedFile: _projectModel.croppedFile!,
-          uiImageCropped: _projectModel.uiImageCropped!),
+        height: height,
+        countrySelected: _projectModel.countryModel!,
+        croppedFile: _projectModel.croppedFile!,
+        uiImageCropped: _projectModel.uiImageCropped!,
+      ),
       height: height,
     );
   }
@@ -293,64 +301,64 @@ class _HomePagePhoneState extends State<HomePageTablet>
                     width: SIZE_EXAMPLE.width,
                   ),
                   Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                          margin: const EdgeInsets.only(right: 30, top: 20),
-                          child:
-                              WSettingNavigatorButton(isDarkMode: _isDarkMode)))
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 30, top: 20),
+                      child: WSettingNavigatorButton(isDarkMode: _isDarkMode),
+                    ),
+                  ),
                 ],
               ),
               //body
               Expanded(
-                  child: Container(
-                width: _size.width,
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // body
-                    Expanded(
-                      child: ClipRRect(
-                        child: Stack(
-                          children: [
-                            _buildBodyWithTabView(),
-                            // hien footer tam thoi de che hieu ung chuyen canh cho nhung screen tiep theo
-                            // chi hien thi khi nguoi dung bam next
-                            // sau khi chuyen man hinh xong thi an no di
-                            if (_isShowFooterMask)
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: WFooter(
-                                  projectModel: _projectModel,
-                                  currentStep: _currentStep,
-                                  isDarkMode: _isDarkMode,
-                                  onNext: _onNext,
-                                  onExport: _onExport,
-                                  onPrint: _onPrint,
-                                  footerHeight: 166,
-                                  isHaveSettingButton: false,
+                child: Container(
+                  width: _size.width,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // body
+                      Expanded(
+                        child: ClipRRect(
+                          child: Stack(
+                            children: [
+                              _buildBodyWithTabView(),
+                              // hien footer tam thoi de che hieu ung chuyen canh cho nhung screen tiep theo
+                              // chi hien thi khi nguoi dung bam next
+                              // sau khi chuyen man hinh xong thi an no di
+                              if (_isShowFooterMask)
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: WFooter(
+                                    projectModel: _projectModel,
+                                    currentStep: _currentStep,
+                                    isDarkMode: _isDarkMode,
+                                    onNext: _onNext,
+                                    onExport: _onExport,
+                                    onPrint: _onPrint,
+                                    footerHeight: 166,
+                                    isHaveSettingButton: false,
+                                  ),
                                 ),
-                              )
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )),
+              ),
             ],
           ),
-          // overlay widget
 
+          // overlay widget
           if (_isLoading == true)
             Positioned.fill(
-              child: Container(
-                color: grey.withValues(alpha: 0.2),
-              ),
+              child: Container(color: grey.withValues(alpha: 0.2)),
             ),
 
           // Circular widget
-          if (_isLoading == true) const CustomLoadingIndicator()
+          if (_isLoading == true) const CustomLoadingIndicator(),
         ],
       ),
     );
@@ -427,7 +435,7 @@ class _HomePagePhoneState extends State<HomePageTablet>
           onExport: _onExport,
           onPrint: _onPrint,
           onUpdateStep: _onNext,
-        )
+        ),
       ],
     );
   }

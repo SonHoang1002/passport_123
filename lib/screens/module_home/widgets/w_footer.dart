@@ -49,7 +49,8 @@ class WFooter extends StatelessWidget {
               ),
       ),
       alignment: Alignment.center,
-      height: footerHeight ??
+      height:
+          footerHeight ??
           (projectModel.selectedFile == null
               ? null
               : (_size.width > MIN_SIZE.width ? 130 : 130)),
@@ -58,9 +59,10 @@ class WFooter extends StatelessWidget {
               height:
                   footerHeight ?? (_size.width > MIN_SIZE.width ? 130 : 130),
               padding: EdgeInsets.only(
-                  right: 20,
-                  left: 20,
-                  bottom: MediaQuery.of(context).padding.bottom),
+                right: 20,
+                left: 20,
+                bottom: MediaQuery.of(context).padding.bottom,
+              ),
               color: Theme.of(context).bottomAppBarTheme.color,
               child: Flex(
                 direction: Axis.horizontal,
@@ -70,13 +72,15 @@ class WFooter extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Container(
-                      constraints:
-                          BoxConstraints(maxWidth: SIZE_EXAMPLE.width / 2),
+                      constraints: BoxConstraints(
+                        maxWidth: SIZE_EXAMPLE.width / 2,
+                      ),
                       child: WButtonFilled(
                         height: 54,
                         message: "Export",
-                        backgroundColor:
-                            isDarkMode ? primaryDark1 : primaryLight1,
+                        backgroundColor: isDarkMode
+                            ? primaryDark1
+                            : primaryLight1,
                         onPressed: () {
                           onExport != null ? onExport!() : null;
                         },
@@ -86,8 +90,9 @@ class WFooter extends StatelessWidget {
                   WSpacer(width: 10),
                   Flexible(
                     child: Container(
-                      constraints:
-                          BoxConstraints(maxWidth: SIZE_EXAMPLE.width / 2),
+                      constraints: BoxConstraints(
+                        maxWidth: SIZE_EXAMPLE.width / 2,
+                      ),
                       child: WButtonFilled(
                         height: 54,
                         message: "Print",
@@ -119,15 +124,17 @@ class WFooter extends StatelessWidget {
                       height: 50,
                       width: 214,
                       message: "Next Step",
-                      backgroundColor:
-                          isDarkMode ? primaryDark1 : primaryLight1,
+                      backgroundColor: isDarkMode
+                          ? primaryDark1
+                          : primaryLight1,
                       onPressed: () {
                         onNext();
                       },
                     ),
                   Container(
                     padding: EdgeInsets.only(
-                        bottom: projectModel.selectedFile == null ? 7 : 0),
+                      bottom: projectModel.selectedFile == null ? 7 : 0,
+                    ),
                     alignment: projectModel.selectedFile != null
                         ? Alignment.centerRight
                         : Alignment.center,
@@ -148,15 +155,18 @@ class WFooter extends StatelessWidget {
       child: InkWell(
         onTap: () async {
           await MediaScanner.loadMedia(
-              path:
-                  "/storage/emulated/0/Pictures/jim-tran-6XZ_wgiwFjI-unsplash.jpg");
+            path:
+                "/storage/emulated/0/Pictures/jim-tran-6XZ_wgiwFjI-unsplash.jpg",
+          );
           // await openAppSettings();
         },
         child: Container(
           height: 46,
           width: 46,
           decoration: BoxDecoration(
-              color: red, borderRadius: BorderRadius.circular(999)),
+            color: red,
+            borderRadius: BorderRadius.circular(999),
+          ),
           child: Image.asset(
             PATH_PREFIX_ICON +
                 (isDarkMode

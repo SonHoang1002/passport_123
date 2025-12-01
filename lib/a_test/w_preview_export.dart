@@ -46,7 +46,7 @@ class _WPreviewExportState extends State<WPreviewExport> {
         var currentPassport = widget.projectModel.countryModel!.currentPassport;
         ExportSizeModel exportModel = widget.exportSize;
 
-        EdgeInsets margin = exportModel.marginModel.toEdgeInsets();
+        EdgeInsets margin = exportModel.marginModel.toEdgeInsetsBy();
 
         double left = FlutterConvert.convertUnit(POINT, POINT, margin.left);
         double top = FlutterConvert.convertUnit(POINT, POINT, margin.top);

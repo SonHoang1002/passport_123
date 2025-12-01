@@ -50,8 +50,10 @@ class _HomePagePhoneState extends State<HomePagePhone>
   bool _isShowFooterMask =
       false; // ngan chan hieu ung slider cuar tab phan footer
   late ProjectModel _projectModel;
-  late final TabController _tabController =
-      TabController(length: 4, vsync: this);
+  late final TabController _tabController = TabController(
+    length: 4,
+    vsync: this,
+  );
   // adjust properties
   Offset? _offsetTrackerBrightness;
   TransformationController _transformationAdjustController =
@@ -76,8 +78,10 @@ class _HomePagePhoneState extends State<HomePagePhone>
   Future<void> _onUpdateSelectedImage(File? file) async {
     if (file != null) {
       var decodedImage = await decodeImageFromList(file.readAsBytesSync());
-      _imageSelectedSize = Size(double.parse(decodedImage.width.toString()),
-          double.parse(decodedImage.height.toString()));
+      _imageSelectedSize = Size(
+        double.parse(decodedImage.width.toString()),
+        double.parse(decodedImage.height.toString()),
+      );
     } else {
       _offsetTrackerBrightness = null;
       _projectModel.resetAllImage();
@@ -88,8 +92,10 @@ class _HomePagePhoneState extends State<HomePagePhone>
       _resetCropProperties();
     }
     _projectModel.selectedFile = file;
-    List<dynamic> listScaled =
-        await _handleGenerateScaleSelectedImage(file, _imageSelectedSize);
+    List<dynamic> listScaled = await _handleGenerateScaleSelectedImage(
+      file,
+      _imageSelectedSize,
+    );
     if (listScaled.isNotEmpty) {
       _projectModel
         ..scaledSelectedFile = listScaled[0]
@@ -116,10 +122,10 @@ class _HomePagePhoneState extends State<HomePagePhone>
       originalSize: selectedSize,
     );
     File? resultFile = await MyMethodChannel.resizeAndResoluteImage(
-    inputPath:   selectedImage.path,
-    format:   1,
-    listWH:   [newSize.width, newSize.height],
-    scaleWH:   [1, 1],
+      inputPath: selectedImage.path,
+      format: 1,
+      listWH: [newSize.width, newSize.height],
+      scaleWH: [1, 1],
       outPath: scaleSelectedImagePath,
       quality: 90,
     );
@@ -136,7 +142,7 @@ class _HomePagePhoneState extends State<HomePagePhone>
 
       File? resizeImage =
           (await resizeImageBeforeAPI(_projectModel.selectedFile!.path)) ??
-              _projectModel.selectedFile!;
+          _projectModel.selectedFile!;
       bool isHasNetworkConnection =
           await MyMethodChannel.checkNetworkConnection();
 
@@ -150,8 +156,8 @@ class _HomePagePhoneState extends State<HomePagePhone>
           //     .cutBackgroundRemoverWithMethodChannel(resizeImage.path);
           final newConvertedImage = await RemoveBackgroundHelpers()
               .cutBackgroundRemoverWithMethodChannelWithOriginalSize(
-            _projectModel.selectedFile!.path,
-          );
+                _projectModel.selectedFile!.path,
+              );
           if (newConvertedImage != null) {
             _projectModel.bgRemovedFile = newConvertedImage;
           }
@@ -163,7 +169,8 @@ class _HomePagePhoneState extends State<HomePagePhone>
 
       stopwatch.stop();
       consolelog(
-          "stopwatch call on _onRemoveImageBackground ${stopwatch.elapsedMilliseconds}");
+        "stopwatch call on _onRemoveImageBackground ${stopwatch.elapsedMilliseconds}",
+      );
     } catch (e) {
       _projectModel.bgRemovedFile = _projectModel.selectedFile;
       consolelog("_onRemoveImageBackground error: ${e}");
@@ -177,7 +184,7 @@ class _HomePagePhoneState extends State<HomePagePhone>
     });
   }
 
-Future<void> _onNext() async {
+  Future<void> _onNext() async {
     setState(() {
       // _isLoading = true;
       _isShowFooterMask = true;
@@ -292,53 +299,52 @@ Future<void> _onNext() async {
               ),
               //body
               Expanded(
-                  child: Container(
-                width: _size.width,
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // body
-                    Expanded(
-                      child: ClipRRect(
-                        child: Stack(
-                          children: [
-                            _buildBodyWithTabView(),
-                            // hien footer tam thoi de che hieu ung chuyen canh cho nhung screen tiep theo
-                            // chi hien thi khi nguoi dung bam next
-                            // sau khi chuyen man hinh xong thi an no di
-                            if (_isShowFooterMask)
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: WFooter(
-                                  projectModel: _projectModel,
-                                  currentStep: _currentStep,
-                                  isDarkMode: _isDarkMode,
-                                  onNext: _onNext,
-                                  onExport: _onExport,
-                                  onPrint: _onPrint,
+                child: Container(
+                  width: _size.width,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // body
+                      Expanded(
+                        child: ClipRRect(
+                          child: Stack(
+                            children: [
+                              _buildBodyWithTabView(),
+                              // hien footer tam thoi de che hieu ung chuyen canh cho nhung screen tiep theo
+                              // chi hien thi khi nguoi dung bam next
+                              // sau khi chuyen man hinh xong thi an no di
+                              if (_isShowFooterMask)
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: WFooter(
+                                    projectModel: _projectModel,
+                                    currentStep: _currentStep,
+                                    isDarkMode: _isDarkMode,
+                                    onNext: _onNext,
+                                    onExport: _onExport,
+                                    onPrint: _onPrint,
+                                  ),
                                 ),
-                              )
-                          ],
-                        ), // _buildBody(), -> note.text
+                            ],
+                          ), // _buildBody(), -> note.text
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )),
+              ),
             ],
           ),
-          // overlay widget
 
+          // overlay widget
           if (_isLoading == true)
             Positioned.fill(
-              child: Container(
-                color: grey.withValues(alpha: 0.2),
-              ),
+              child: Container(color: grey.withValues(alpha: 0.2)),
             ),
 
           // Circular widget
-          if (_isLoading == true) const CustomLoadingIndicator()
+          if (_isLoading == true) const CustomLoadingIndicator(),
         ],
       ),
     );
@@ -415,7 +421,7 @@ Future<void> _onNext() async {
           onExport: _onExport,
           onPrint: _onPrint,
           onUpdateStep: _onNext,
-        )
+        ),
       ],
     );
   }

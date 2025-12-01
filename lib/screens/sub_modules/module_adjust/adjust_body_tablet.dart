@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
-// import 'package:color_picker_android/color_picker_flutter.dart';
-// import 'package:color_picker_android/helpers/convert.dart';
+import 'package:color_picker_android/color_picker_flutter.dart';
+import 'package:color_picker_android/helpers/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_filters/flutter_image_filters.dart';
@@ -88,10 +88,12 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
   late bool isDarkMode;
   Size? _sizeConvertedImage;
 
-  final GlobalKey _keySliderBrightness =
-      GlobalKey(debugLabel: "_keySliderBrightness");
-  final GlobalKey _keyConvertedImage =
-      GlobalKey(debugLabel: "_keyConvertedImage");
+  final GlobalKey _keySliderBrightness = GlobalKey(
+    debugLabel: "_keySliderBrightness",
+  );
+  final GlobalKey _keyConvertedImage = GlobalKey(
+    debugLabel: "_keyConvertedImage",
+  );
   final GlobalKey _keyAdjustArea = GlobalKey(debugLabel: "_keyAdjustArea");
   late RenderBox _renderBoxBrightness;
   RenderBox? _renderBoxConvertedImage;
@@ -132,36 +134,43 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
     consolelog("call init adjust body");
     _listBackground.insert(0, widget.projectModel.selectedFile);
     _listBackground.add("${PATH_PREFIX_ICON}icon_background_option.png");
-    _listSubject = BlocProvider.of<AdjustSubjectBloc>(context, listen: false)
-        .state
-        .listAdjustSubjectModel;
+    _listSubject = BlocProvider.of<AdjustSubjectBloc>(
+      context,
+      listen: false,
+    ).state.listAdjustSubjectModel;
     _indexSubjectSelectedPreview = widget.indexSnapList;
-    _brightnessSelected =
-        (widget.projectModel.brightness * _sliderWidth).toInt();
-    _offsetTracker = widget.offsetTrackerBrightness ??
-        Offset(0.5 * _sliderWidth - _dotSize / 2 - 2,
-            0); // tru 2 do border cua dot tracker
+    _brightnessSelected = (widget.projectModel.brightness * _sliderWidth)
+        .toInt();
+    _offsetTracker =
+        widget.offsetTrackerBrightness ??
+        Offset(
+          0.5 * _sliderWidth - _dotSize / 2 - 2,
+          0,
+        ); // tru 2 do border cua dot tracker
     _indexBackgroundSelected = 0;
     _initShaderConfiguration();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _controllerSnapList.animateTo(
-          (widget.indexSnapList + 1 / 2) * _snapItemSize,
-          duration: const Duration(milliseconds: 10),
-          curve: Curves.linear);
+        (widget.indexSnapList + 1 / 2) * _snapItemSize,
+        duration: const Duration(milliseconds: 10),
+        curve: Curves.linear,
+      );
       _renderBoxBrightness =
           _keySliderBrightness.currentContext?.findRenderObject() as RenderBox;
 
       _previewFileOriginal = widget.projectModel.selectedFile;
       _previewFileConverted = widget.projectModel.bgRemovedFile;
 
-      final newIndexbg =
-          _listBackground.indexOf(widget.projectModel.background);
+      final newIndexbg = _listBackground.indexOf(
+        widget.projectModel.background,
+      );
       if (newIndexbg != -1) {
         _indexBackgroundSelected = newIndexbg;
       }
       _decodedOriginalImage = await decodeImageFromList(
-          widget.projectModel.bgRemovedFile!.readAsBytesSync());
+        widget.projectModel.bgRemovedFile!.readAsBytesSync(),
+      );
       if (_decodedOriginalImage.width > 1000 &&
           _decodedOriginalImage.height > 1000) {
         double ratioWidth, ratioHeight;
@@ -192,9 +201,9 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
       _renderBoxConvertedImage =
           _keyConvertedImage.currentContext?.findRenderObject() as RenderBox;
       _sizeConvertedImage = (_renderBoxConvertedImage?.size);
-      _uiImageObject =
-          (await TextureSource.fromFile(widget.projectModel.bgRemovedFile!))
-              .image;
+      _uiImageObject = (await TextureSource.fromFile(
+        widget.projectModel.bgRemovedFile!,
+      )).image;
       _textureOriginal = await TextureSource.fromFile(_previewFileOriginal!);
       _textureConverted = await TextureSource.fromFile(_previewFileConverted!);
       _isLoadImageFilter = true;
@@ -208,22 +217,24 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
     //(480, 640) la size ảnh chuẩn với blur được định sẵn (constant.dart)
     _paintBlurShadowLeft = Paint()
       ..imageFilter = ui.ImageFilter.blur(
-          sigmaX: _decodedOriginalImage.width /
-              _standardOriginalImageSize.width *
-              15,
-          sigmaY: _decodedOriginalImage.height /
-              _standardOriginalImageSize.height *
-              15,
-          tileMode: TileMode.decal);
+        sigmaX:
+            _decodedOriginalImage.width / _standardOriginalImageSize.width * 15,
+        sigmaY:
+            _decodedOriginalImage.height /
+            _standardOriginalImageSize.height *
+            15,
+        tileMode: TileMode.decal,
+      );
     _paintBlurShadowRight = Paint()
       ..imageFilter = ui.ImageFilter.blur(
-          sigmaX: _decodedOriginalImage.width /
-              _standardOriginalImageSize.width *
-              30,
-          sigmaY: _decodedOriginalImage.height /
-              _standardOriginalImageSize.height *
-              30,
-          tileMode: TileMode.decal);
+        sigmaX:
+            _decodedOriginalImage.width / _standardOriginalImageSize.width * 30,
+        sigmaY:
+            _decodedOriginalImage.height /
+            _standardOriginalImageSize.height *
+            30,
+        tileMode: TileMode.decal,
+      );
   }
 
   void _onUpdateBrightnessProperty(double delta) {
@@ -231,7 +242,8 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
     _brightnessShaderConfiguration.brightness = brightnessValue + 0.5;
     if (_indexBackgroundSelected == 0) {
       widget.onUpdateProject(
-          widget.projectModel..brightness = brightnessValue + 0.5);
+        widget.projectModel..brightness = brightnessValue + 0.5,
+      );
     } else if ([1, 2, 3].contains(_indexBackgroundSelected)) {
       ///   Giảm shadow default, tăng độ trắng background default
       ///
@@ -254,9 +266,7 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
       );
       // old : 0.02 - 0.15 - 0.3  --- 0.02 - 0.1 - 0.2
       // new : 0.02 - 0.85 - 0.15 --- 0.02 - 0.06 - 0.1
-      widget.onUpdateProject(
-        widget.projectModel..listBlurShadow = [s1, s2],
-      );
+      widget.onUpdateProject(widget.projectModel..listBlurShadow = [s1, s2]);
     }
   }
 
@@ -270,12 +280,18 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
 
   void _onCheckOffsetInside(Offset globalPosition) {
     // check inside brightness area
-    final startOffsetBrightness =
-        _renderBoxBrightness.localToGlobal(const Offset(0, 0));
+    final startOffsetBrightness = _renderBoxBrightness.localToGlobal(
+      const Offset(0, 0),
+    );
     final endOffsetBrightness = startOffsetBrightness.translate(
-        _renderBoxBrightness.size.width, _renderBoxBrightness.size.height);
+      _renderBoxBrightness.size.width,
+      _renderBoxBrightness.size.height,
+    );
     if (containOffset(
-        globalPosition, startOffsetBrightness, endOffsetBrightness)) {
+      globalPosition,
+      startOffsetBrightness,
+      endOffsetBrightness,
+    )) {
       setState(() {
         _isFocusBrightness = true;
       });
@@ -293,58 +309,60 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
   }
 
   void _onSelectBackground(dynamic newBackground) async {
-    // // open sheet background
-    // if (_listBackground.last == newBackground) {
-    //   // lay cac mau da luu trong SharedPreferences
-    //   List<String> listColorString =
-    //       await SharedPreferencesHelper().getColorSaved();
-    //   List<Color> listSavedColor =
-    //       listColorString.map((e) => convertHexStringToColor(e)).toList();
-    //   dynamic currentColor = widget.projectModel.background;
-    //   if (currentColor is File ||
-    //       currentColor is String ||
-    //       currentColor == null) {
-    //     currentColor = isDarkMode ? black : white;
-    //   }
-    //   // ignore: use_build_context_synchronously
-    //   showModalBottomSheet(
-    //       context: context,
-    //       builder: (context) {
-    //         return ColorPickerTablet(
-    //           currentColor: currentColor,
-    //           onDone: (value) {
-    //             _indexBackgroundSelected = _listBackground.length - 1;
-    //             _onUpdateBackgroundProperty(value);
-    //             setState(() {});
-    //             popNavigator(context);
-    //           },
-    //           listColorSaved: listSavedColor,
-    //           isLightMode: !isDarkMode,
-    //           onColorSave: (color) async {
-    //             if (color == null) return;
-    //             if (listSavedColor.contains(color)) {
-    //               listSavedColor = List.from(listSavedColor
-    //                   .where((element) => element != color)
-    //                   .toList());
-    //             } else {
-    //               listSavedColor = [color, ...List.from(listSavedColor)];
-    //             }
-    //             await SharedPreferencesHelper().updateColorSaved(listSavedColor
-    //                 .map((e) => convertColorToHexString(e))
-    //                 .toList());
-    //           },
-    //         );
-    //       },
-    //       isScrollControlled: true,
-    //       backgroundColor: transparent);
-    //   return;
-    // }
-    // final index = _listBackground.indexOf(newBackground);
-    // if (index != -1) {
-    //   _indexBackgroundSelected = index;
-    // }
-    // _onUpdateBackgroundProperty(newBackground);
-    // setState(() {});
+    // open sheet background
+    if (_listBackground.last == newBackground) {
+      // lay cac mau da luu trong SharedPreferences
+      List<String> listColorString = await SharedPreferencesHelper()
+          .getColorSaved();
+      List<Color> listSavedColor = listColorString
+          .map((e) => convertHexStringToColor(e))
+          .toList();
+      dynamic currentColor = widget.projectModel.background;
+      if (currentColor is File ||
+          currentColor is String ||
+          currentColor == null) {
+        currentColor = isDarkMode ? black : white;
+      }
+      // ignore: use_build_context_synchronously
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return ColorPickerTablet(
+            currentColor: currentColor,
+            onDone: (value) {
+              _indexBackgroundSelected = _listBackground.length - 1;
+              _onUpdateBackgroundProperty(value);
+              setState(() {});
+              popNavigator(context);
+            },
+            listColorSaved: listSavedColor,
+            isLightMode: !isDarkMode,
+            onColorSave: (color) async {
+              if (color == null) return;
+              if (listSavedColor.contains(color)) {
+                listSavedColor = List.from(
+                  listSavedColor.where((element) => element != color).toList(),
+                );
+              } else {
+                listSavedColor = [color, ...List.from(listSavedColor)];
+              }
+              await SharedPreferencesHelper().updateColorSaved(
+                listSavedColor.map((e) => convertColorToHexString(e)).toList(),
+              );
+            },
+          );
+        },
+        isScrollControlled: true,
+        backgroundColor: transparent,
+      );
+      return;
+    }
+    final index = _listBackground.indexOf(newBackground);
+    if (index != -1) {
+      _indexBackgroundSelected = index;
+    }
+    _onUpdateBackgroundProperty(newBackground);
+    setState(() {});
   }
 
   void _onUpdateOffset(Offset globalPosition) {
@@ -414,15 +432,17 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
   @override
   Widget build(BuildContext context) {
     consolelog(
-        "_renderBoxConvertedImage?.size ${widget.transformationController}");
+      "_renderBoxConvertedImage?.size ${widget.transformationController}",
+    );
 
     _size = MediaQuery.sizeOf(context);
     isDarkMode = BlocProvider.of<ThemeBloc>(context).isDarkMode;
     bool isPhone = BlocProvider.of<DevicePlatformCubit>(context).isPhone;
 
-    _listSubject = BlocProvider.of<AdjustSubjectBloc>(context, listen: true)
-        .state
-        .listAdjustSubjectModel;
+    _listSubject = BlocProvider.of<AdjustSubjectBloc>(
+      context,
+      listen: true,
+    ).state.listAdjustSubjectModel;
     Size _mainSize;
     _mainSize = isPhone ? _size : Size(SIZE_EXAMPLE.width, _size.height);
     return GestureDetector(
@@ -488,7 +508,9 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                                   maxWidth: 220,
                                 )
                               : const BoxConstraints(
-                                  maxHeight: 280, maxWidth: 280),
+                                  maxHeight: 280,
+                                  maxWidth: 280,
+                                ),
                           margin: const EdgeInsets.only(bottom: 20),
                           child: Stack(
                             alignment: Alignment.center,
@@ -540,19 +562,19 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                                                 child: InteractiveViewer(
                                                   boundaryMargin:
                                                       EdgeInsets.symmetric(
-                                                    vertical:
-                                                        ((_sizeConvertedImage
+                                                        vertical:
+                                                            ((_sizeConvertedImage
                                                                     ?.height) ??
                                                                 _mainSize
                                                                     .height) /
                                                             2,
-                                                    horizontal:
-                                                        ((_sizeConvertedImage
+                                                        horizontal:
+                                                            ((_sizeConvertedImage
                                                                     ?.width) ??
                                                                 _mainSize
                                                                     .width) /
                                                             2,
-                                                  ),
+                                                      ),
                                                   panEnabled: false,
                                                   scaleEnabled: false,
                                                   transformationController: widget
@@ -565,17 +587,18 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                                               );
                                       },
                                     )
-                                  : const CustomLoadingIndicator()
+                                  : const CustomLoadingIndicator(),
                             ],
                           ),
                         ),
                         // title for adjust properties
                         if (widget.indexSegment == 1)
                           Positioned.fill(
-                              child: buildAdjustSubjectTitlePreview(
-                            isDarkMode: isDarkMode,
-                            model: _listSubject[_indexSubjectSelectedPreview],
-                          ))
+                            child: buildAdjustSubjectTitlePreview(
+                              isDarkMode: isDarkMode,
+                              model: _listSubject[_indexSubjectSelectedPreview],
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -605,7 +628,7 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                             if (_indexBackgroundSelected != -1) {
                               isSelected =
                                   _listBackground[_indexBackgroundSelected] ==
-                                      e;
+                                  e;
                             }
                             Color? selectedColor;
                             if (mediaSrc is String &&
@@ -664,7 +687,8 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                               if (notification is ScrollEndNotification) {
                                 _isShowSliderSubject = true;
                                 widget.onUpdateSnapList(
-                                    _indexSubjectSelectedPreview);
+                                  _indexSubjectSelectedPreview,
+                                );
                               }
                               if (notification is ScrollStartNotification) {
                                 _isShowSliderSubject = false;
@@ -674,10 +698,11 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                             child: ScrollSnapList(
                               itemBuilder: (context, index) {
                                 return buildAdjustSubjectItem(
-                                    isDarkMode,
-                                    index == _indexSubjectSelectedPreview,
-                                    _listSubject[index],
-                                    () {});
+                                  isDarkMode,
+                                  index == _indexSubjectSelectedPreview,
+                                  _listSubject[index],
+                                  () {},
+                                );
                               },
                               listController: _controllerSnapList,
                               itemCount: _listSubject.length,
@@ -711,16 +736,19 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                                 _listSubject[widget.indexSnapList].dividers,
                             onValueChange: (newRatio) {
                               AdjustSubjectModel newModel =
-                                  _listSubject[widget.indexSnapList]
-                                      .copyWith(currentRatioValue: newRatio);
-                              BlocProvider.of<AdjustSubjectBloc>(context).add(
-                                  UpdateAdjustSubjectEvent(model: newModel));
+                                  _listSubject[widget.indexSnapList].copyWith(
+                                    currentRatioValue: newRatio,
+                                  );
+                              BlocProvider.of<AdjustSubjectBloc>(
+                                context,
+                              ).add(UpdateAdjustSubjectEvent(model: newModel));
                               _onUpdateAdjustProperty();
                             },
-                            checkPointColor:
-                                isDarkMode ? Colors.yellow : Colors.purple,
+                            checkPointColor: isDarkMode
+                                ? Colors.yellow
+                                : Colors.purple,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -759,7 +787,7 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
             },
             isHaveSettingButton: false,
             footerHeight: 166,
-          )
+          ),
         ],
       ),
     );
@@ -780,7 +808,8 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
 
   Widget _buildInteractiveChild({double? imageHeight, double? imageWidth}) {
     consolelog(
-        "_decodedOriginalImage ${_decodedOriginalImage}-${imageWidth}-${imageWidth}");
+      "_decodedOriginalImage ${_decodedOriginalImage}-${imageWidth}-${imageWidth}",
+    );
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -795,13 +824,17 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                 imageWidth,
                 (_paintBlurShadowLeft ?? PAINT_BLURREDRED_SHADOW_LEFT)
                   ..colorFilter = ColorFilter.mode(
-                      black.withValues(
-                          alpha: widget.projectModel.listBlurShadow[0]),
-                      BlendMode.srcIn),
-                top: SHADOW_EDGE_INSET_LEFT.top /
+                    black.withValues(
+                      alpha: widget.projectModel.listBlurShadow[0],
+                    ),
+                    BlendMode.srcIn,
+                  ),
+                top:
+                    SHADOW_EDGE_INSET_LEFT.top /
                     _standardOriginalImageFramePreviewSize.height *
                     imageHeight!,
-                left: SHADOW_EDGE_INSET_LEFT.left /
+                left:
+                    SHADOW_EDGE_INSET_LEFT.left /
                     _standardOriginalImageFramePreviewSize.width *
                     imageWidth!,
               ),
@@ -811,21 +844,21 @@ class _TestBodyAdjustTabletState extends State<BodyAdjustTablet> {
                 imageWidth,
                 (_paintBlurShadowRight ?? PAINT_BLURREDRED_SHADOW_RIGHT)
                   ..colorFilter = ColorFilter.mode(
-                      black.withValues(
-                          alpha: widget.projectModel.listBlurShadow[1]),
-                      BlendMode.srcIn),
-                top: SHADOW_EDGE_INSET_RIGHT.top /
+                    black.withValues(
+                      alpha: widget.projectModel.listBlurShadow[1],
+                    ),
+                    BlendMode.srcIn,
+                  ),
+                top:
+                    SHADOW_EDGE_INSET_RIGHT.top /
                     _standardOriginalImageFramePreviewSize.height *
                     imageHeight,
-                left: SHADOW_EDGE_INSET_RIGHT.left /
+                left:
+                    SHADOW_EDGE_INSET_RIGHT.left /
                     _standardOriginalImageFramePreviewSize.width *
                     imageWidth,
               ),
-              buildBlursReflection(
-                _uiImageObject,
-                imageHeight,
-                imageWidth,
-              ),
+              buildBlursReflection(_uiImageObject, imageHeight, imageWidth),
             ],
           ),
         SizedBox(

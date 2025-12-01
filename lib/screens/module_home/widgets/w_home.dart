@@ -36,8 +36,8 @@ Widget buildStepSelection({
                 color: isActive
                     ? null
                     : isDarkMode
-                        ? grey.withValues(alpha: 0.9)
-                        : black.withValues(alpha: 0.5),
+                    ? grey.withValues(alpha: 0.9)
+                    : black.withValues(alpha: 0.5),
               ),
             ),
           ),
@@ -63,32 +63,28 @@ Widget buildStepSelection({
   );
 }
 
-Widget buildHomeSelection(
-    {required String iconPath,
-    required String title,
-    required double iconSize,
-    Color? textColor,
-    Color? titleBackgroundColor,
-    Function()? onTap}) {
+Widget buildHomeSelection({
+  required String iconPath,
+  required String title,
+  required double iconSize,
+  Color? textColor,
+  Color? titleBackgroundColor,
+  Function()? onTap,
+}) {
   return Column(
     children: [
       GestureDetector(
         onTap: onTap,
-        child: Image.asset(
-          iconPath,
-          height: iconSize,
-          width: iconSize,
-        ),
+        child: Image.asset(iconPath, height: iconSize, width: iconSize),
       ),
-      WSpacer(
-        height: 10,
-      ),
+      WSpacer(height: 10),
       GestureDetector(
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-              color: titleBackgroundColor,
-              borderRadius: BorderRadius.circular(13)),
+            color: titleBackgroundColor,
+            borderRadius: BorderRadius.circular(13),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           child: WTextContent(
             value: title,
@@ -97,7 +93,7 @@ Widget buildHomeSelection(
             textColor: textColor,
           ),
         ),
-      )
+      ),
     ],
   );
 }

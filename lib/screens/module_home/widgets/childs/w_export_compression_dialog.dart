@@ -36,9 +36,7 @@ class WExportCompression extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(22)),
       height: 172,
       width: 328,
       child: Stack(
@@ -58,7 +56,7 @@ class WExportCompression extends StatelessWidget {
                     _buildSlider(context),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -72,13 +70,8 @@ class WExportCompression extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(22),
         child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 20,
-            sigmaY: 20,
-          ),
-          child: Container(
-            color: Theme.of(context).dialogBackgroundColor,
-          ),
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(color: Theme.of(context).dialogBackgroundColor),
         ),
       ),
     );
@@ -96,17 +89,15 @@ class WExportCompression extends StatelessWidget {
     );
   }
 
-  Widget _buildSegments({
-    required BuildContext context,
-  }) {
+  Widget _buildSegments({required BuildContext context}) {
     return Flexible(
       child: SizedBox(
         width: 300,
         height: 36,
         child: ValueListenableBuilder(
-          valueListenable: ValuesListenablesCustom(valueListenables: [
-            _vIndexSegment,
-          ]),
+          valueListenable: ValuesListenablesCustom(
+            valueListenables: [_vIndexSegment],
+          ),
           builder: (context, _, child) {
             return buildSegmentControl(
               context: context,
@@ -117,8 +108,9 @@ class WExportCompression extends StatelessWidget {
                 _vIndexSegment.value = value;
                 // onCaculateFileSize();
               },
-              unactiveTextColor:
-                  Theme.of(context).textTheme.displayMedium!.color,
+              unactiveTextColor: Theme.of(
+                context,
+              ).textTheme.displayMedium!.color,
               borderRadius: 12,
             );
           },
@@ -129,81 +121,82 @@ class WExportCompression extends StatelessWidget {
 
   Widget _buildSlider(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: ValuesListenablesCustom(valueListenables: [
-          _vIndexSegment,
-        ]),
-        builder: (context, _, child) {
-          if (_vIndexSegment.value == 1) {
-            return Container(
-              height: 30,
-              color: transparent,
-            );
-          }
-          return Container(
-            color: transparent,
-            width: 300,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                WTextContent(
-                  value: "Compression:",
-                  textSize: 13,
-                  textLineHeight: 15.51,
-                  textFontWeight: FontWeight.w600,
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [_vIndexSegment],
+      ),
+      builder: (context, _, child) {
+        if (_vIndexSegment.value == 1) {
+          return Container(height: 30, color: transparent);
+        }
+        return Container(
+          color: transparent,
+          width: 300,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              WTextContent(
+                value: "Compression:",
+                textSize: 13,
+                textLineHeight: 15.51,
+                textFontWeight: FontWeight.w600,
+              ),
+              ValueListenableBuilder(
+                valueListenable: ValuesListenablesCustom(
+                  valueListenables: [_vSliderPercent],
                 ),
-                ValueListenableBuilder(
-                  valueListenable: ValuesListenablesCustom(valueListenables: [
-                    _vSliderPercent,
-                  ]),
-                  builder: (context, _, child) {
-                    return Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 3),
-                        child: WSlider1(
-                          value: _vSliderPercent.value,
-                          max: _vMax,
-                          min: _vMin,
-                          activeColor:
-                              Theme.of(context).textTheme.displayLarge!.color,
-                          inactiveColor:
-                              Theme.of(context).sliderTheme.inactiveTrackColor,
-                          onChanged: (value) {
-                            _vSliderPercent.value = value;
-                            onChangeCompression(
-                              int.parse(value.roundWithUnit(fractionDigits: 0)),
-                            );
-                          },
-                          onChangeEnd: (value) {
-                            onCompressionEnd(int.parse(
-                                value.roundWithUnit(fractionDigits: 0)));
-                            // onCaculateFileSize();
-                          },
-                        ),
+                builder: (context, _, child) {
+                  return Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      child: WSlider1(
+                        value: _vSliderPercent.value,
+                        max: _vMax,
+                        min: _vMin,
+                        activeColor: Theme.of(
+                          context,
+                        ).textTheme.displayLarge!.color,
+                        inactiveColor: Theme.of(
+                          context,
+                        ).sliderTheme.inactiveTrackColor,
+                        onChanged: (value) {
+                          _vSliderPercent.value = value;
+                          onChangeCompression(
+                            int.parse(value.roundWithUnit(fractionDigits: 0)),
+                          );
+                        },
+                        onChangeEnd: (value) {
+                          onCompressionEnd(
+                            int.parse(value.roundWithUnit(fractionDigits: 0)),
+                          );
+                          // onCaculateFileSize();
+                        },
                       ),
-                    );
-                  },
+                    ),
+                  );
+                },
+              ),
+              ValueListenableBuilder(
+                valueListenable: ValuesListenablesCustom(
+                  valueListenables: [_vSliderPercent],
                 ),
-                ValueListenableBuilder(
-                  valueListenable: ValuesListenablesCustom(valueListenables: [
-                    _vSliderPercent,
-                  ]),
-                  builder: (context, _, child) {
-                    return SizedBox(
-                      width: 50,
-                      child: WTextContent(
-                        value:
-                            "${(_vSliderPercent.value).roundWithUnit(fractionDigits: 0)}%",
-                        textSize: 13,
-                        textLineHeight: 15.51,
-                        textFontWeight: FontWeight.w600,
-                        textAlign: TextAlign.right,
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          );
-        });
+                builder: (context, _, child) {
+                  return SizedBox(
+                    width: 50,
+                    child: WTextContent(
+                      value:
+                          "${(_vSliderPercent.value).roundWithUnit(fractionDigits: 0)}%",
+                      textSize: 13,
+                      textLineHeight: 15.51,
+                      textFontWeight: FontWeight.w600,
+                      textAlign: TextAlign.right,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

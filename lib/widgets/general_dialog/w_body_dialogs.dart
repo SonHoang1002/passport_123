@@ -247,7 +247,7 @@ class _DialogBodyState extends State<DialogBody> {
                                             textFontWeight: FontWeight.w500,
                                             textOverflow: TextOverflow.ellipsis,
                                             textMaxLength: 2,
-                                            textColor: widget.selectedValue == e.$2
+                                            textColor: widget.selectedValue == e
                                                 ? widget.selectedTextColor
                                                 : widget.textColor,
                                           ),
@@ -261,7 +261,7 @@ class _DialogBodyState extends State<DialogBody> {
                                               ).iconTheme.color,
                                               // isDarkMode ? white07 : black07,
                                             ),
-                                          if (widget.selectedValue == e.$2)
+                                          if (widget.selectedValue == e)
                                             widget.selectedWidget ??
                                                 const SizedBox(),
                                         ],

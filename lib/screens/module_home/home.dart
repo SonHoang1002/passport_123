@@ -28,15 +28,15 @@ class _HomePageMainState extends State<HomePageMain> {
     if (_isWillPopClicked) return true;
     _isWillPopClicked = true;
     setState(() {});
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: WTextContent(value: "Click again to exit!!"),
-      margin: const EdgeInsets.only(bottom: 30, right: 10, left: 10),
-      behavior: SnackBarBehavior.floating,
-      backgroundColor: Theme.of(context).dialogBackgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: WTextContent(value: "Click again to exit!!"),
+        margin: const EdgeInsets.only(bottom: 30, right: 10, left: 10),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Theme.of(context).dialogBackgroundColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
-    ));
+    );
     Future.delayed(const Duration(seconds: 5), () {
       setState(() {
         _isWillPopClicked = false;
@@ -73,10 +73,12 @@ class _HomePageMainState extends State<HomePageMain> {
 
     if (listCountryModel != null) {
       // ignore: use_build_context_synchronously
-      BlocProvider.of<CountryBloc>(context, listen: false)
-          .add(UpdateCountryEvent(listCountry: listCountryModel));
-      List<String>? country =
-          await SharedPreferencesHelper().getCountryPassport();
+      BlocProvider.of<CountryBloc>(
+        context,
+        listen: false,
+      ).add(UpdateCountryEvent(listCountry: listCountryModel));
+      List<String>? country = await SharedPreferencesHelper()
+          .getCountryPassport();
       if (country == null) {
         _projectModel.countryModel = listCountryModel
             .where((element) => element.title == DEFAULT_PASSPORT_COUNTRY)
@@ -105,19 +107,22 @@ class _HomePageMainState extends State<HomePageMain> {
               break;
           }
           _projectModel.countryModel = CountryModel.createCustomCountryModel(
-              width: (double.parse(country[2])),
-              height: (double.parse(country[3])),
-              ratioHead: (double.parse(country[4])),
-              ratioEyes: (double.parse(country[5])),
-              ratioChin: (double.parse(country[6])),
-              currentUnit: currentUnit);
+            width: (double.parse(country[2])),
+            height: (double.parse(country[3])),
+            ratioHead: (double.parse(country[4])),
+            ratioEyes: (double.parse(country[5])),
+            ratioChin: (double.parse(country[6])),
+            currentUnit: currentUnit,
+          );
         } else {
           for (int i = 0; i < listCountryModel.length; i++) {
             if (listCountryModel[i].id == int.parse(country[0])) {
               _projectModel.countryModel = listCountryModel[i];
-              for (int y = 0;
-                  y < _projectModel.countryModel!.listPassportModel.length;
-                  y++) {
+              for (
+                int y = 0;
+                y < _projectModel.countryModel!.listPassportModel.length;
+                y++
+              ) {
                 if (_projectModel.countryModel!.listPassportModel[y].id ==
                     int.parse(country[1])) {
                   _projectModel.countryModel!.indexSelectedPassport = y;
@@ -132,22 +137,20 @@ class _HomePageMainState extends State<HomePageMain> {
 
   @override
   Widget build(BuildContext context) {
-    final DeviceType deviceType =
-        BlocProvider.of<DevicePlatformCubit>(context, listen: true).getPlatform;
+    final DeviceType deviceType = BlocProvider.of<DevicePlatformCubit>(
+      context,
+      listen: true,
+    ).getPlatform;
     Widget body = const SizedBox();
     switch (deviceType) {
       case DeviceType.Phone:
         if (1 == 1) {
-          body = HomePagePhone(
-            project: _projectModel,
-          );
+          body = HomePagePhone(project: _projectModel);
         } else {
           // body = const WTestScreen();
         }
       case DeviceType.Tablet:
-        body = HomePageTablet(
-          project: _projectModel,
-        );
+        body = HomePageTablet(project: _projectModel);
     }
     return WillPopScope(
       onWillPop: () async {

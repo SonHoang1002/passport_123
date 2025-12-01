@@ -29,14 +29,17 @@ class _OnBoardPageState extends State<OnBoardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: true).isDarkMode;
+    final isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: true,
+    ).isDarkMode;
     return Scaffold(
       body: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
         padding: EdgeInsets.only(
-            top: MediaQuery.of(context).padding.top + 20,
-            bottom: MediaQuery.of(context).padding.bottom + 20),
+          top: MediaQuery.of(context).padding.top + 20,
+          bottom: MediaQuery.of(context).padding.bottom + 20,
+        ),
         alignment: Alignment.center,
         child: Stack(
           children: [
@@ -98,7 +101,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
                   }
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -108,8 +111,10 @@ class _OnBoardPageState extends State<OnBoardPage> {
   void _onPageChanged(int index) {
     setState(() {
       _indexCurrentCarousel = index;
-      _carouselSliderController.animateToPage(_indexCurrentCarousel,
-          curve: CUBIC_CURVE);
+      _carouselSliderController.animateToPage(
+        _indexCurrentCarousel,
+        curve: CUBIC_CURVE,
+      );
     });
   }
 }

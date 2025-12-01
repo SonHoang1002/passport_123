@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pass1_/models/export_size_model.dart';
 import 'package:pass1_/commons/colors.dart';
 import 'package:pass1_/commons/constants.dart';
 import 'package:pass1_/helpers/convert.dart';

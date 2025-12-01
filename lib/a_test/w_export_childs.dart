@@ -502,26 +502,26 @@ class WExports {
     required bool isDarkMode,
     required int indexImageFormat,
     required int indexTab,
-    Color? textColorWhenOverSize,
   }) {
     String message = "--";
+
+    PassportModel currentPassport = countrySelected.currentPassport;
     bool isOverflowSize = ExportHelpers().checkOverFlowSize(
       screenSize,
-      countrySelected.currentPassport,
-      // dpi,
+      currentPassport,
+      dpi,
     );
+    consolelog("isOverflowSizeisOverflowSize = $isOverflowSize");
 
     if (!isOverflowSize) {
-      PassportModel currentPassport = countrySelected.currentPassport;
       double passportWidthByPixelWithDpi, passportHeightByPixelWithDpi;
       // Size sizeToPreviewByPixel = Size(
       //   FlutterConvert.convertUnit(
       //       currentPassport.unit, PIXEL, currentPassport.width),
-      //   FlutterConvert.convertUnit( 
+      //   FlutterConvert.convertUnit(
       //       currentPassport.unit, PIXEL, currentPassport.height),
       // );
       bool isTabPhoto = indexTab == 0;
-      consolelog("123123 = $currentPassport");
       if (isTabPhoto) {
         switch (indexImageFormat) {
           case 0: // JPG
@@ -662,15 +662,30 @@ class WExports {
 
       message =
           "${passportWidthByPixelWithDpi.roundWithUnit(fractionDigits: 0)}x${passportHeightByPixelWithDpi.roundWithUnit(fractionDigits: 0)}";
+    } else {
+      /// Ví dụ 500x600inch , dpi 600
+      /// -> số print point  = 300000x360000px
+      /// -> 6667x8000px -> Ảnh sẽ có kích thước như này
+
+      double aspectRatio = currentPassport.width / currentPassport.height;
+
+      double widthInPixelLimited, heightInPixelLimited;
+      if (aspectRatio > 1) {
+        widthInPixelLimited = LIMITATION_DIMENSION_BY_PIXEl;
+        heightInPixelLimited = widthInPixelLimited / aspectRatio;
+      } else if (aspectRatio < 1) {
+        heightInPixelLimited = LIMITATION_DIMENSION_BY_PIXEl;
+        widthInPixelLimited = heightInPixelLimited * aspectRatio;
+      } else {
+        widthInPixelLimited = heightInPixelLimited =
+            LIMITATION_DIMENSION_BY_PIXEl;
+      }
+      message = message =
+          "${widthInPixelLimited.roundWithUnit(fractionDigits: 0)}x${heightInPixelLimited.roundWithUnit(fractionDigits: 0)}";
     }
     message += "px";
 
-    return _buildText(
-      context,
-      isDarkMode,
-      message,
-      textColor: textColorWhenOverSize,
-    );
+    return _buildText(context, isDarkMode, message);
   }
 
   static Widget buildAnalyzeOutputFormat(

@@ -92,6 +92,10 @@ class _WExportBody1State extends State<WExportBody1> {
         currentPassport.unit == PIXEL;
   }
 
+  double get dpi {
+    return _vSliderDpiResolutionMain.value;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -100,16 +104,17 @@ class _WExportBody1State extends State<WExportBody1> {
     }
   }
 
-  Future<double?> _handleGetFileSize() async {
+  Future<double?> _handleGenerateSinglePhotoMedia() async {
     if (!_isCaculating.value) {
       _isCaculating.value = true;
     }
     Stopwatch stopwatch = Stopwatch()..start();
     double? result;
-    result = 5;
-    // result = await _runGetFileSizeOnBackground();
+    result = await _runGetFileSizeOnBackground();
     stopwatch.stop();
-    consolelog("_handleGetFileSize call: ${stopwatch.elapsedMilliseconds}");
+    consolelog(
+      "_handleGenerateSinglePhotoMedia call: ${stopwatch.elapsedMilliseconds}",
+    );
     if (_isCaculating.value) {
       _isCaculating.value = false;
     }
@@ -117,25 +122,26 @@ class _WExportBody1State extends State<WExportBody1> {
   }
 
   Future<double?> _runGetFileSizeOnBackground() async {
-    var currentPassport = widget.countrySelected.currentPassport;
-    bool isOverflowSize = ExportHelpers().checkOverFlowSize(
-      _size,
-      currentPassport,
-      // _vSliderDpiResolutionMain.value,
-    );
-    if (isOverflowSize) {
-      return null;
-    }
+    // var currentPassport = widget.countrySelected.currentPassport;
+    // bool isOverflowSize = ExportHelpers().checkOverFlowSize(
+    //   _size,
+    //   currentPassport,
+    //   dpi,
+    // );
+    // if (isOverflowSize) {
+    //   return null;
+    // }
     if (isTabPhoto) {
-      Map<String, dynamic> result = await ExportHelpers.handleGetFileSize(
-        indexImageFormat: indexImageFormat,
-        imageCropped: widget.imageCropped,
-        countrySelected: widget.countrySelected,
-        // screenSize: _size,
-        valueResolutionDpi: _vSliderDpiResolutionMain.value,
-        // listPassportDimensionByInch: _listPassportDimensionByInch,
-        quality: _vSliderCompressionPercent.value,
-      );
+      Map<String, dynamic> result =
+          await ExportHelpers.handleGenerateSinglePhotoMedia(
+            indexImageFormat: indexImageFormat,
+            imageCropped: widget.imageCropped,
+            countrySelected: widget.countrySelected,
+            // screenSize: _size,
+            valueResolutionDpi: dpi,
+            // listPassportDimensionByInch: _listPassportDimensionByInch,
+            quality: _vSliderCompressionPercent.value,
+          );
 
       File? outputFile = result["outputFile"];
       if (outputFile != null && _convertedPhotoFile?.path != outputFile.path) {
@@ -144,17 +150,19 @@ class _WExportBody1State extends State<WExportBody1> {
       return result['fileSize'];
     } else {
       double sum = 0.0;
-      List<File> listPaperFile = await ExportHelpers.onGenerateExportFiles(
-        projectModel: widget.projectModel,
-        exportSize: _vExportSize.value,
-        copyNumber: _vCopyCount.value,
-        valueResolutionDpi: _vSliderDpiResolutionMain.value,
-        indexImageFormat: indexImageFormat,
-        countrySelected: widget.countrySelected,
-        screenSize: _size,
-        listPassportDimensionByInch: _listPassportDimensionByInch,
-        quality: _vSliderCompressionPercent.value,
-      );
+      return sum;
+      List<File> listPaperFile =
+          await ExportHelpers.handleGenerateMultiplePaperMedia(
+            projectModel: widget.projectModel,
+            exportSize: _vExportSize.value,
+            copyNumber: _vCopyCount.value,
+            valueResolutionDpi: dpi,
+            indexImageFormat: indexImageFormat,
+            countrySelected: widget.countrySelected,
+            screenSize: _size,
+            listPassportDimensionByInch: _listPassportDimensionByInch,
+            quality: _vSliderCompressionPercent.value,
+          );
       _convertedPaperFiles = listPaperFile;
 
       for (var item in listPaperFile) {
@@ -306,8 +314,8 @@ class _WExportBody1State extends State<WExportBody1> {
 
     if (currentPassport.unit == PIXEL) {
       _listPassportDimensionByInch = [
-        currentPassport.width / _vSliderDpiResolutionMain.value,
-        currentPassport.height / _vSliderDpiResolutionMain.value,
+        currentPassport.width / dpi,
+        currentPassport.height / dpi,
       ];
     } else {
       _listPassportDimensionByInch = [
@@ -390,7 +398,6 @@ class _WExportBody1State extends State<WExportBody1> {
                       dpi: _vSliderDpiResolutionPreview.value,
                       indexImageFormat: indexImageFormat,
                       indexTab: indexTab,
-                      textColorWhenOverSize: red,
                     );
                   },
                 ),
@@ -421,7 +428,7 @@ class _WExportBody1State extends State<WExportBody1> {
                   ),
                   builder: (context, _, child) {
                     return FutureBuilder<double?>(
-                      future: _handleGetFileSize(),
+                      future: _handleGenerateSinglePhotoMedia(),
                       builder: (context, snapshot) {
                         double? data;
                         if (snapshot.connectionState == ConnectionState.done) {
@@ -433,7 +440,7 @@ class _WExportBody1State extends State<WExportBody1> {
                           fileSize: data,
                           size: _size,
                           countrySelected: countrySelected,
-                          valueResolution: _vSliderDpiResolutionMain.value,
+                          valueResolution: dpi,
                           listPassportDimensionByInch:
                               _listPassportDimensionByInch,
                         );
@@ -522,7 +529,7 @@ class _WExportBody1State extends State<WExportBody1> {
           screenSize: _size,
           projectModel: widget.projectModel,
           copyNumber: _vCopyCount.value,
-          valueResolutionDpi: _vSliderDpiResolutionMain.value,
+          valueResolutionDpi: dpi,
         );
       },
     );
@@ -555,7 +562,7 @@ class _WExportBody1State extends State<WExportBody1> {
           copyNumber: _vCopyCount.value,
           exportSize: _vExportSize.value,
           compressionPercent: _vSliderCompressionPercent.value,
-          dpiResolution: _vSliderDpiResolutionMain.value,
+          dpiResolution: dpi,
           indexImageFormat: indexImageFormat,
           listMinMaxDpi: _vListMinMaxDpi.value,
           dataSegmentResolution: _vDataSegmentResolution.value,
@@ -613,7 +620,7 @@ class _WExportBody1State extends State<WExportBody1> {
             var overFlowSize = ExportHelpers().checkOverFlowSize(
               _size,
               widget.countrySelected.currentPassport,
-              // _vSliderDpiResolutionMain.value,
+              dpi,
             );
             if (overFlowSize) {
               ExportHelpers().showWarningExport(context);
@@ -631,7 +638,7 @@ class _WExportBody1State extends State<WExportBody1> {
             var overFlowSize = ExportHelpers().checkOverFlowSize(
               _size,
               widget.countrySelected.currentPassport,
-              // _vSliderDpiResolutionMain.value,
+              dpi,
             );
             if (overFlowSize) {
               ExportHelpers().showWarningExport(context);

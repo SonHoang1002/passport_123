@@ -22,22 +22,25 @@ class SliderColor extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(
-            color: isDarkMode ? sliderStrokeDark : sliderStrokeLight,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(999)),
+        border: Border.all(
+          color: isDarkMode ? sliderStrokeDark : sliderStrokeLight,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(999),
+      ),
       height: dotSize + 4,
       width: sliderWidth,
       child: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: listGradientColor,
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight),
-                borderRadius: BorderRadius.circular(15)),
+              gradient: LinearGradient(
+                colors: listGradientColor,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              borderRadius: BorderRadius.circular(15),
+            ),
           ),
           Positioned(
             left: offsetTracker.dx,
@@ -45,21 +48,22 @@ class SliderColor extends StatelessWidget {
               height: dotSize,
               width: dotSize,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(dotSize / 2),
-                  // boxShadow: const [
-                  //   BoxShadow(
-                  //       color: Color.fromRGBO(0, 0, 0, 0.1),
-                  //       offset: Offset(0, 2),
-                  //       blurRadius: 10,
-                  //       spreadRadius: 0)
-                  // ],
-                  color: white,
-                  border: Border.all(
-                      width: 3,
-                      color:
-                          isDarkMode ? sliderStrokeDark : sliderStrokeLight)),
+                borderRadius: BorderRadius.circular(dotSize / 2),
+                // boxShadow: const [
+                //   BoxShadow(
+                //       color: Color.fromRGBO(0, 0, 0, 0.1),
+                //       offset: Offset(0, 2),
+                //       blurRadius: 10,
+                //       spreadRadius: 0)
+                // ],
+                color: white,
+                border: Border.all(
+                  width: 3,
+                  color: isDarkMode ? sliderStrokeDark : sliderStrokeLight,
+                ),
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

@@ -7,11 +7,18 @@ import 'package:pdf/pdf.dart';
 PdfPageFormat? getPdfPageFormat(PassportModel currentPassport) {
   PdfPageFormat? pageFormat = PdfPageFormat.a4;
   double heightPassport = FlutterConvert.convertUnit(
-      currentPassport.unit, POINT, currentPassport.height);
+    currentPassport.unit,
+    POINT,
+    currentPassport.height,
+  );
   double widthPassport = FlutterConvert.convertUnit(
-      currentPassport.unit, POINT, currentPassport.width);
+    currentPassport.unit,
+    POINT,
+    currentPassport.width,
+  );
   consolelog(
-      "heightPassport: ${heightPassport}, widthPassport: ${widthPassport} ");
+    "heightPassport: ${heightPassport}, widthPassport: ${widthPassport} ",
+  );
   if (heightPassport > PdfPageFormat.a4.height ||
       widthPassport > PdfPageFormat.a4.width) {
     pageFormat = PdfPageFormat.a3;

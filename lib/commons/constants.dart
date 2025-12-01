@@ -479,7 +479,7 @@ List<ExportSizeModel> LIST_EXPORT_SIZE = [
 ];
 
 // ignore: constant_identifier_names
-const double PRINT_MARGIN_AROUND_IMAGE_BY_POINT = 0.5 /10 / 2.54 * 72; // 0.5mm
+const double PRINT_MARGIN_AROUND_IMAGE_BY_POINT = 0.5 / 10 / 2.54 * 72; // 0.5mm
 
 // ignore: constant_identifier_names
 const double PRINT_DEFAULT_DPI = 600;

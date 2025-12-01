@@ -126,7 +126,7 @@ class MarginModel {
     );
   }
 
-  EdgeInsets toEdgeInsets() {
+  EdgeInsets toEdgeInsetsByCurrentUnit() {
     EdgeInsets margin = EdgeInsets.fromLTRB(mLeft, mTop, mRight, mBottom);
     return margin;
   }

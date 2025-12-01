@@ -20,12 +20,15 @@ class RemoveBackgroundHelpers {
           BlackToTransparentConfiguration();
 
       ///Ảnh đen trắng
-      TextureSource textureBlackWhite =
-          await TextureSource.fromFile(File(pathBlackWhite));
+      TextureSource textureBlackWhite = await TextureSource.fromFile(
+        File(pathBlackWhite),
+      );
 
       /// Ảnh có nền trong suốt.MASK IMAGE
-      Image imageObjectMaskNenTrongsuot =
-          await config.export(textureBlackWhite, textureBlackWhite.size);
+      Image imageObjectMaskNenTrongsuot = await config.export(
+        textureBlackWhite,
+        textureBlackWhite.size,
+      );
       final ByteData? finalMaskNenTrongsuot = await imageObjectMaskNenTrongsuot
           .toByteData(format: ImageByteFormat.png);
       String scaledTransparentPath =
@@ -76,8 +79,9 @@ class RemoveBackgroundHelpers {
       // TextureSource ttsBlackWhite =
       //     await TextureSource.fromFile(File(pathBlackWhite));
 
-      TextureSource ttsOriginal =
-          await TextureSource.fromFile(File(originalPath));
+      TextureSource ttsOriginal = await TextureSource.fromFile(
+        File(originalPath),
+      );
 
       BlackToTransparentConfiguration config =
           BlackToTransparentConfiguration();
@@ -87,21 +91,27 @@ class RemoveBackgroundHelpers {
 
       File? blackWhiteOriginalSizeFile =
           await MyMethodChannel.resizeAndResoluteImage(
-       inputPath:  pathBlackWhite,
-       format:  1,
-       listWH:  [ttsOriginal.width.toDouble(), ttsOriginal.height.toDouble()],
-      scaleWH:   [1, 1],
-        outPath: pathBlackWhiteOriginalSize,
-        quality: 90,
-      );
+            inputPath: pathBlackWhite,
+            format: 1,
+            listWH: [
+              ttsOriginal.width.toDouble(),
+              ttsOriginal.height.toDouble(),
+            ],
+            scaleWH: [1, 1],
+            outPath: pathBlackWhiteOriginalSize,
+            quality: 90,
+          );
 
       ///Ảnh đen trắng
-      TextureSource textureBlackWhite =
-          await TextureSource.fromFile(blackWhiteOriginalSizeFile!);
+      TextureSource textureBlackWhite = await TextureSource.fromFile(
+        blackWhiteOriginalSizeFile!,
+      );
 
       /// Ảnh có nền trong suốt.MASK IMAGE
-      Image imageObjectMaskNenTrongsuot =
-          await config.export(textureBlackWhite, textureBlackWhite.size);
+      Image imageObjectMaskNenTrongsuot = await config.export(
+        textureBlackWhite,
+        textureBlackWhite.size,
+      );
 
       final ByteData? finalMaskNenTrongsuot = await imageObjectMaskNenTrongsuot
           .toByteData(format: ImageByteFormat.png);

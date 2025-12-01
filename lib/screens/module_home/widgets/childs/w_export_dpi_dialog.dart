@@ -46,8 +46,9 @@ class _WExportDpiDialogState extends State<WExportDpiDialog> {
   @override
   void initState() {
     _vIndexSegment = ValueNotifier<int>(widget.currentIndexDpiFormat);
-    _vSliderValue =
-        ValueNotifier<double>(widget.currentDpiResolution.toDouble());
+    _vSliderValue = ValueNotifier<double>(
+      widget.currentDpiResolution.toDouble(),
+    );
     _vIndexSegment.addListener(listenerSegment);
     _vSliderValue.addListener(listenerSlider);
     super.initState();
@@ -93,12 +94,9 @@ class _WExportDpiDialogState extends State<WExportDpiDialog> {
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildSegments(),
-                    _buildSlider(),
-                  ],
+                  children: [_buildSegments(), _buildSlider()],
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -112,13 +110,8 @@ class _WExportDpiDialogState extends State<WExportDpiDialog> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(22),
         child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 20,
-            sigmaY: 20,
-          ),
-          child: Container(
-            color: Theme.of(context).dialogBackgroundColor,
-          ),
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(color: Theme.of(context).dialogBackgroundColor),
         ),
       ),
     );
@@ -143,9 +136,9 @@ class _WExportDpiDialogState extends State<WExportDpiDialog> {
         height: 36,
         color: transparent,
         child: ValueListenableBuilder(
-          valueListenable: ValuesListenablesCustom(valueListenables: [
-            _vIndexSegment,
-          ]),
+          valueListenable: ValuesListenablesCustom(
+            valueListenables: [_vIndexSegment],
+          ),
           builder: (context, _, child) {
             return buildSegmentControl(
               context: context,
@@ -167,8 +160,9 @@ class _WExportDpiDialogState extends State<WExportDpiDialog> {
                 }
                 _vIndexSegment.value = value!;
               },
-              unactiveTextColor:
-                  Theme.of(context).textTheme.displayMedium!.color,
+              unactiveTextColor: Theme.of(
+                context,
+              ).textTheme.displayMedium!.color,
               borderRadius: 12,
             );
           },
@@ -185,9 +179,9 @@ class _WExportDpiDialogState extends State<WExportDpiDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ValueListenableBuilder(
-            valueListenable: ValuesListenablesCustom(valueListenables: [
-              _vSliderValue,
-            ]),
+            valueListenable: ValuesListenablesCustom(
+              valueListenables: [_vSliderValue],
+            ),
             builder: (context, _, child) {
               return Expanded(
                 child: WSlider1(
@@ -195,8 +189,9 @@ class _WExportDpiDialogState extends State<WExportDpiDialog> {
                   min: widget.listMinMaxDpi[0],
                   max: widget.listMinMaxDpi[1],
                   activeColor: Theme.of(context).textTheme.displayLarge!.color,
-                  inactiveColor:
-                      Theme.of(context).sliderTheme.inactiveTrackColor,
+                  inactiveColor: Theme.of(
+                    context,
+                  ).sliderTheme.inactiveTrackColor,
                   onChanged: (value) {
                     _vIndexSegment.value = 2;
                     _vSliderValue.value = value;
@@ -212,9 +207,9 @@ class _WExportDpiDialogState extends State<WExportDpiDialog> {
             },
           ),
           ValueListenableBuilder(
-            valueListenable: ValuesListenablesCustom(valueListenables: [
-              _vSliderValue,
-            ]),
+            valueListenable: ValuesListenablesCustom(
+              valueListenables: [_vSliderValue],
+            ),
             builder: (context, _, child) {
               return SizedBox(
                 width: 40,

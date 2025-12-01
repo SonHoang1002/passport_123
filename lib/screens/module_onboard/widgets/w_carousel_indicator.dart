@@ -15,16 +15,19 @@ class WCarouselIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        BlocProvider.of<ThemeBloc>(context, listen: true).isDarkMode;
+    final isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: true,
+    ).isDarkMode;
     return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: listInstructionModel.indexed.map((e) {
-          final index = e.$1;
-          return _buildDot(index == currentIndex
-              ? blue
-              : (isDarkMode ? white015 : black015));
-        }).toList());
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: listInstructionModel.indexed.map((e) {
+        final index = e.$1;
+        return _buildDot(
+          index == currentIndex ? blue : (isDarkMode ? white015 : black015),
+        );
+      }).toList(),
+    );
   }
 
   Widget _buildDot(Color color) {

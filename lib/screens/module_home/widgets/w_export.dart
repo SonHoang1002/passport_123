@@ -62,7 +62,7 @@
 //     _valueResolution = _valueSlider = 300;
 //     _handleConvertCurrentUnitToINCH();
 //     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-//       await _handleGetFileSize();
+//       await _handleGenerateSinglePhotoMedia();
 //     });
 //   }
 
@@ -90,10 +90,10 @@
 //     _indexSelectedFormat = value;
 //     _handleResetFiles(forceReset: true);
 //     setState(() {});
-//     await _handleGetFileSize();
+//     await _handleGenerateSinglePhotoMedia();
 //   }
 
-//   Future<double> _handleGetFileSize({
+//   Future<double> _handleGenerateSinglePhotoMedia({
 //     double? fileHeight,
 //     double? fileWidth,
 //   }) async {
@@ -148,7 +148,7 @@
 //       default:
 //     }
 //     setState(() {});
-//     await _handleGetFileSize();
+//     await _handleGenerateSinglePhotoMedia();
 //   }
 
 //   Future<bool> _onSaveTo(File? file, String fileName) async {
@@ -464,7 +464,7 @@
 //                                               _valueResolution = value;
 //                                           _handleResetFiles();
 //                                           setState(() {});
-//                                           await _handleGetFileSize();
+//                                           await _handleGenerateSinglePhotoMedia();
 //                                         },
 //                                         min: 300,
 //                                         max: 1200,

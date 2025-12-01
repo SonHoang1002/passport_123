@@ -17,8 +17,9 @@ Widget buildImageOriginal({
         height: imageHeight,
         width: imageWidth,
         fit: BoxFit.cover,
-        color:
-            (projectModel.background is Color) ? projectModel.background : null,
+        color: (projectModel.background is Color)
+            ? projectModel.background
+            : null,
         colorBlendMode: BlendMode.multiply,
         opacity: const AlwaysStoppedAnimation(0.1), //0.3
       ),
@@ -36,10 +37,7 @@ Widget buildImageOriginal({
             ],
           ),
         ),
-        child: SizedBox(
-          height: imageHeight,
-          width: imageWidth,
-        ),
+        child: SizedBox(height: imageHeight, width: imageWidth),
       ),
     ],
   );

@@ -5,11 +5,13 @@ import 'package:pass1_/helpers/log_custom.dart';
 
 class FirebaseHelpers {
   Future<DocumentReference<Map<String, dynamic>>> _getAndroidDocument(
-      String? androidId) async {
+    String? androidId,
+  ) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
-      DocumentReference<Map<String, dynamic>> docRef =
-          db.collection("users").doc(androidId);
+      DocumentReference<Map<String, dynamic>> docRef = db
+          .collection("users")
+          .doc(androidId);
       return docRef;
     } catch (e) {
       consolelog("_getAndroidDocument error: ${e.toString()}");
@@ -27,8 +29,10 @@ class FirebaseHelpers {
         docRef
             .set({"id": androidId, "isRating": false})
             .then((void x) => debugPrint("Add id success"))
-            .onError((Object? error, StackTrace stackTrace) =>
-                debugPrint("Add id error: $error"));
+            .onError(
+              (Object? error, StackTrace stackTrace) =>
+                  debugPrint("Add id error: $error"),
+            );
       }
     } catch (e) {
       consolelog("sendFirebaseAndroidId error: ${e.toString()}");
@@ -69,17 +73,29 @@ class FirebaseHelpers {
       if (doc.data() != null && doc.exists) {
         docRef
             .update({"isRating": true, "id": androidId})
-            .then((void x) => debugPrint(
-                " ------------------------- Update rating status to true ------------------------- "))
-            .onError((Object? error, StackTrace stackTrace) => debugPrint(
-                " ------------------------- Update rating error: $error  ------------------------- "));
+            .then(
+              (void x) => debugPrint(
+                " ------------------------- Update rating status to true ------------------------- ",
+              ),
+            )
+            .onError(
+              (Object? error, StackTrace stackTrace) => debugPrint(
+                " ------------------------- Update rating error: $error  ------------------------- ",
+              ),
+            );
       } else {
         docRef
             .set({"isRating": true, "id": androidId})
-            .then((void x) => debugPrint(
-                " ------------------------- Update (with create when doc is null) rating status to true ------------------------- "))
-            .onError((Object? error, StackTrace stackTrace) => debugPrint(
-                " ------------------------- Update (with create when doc is null) rating error: $error  ------------------------- "));
+            .then(
+              (void x) => debugPrint(
+                " ------------------------- Update (with create when doc is null) rating status to true ------------------------- ",
+              ),
+            )
+            .onError(
+              (Object? error, StackTrace stackTrace) => debugPrint(
+                " ------------------------- Update (with create when doc is null) rating error: $error  ------------------------- ",
+              ),
+            );
       }
       return true;
     } catch (e) {
@@ -96,10 +112,16 @@ class FirebaseHelpers {
       if (doc.data() != null && doc.exists) {
         docRef
             .delete()
-            .then((void x) => debugPrint(
-                " ------------------------- Delete succesfully ------------------------- "))
-            .onError((Object? error, StackTrace stackTrace) => debugPrint(
-                " ------------------------- Delete error: $error  ------------------------- "));
+            .then(
+              (void x) => debugPrint(
+                " ------------------------- Delete succesfully ------------------------- ",
+              ),
+            )
+            .onError(
+              (Object? error, StackTrace stackTrace) => debugPrint(
+                " ------------------------- Delete error: $error  ------------------------- ",
+              ),
+            );
       }
     } catch (e) {
       debugPrint("testDeleteRating error: $e");

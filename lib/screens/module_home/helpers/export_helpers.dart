@@ -30,7 +30,7 @@ import 'package:pass1_/widgets/general_dialog/w_general_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ExportHelpers {
-  static Future<List<File>> onGenerateExportFiles({
+  static Future<List<File>> handleGenerateMultiplePaperMedia({
     required ProjectModel projectModel,
     required ExportSizeModel exportSize,
     required int copyNumber,
@@ -47,23 +47,51 @@ class ExportHelpers {
     switch (indexImageFormat) {
       case 0: // JPG
       case 1: // PNG
+        // Lấy uiImage từ ảnh original đã crop
+
+        // consolelog("indexImageFormatindexImageFormat = $indexImageFormat");
+        // (ui.Image, Uint8List) imageData = await _loadImageDataForPdfImageFormat(
+        //   projectModel,
+        //   indexImageFormat,
+        //   countrySelected,
+        //   screenSize,
+        //   valueResolutionDpi,
+        //   listPassportDimensionByInch,
+        //   quality,
+        // );
+        // Map<String, dynamic> drawResult = GeneratePdfHelpers().drawPdfImage(
+        //   projectModel,
+        //   exportSize,
+        //   copyNumber,
+        //   imageData.$1,
+        //   valueResolutionDpi,
+        // );
+
         consolelog("indexImageFormatindexImageFormat = $indexImageFormat");
-        (ui.Image, Uint8List) imageData = await _loadImageDataForPdfImageFormat(
-          projectModel,
-          indexImageFormat,
-          countrySelected,
-          screenSize,
-          valueResolutionDpi,
-          listPassportDimensionByInch,
-          quality,
-        );
-        Map<String, dynamic> drawResult = GeneratePdfHelpers().drawPdfImage(
+        // (ui.Image, Uint8List) imageData = await _loadImageDataForPdfImageFormat(
+        //   projectModel,
+        //   indexImageFormat,
+        //   countrySelected,
+        //   screenSize,
+        //   valueResolutionDpi,
+        //   listPassportDimensionByInch,
+        //   quality,
+        // );
+        // Map<String, dynamic> drawResult = GeneratePdfHelpers().drawPdfImage(
+        //   projectModel,
+        //   exportSize,
+        //   copyNumber,
+        //   imageData.$1,
+        //   valueResolutionDpi,
+        // );
+
+        var drawResult = await GeneratePdfHelpers().drawPdfImageV1(
           projectModel,
           exportSize,
           copyNumber,
-          imageData.$1,
           valueResolutionDpi,
         );
+
         List<ui.Image> listPdfImages = drawResult["listUiPdfImage"];
         // Size paperSizeByPixel = drawResult["paperSizeByPixel"];
         // Size passportSizeByPixel = drawResult["passportSizeByPixel"];
@@ -242,7 +270,7 @@ class ExportHelpers {
   ///   "outputFile": ,
   ///   "fileSize": ,
   /// };
-  static Future<Map<String, dynamic>> handleGetFileSize({
+  static Future<Map<String, dynamic>> handleGenerateSinglePhotoMedia({
     required int indexImageFormat,
     required File imageCropped,
     required CountryModel countrySelected,
@@ -264,21 +292,20 @@ class ExportHelpers {
         String extension = JPG.toLowerCase();
         String outImagePath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
 
-        File? pdfFile;
         PassportModel currentPassport = countrySelected.currentPassport;
-        double passportWidthByPixel, passportHeightByPixel;
+        double passportWidthByPixelPoint, passportHeightByPixelPoint;
         if (currentPassport.unit == PIXEL) {
-          passportWidthByPixel = currentPassport.width;
-          passportHeightByPixel = currentPassport.height;
+          passportWidthByPixelPoint = currentPassport.width;
+          passportHeightByPixelPoint = currentPassport.height;
         } else {
-          passportWidthByPixel =
+          passportWidthByPixelPoint =
               FlutterConvert.convertUnit(
                 currentPassport.unit,
                 INCH,
                 currentPassport.width,
               ) *
               dpi;
-          passportHeightByPixel =
+          passportHeightByPixelPoint =
               FlutterConvert.convertUnit(
                 currentPassport.unit,
                 INCH,
@@ -286,58 +313,150 @@ class ExportHelpers {
               ) *
               dpi;
         }
-        double passportWidthByPixelLimited = passportWidthByPixel,
-            passportHeightByPixelLimited = passportHeightByPixel;
-        if (passportWidthByPixel > LIMITATION_DIMENSION_BY_PIXEl ||
-            passportHeightByPixel > LIMITATION_DIMENSION_BY_PIXEl) {
-          double aspectRatio = passportWidthByPixel / passportHeightByPixel;
+        double passportWidthByPixelPointLimited = passportWidthByPixelPoint;
+        double passportHeightByPixelPointLimited = passportHeightByPixelPoint;
+        if (max(passportWidthByPixelPoint, passportHeightByPixelPoint) >
+            LIMITATION_DIMENSION_BY_PIXEl) {
+          double aspectRatio =
+              passportWidthByPixelPoint / passportHeightByPixelPoint;
           if (aspectRatio > 1) {
-            passportWidthByPixelLimited = LIMITATION_DIMENSION_BY_PIXEl;
-            passportHeightByPixelLimited =
-                passportWidthByPixelLimited / aspectRatio;
+            passportWidthByPixelPointLimited = LIMITATION_DIMENSION_BY_PIXEl;
+            passportHeightByPixelPointLimited =
+                passportWidthByPixelPointLimited / aspectRatio;
           } else if (aspectRatio < 1) {
-            passportHeightByPixelLimited = LIMITATION_DIMENSION_BY_PIXEl;
-            passportWidthByPixelLimited =
-                passportHeightByPixelLimited * aspectRatio;
+            passportHeightByPixelPointLimited = LIMITATION_DIMENSION_BY_PIXEl;
+            passportWidthByPixelPointLimited =
+                passportHeightByPixelPointLimited * aspectRatio;
           } else {
-            passportWidthByPixelLimited = passportHeightByPixelLimited =
-                LIMITATION_DIMENSION_BY_PIXEl;
+            passportWidthByPixelPointLimited =
+                passportHeightByPixelPointLimited =
+                    LIMITATION_DIMENSION_BY_PIXEl;
           }
         }
+
+        consolelog(
+          "111 passportWidthByPixelPoint: $passportWidthByPixelPoint, passportHeightByPixelPoint = $passportHeightByPixelPoint, passportWidthByPixelPointLimited = $passportWidthByPixelPointLimited,  passportHeightByPixelPointLimited = $passportHeightByPixelPointLimited",
+        );
+
         File? resizedFile = await MyMethodChannel.resizeAndResoluteImage(
           inputPath: imageCropped.path,
           format: 0, // JPG format
-          listWH: [passportWidthByPixelLimited, passportHeightByPixelLimited],
+          listWH: [
+            passportWidthByPixelPointLimited,
+            passportHeightByPixelPointLimited,
+          ],
           scaleWH: [1, 1],
           outPath: outImagePath,
           quality: quality,
         );
-x
+        File? pdfFile;
         if (resizedFile != null) {
-          double passportWidthByPrintPoint, passportHeightByPrintPoint;
+          double scaleWidth, scaleHeight;
           if (currentPassport.unit == PIXEL) {
-            passportWidthByPrintPoint =
-                currentPassport.width / valueResolutionDpi * 72;
-            passportHeightByPrintPoint =
-                currentPassport.height / valueResolutionDpi * 72;
+            double passportWidthByPixel, passportHeightByPixel;
+            if ((max(currentPassport.width, currentPassport.height)) >
+                LIMITATION_DIMENSION_BY_PIXEl) {
+              double aspectRatio = currentPassport.size.aspectRatio;
+              if (aspectRatio > 1) {
+                passportWidthByPixel = LIMITATION_DIMENSION_BY_PIXEl;
+                passportHeightByPixel = passportWidthByPixel / aspectRatio;
+              } else if (aspectRatio < 1) {
+                passportHeightByPixel = LIMITATION_DIMENSION_BY_PIXEl;
+                passportWidthByPixel = passportHeightByPixel * aspectRatio;
+              } else {
+                passportWidthByPixel = passportHeightByPixel =
+                    LIMITATION_DIMENSION_BY_PIXEl;
+              }
+              scaleWidth = passportWidthByPixel / currentPassport.width;
+              scaleHeight = passportHeightByPixel / currentPassport.height;
+            } else {
+              scaleWidth = 1.0;
+              scaleHeight = 1.0;
+            }
           } else {
-            passportWidthByPrintPoint = FlutterConvert.convertUnit(
+            /// đổi đưn vị sang điểm vẽ
+            double passportWidthConvertedByPixel =
+                FlutterConvert.convertUnit(
+                  currentPassport.unit,
+                  INCH,
+                  currentPassport.width,
+                ) *
+                dpi;
+            double passportHeightConvertedByPixel =
+                FlutterConvert.convertUnit(
+                  currentPassport.unit,
+                  INCH,
+                  currentPassport.height,
+                ) *
+                dpi;
+
+            if ((max(
+                  passportWidthConvertedByPixel,
+                  passportHeightConvertedByPixel,
+                )) >
+                LIMITATION_DIMENSION_BY_PIXEl) {
+              double aspectRatio =
+                  passportWidthConvertedByPixel /
+                  passportHeightConvertedByPixel;
+              double newPassportWidthConvertedByPixel,
+                  newPassportHeightConvertedByPixel;
+              if (aspectRatio > 1) {
+                newPassportWidthConvertedByPixel =
+                    LIMITATION_DIMENSION_BY_PIXEl;
+                newPassportHeightConvertedByPixel =
+                    newPassportWidthConvertedByPixel / aspectRatio;
+              } else if (aspectRatio < 1) {
+                newPassportHeightConvertedByPixel =
+                    LIMITATION_DIMENSION_BY_PIXEl;
+                newPassportWidthConvertedByPixel =
+                    newPassportHeightConvertedByPixel * aspectRatio;
+              } else {
+                newPassportWidthConvertedByPixel =
+                    newPassportHeightConvertedByPixel =
+                        LIMITATION_DIMENSION_BY_PIXEl;
+              }
+              scaleWidth =
+                  newPassportWidthConvertedByPixel /
+                  passportWidthConvertedByPixel;
+              scaleHeight =
+                  newPassportHeightConvertedByPixel /
+                  passportHeightConvertedByPixel;
+            } else {
+              scaleWidth = 1.0;
+              scaleHeight = 1.0;
+            }
+          }
+          double passportWidthByPrintPointLimited,
+              passportHeightByPrintPointLimited;
+          if (currentPassport.unit == PIXEL) {
+            passportWidthByPrintPointLimited =
+                currentPassport.width * scaleWidth / valueResolutionDpi * 72;
+            passportHeightByPrintPointLimited =
+                currentPassport.height * scaleHeight / valueResolutionDpi * 72;
+          } else {
+            passportWidthByPrintPointLimited = FlutterConvert.convertUnit(
               currentPassport.unit,
               POINT,
-              currentPassport.width,
+              currentPassport.width * scaleWidth,
             );
-            passportHeightByPrintPoint = FlutterConvert.convertUnit(
+            passportHeightByPrintPointLimited = FlutterConvert.convertUnit(
               currentPassport.unit,
               POINT,
-              currentPassport.height,
+              currentPassport.height * scaleHeight,
             );
           }
-          consolelog("valueResolutionDpi = $valueResolutionDpi");
+
+          Size passportSizeByPrintPoint = Size(
+            passportWidthByPrintPointLimited,
+            passportHeightByPrintPointLimited,
+          );
+          consolelog(
+            " 123123 passportSizeByPrintPoint = $passportSizeByPrintPoint, scaleWidth = $scaleWidth, scaleHeight = $scaleHeight",
+          );
           pdfFile = await GeneratePdfHelpers().generateSingleImagePdf(
-            Size(passportWidthByPrintPoint, passportHeightByPrintPoint),
+            passportSizeByPrintPoint,
             [resizedFile],
           );
-          // single pdf: image data length: 927866 - pdf data length: 928820
           consolelog(
             "single pdf: image data length: ${resizedFile.readAsBytesSync().length} - pdf data length: ${pdfFile!.readAsBytesSync().length}",
           );
@@ -352,21 +471,22 @@ x
         String extension = LIST_FORMAT_IMAGE[indexImageFormat]
             .toLowerCase(); // JPG or PNG
         String outImagePath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
+
         var currentPassport = countrySelected.currentPassport;
-        double passportWidthByPixel, passportHeightByPixel;
+        double passportWidthByPixelPoint, passportHeightByPixelPoint;
 
         if (currentPassport.unit == PIXEL) {
-          passportWidthByPixel = currentPassport.width;
-          passportHeightByPixel = currentPassport.height;
+          passportWidthByPixelPoint = currentPassport.width;
+          passportHeightByPixelPoint = currentPassport.height;
         } else {
-          passportWidthByPixel =
+          passportWidthByPixelPoint =
               FlutterConvert.convertUnit(
                 currentPassport.unit,
                 INCH,
                 currentPassport.width,
               ) *
               dpi;
-          passportHeightByPixel =
+          passportHeightByPixelPoint =
               FlutterConvert.convertUnit(
                 currentPassport.unit,
                 INCH,
@@ -375,10 +495,37 @@ x
               dpi;
         }
 
+        /// Limit
+        double passportWidthByPixelPointLimited = passportWidthByPixelPoint;
+        double passportHeightByPixelPointLimited = passportHeightByPixelPoint;
+        if (max(passportWidthByPixelPoint, passportHeightByPixelPoint) >
+            LIMITATION_DIMENSION_BY_PIXEl) {
+          double aspectRatio =
+              passportWidthByPixelPoint / passportHeightByPixelPoint;
+          if (aspectRatio > 1) {
+            passportWidthByPixelPointLimited = LIMITATION_DIMENSION_BY_PIXEl;
+            passportHeightByPixelPointLimited =
+                passportWidthByPixelPointLimited / aspectRatio;
+          } else if (aspectRatio < 1) {
+            passportHeightByPixelPointLimited = LIMITATION_DIMENSION_BY_PIXEl;
+            passportWidthByPixelPointLimited =
+                passportHeightByPixelPointLimited * aspectRatio;
+          } else {
+            passportWidthByPixelPointLimited =
+                passportHeightByPixelPointLimited =
+                    LIMITATION_DIMENSION_BY_PIXEl;
+          }
+        }
+        consolelog(
+          "passportWidthByPixelPoint: $passportWidthByPixelPoint, passportHeightByPixelPoint = $passportHeightByPixelPoint, passportWidthByPixelPointLimited = $passportWidthByPixelPointLimited,  passportHeightByPixelPointLimited = $passportHeightByPixelPointLimited",
+        );
         File? resizedFile = await MyMethodChannel.resizeAndResoluteImage(
           inputPath: imageCropped.path,
           format: indexImageFormat,
-          listWH: [passportWidthByPixel, passportHeightByPixel],
+          listWH: [
+            passportWidthByPixelPointLimited,
+            passportHeightByPixelPointLimited,
+          ],
           scaleWH: [1, 1],
           outPath: outImagePath,
           quality: quality,
@@ -391,9 +538,9 @@ x
         }
       }
     } catch (e) {
-      consolelog("handleGetFileSize error: $e");
+      consolelog("handleGenerateSinglePhotoMedia error: $e");
     }
-    consolelog("result from handleGetFileSize: $result");
+    consolelog("result from handleGenerateSinglePhotoMedia: $result");
     return result;
   }
 
@@ -433,13 +580,36 @@ x
           ) *
           dpi;
     }
-    // Size abc = handleLimitDPI(
-    //     countrySelected, size, valueResolution, listPassportDimensionByInch);
+
+    double passportWidthByPixelLimited, passportHeightByPixelLimited;
+
+    if (max(passportWidthByPixel, passportHeightByPixel) >
+        LIMITATION_DIMENSION_BY_PIXEl) {
+      double aspectRatio = passportWidthByPixel / passportHeightByPixel;
+      if (aspectRatio > 1) {
+        passportWidthByPixelLimited = LIMITATION_DIMENSION_BY_PIXEl;
+        passportHeightByPixelLimited =
+            passportWidthByPixelLimited / aspectRatio;
+      } else if (aspectRatio < 1) {
+        passportHeightByPixelLimited = LIMITATION_DIMENSION_BY_PIXEl;
+        passportWidthByPixelLimited =
+            passportHeightByPixelLimited * aspectRatio;
+      } else {
+        passportWidthByPixelLimited = passportHeightByPixelLimited =
+            LIMITATION_DIMENSION_BY_PIXEl;
+      }
+    } else {
+      passportWidthByPixelLimited = passportWidthByPixel;
+      passportHeightByPixelLimited = passportHeightByPixel;
+    }
+    consolelog(
+      "_resizeImage limit: old = $passportWidthByPixel, $passportHeightByPixel, new = $passportWidthByPixelLimited, $passportHeightByPixelLimited",
+    );
 
     final resizedFile = await MyMethodChannel.resizeAndResoluteImage(
       inputPath: imageCropped.path,
       format: indexImageFormat,
-      listWH: [passportWidthByPixel, passportHeightByPixel],
+      listWH: [passportWidthByPixelLimited, passportHeightByPixelLimited],
       scaleWH: [1, 1],
       outPath: outPath,
       quality: quality,
@@ -852,41 +1022,69 @@ x
   bool checkOverFlowSize(
     Size screenSize,
     PassportModel currentPassport,
-    // double valueResolution,
+    double dpi,
   ) {
-    double widthConverted = FlutterConvert.convertUnit(
-      currentPassport.unit,
-      INCH,
-      currentPassport.width,
-    );
-    double heightConverted = FlutterConvert.convertUnit(
-      currentPassport.unit,
-      INCH,
-      currentPassport.height,
-    );
-
-    Size expandedSize = Size(widthConverted, heightConverted);
-
-    // Size(
-    //   widthConverted * valueResolution,
-    //   heightConverted * valueResolution,
-    // );
-    double maxDimension = max(expandedSize.width, expandedSize.height);
-    consolelog("maxDimension ${screenSize}");
-    if (screenSize.width > MIN_SIZE.width) {
-      if (maxDimension >= MAX_SIZE_EXPORT_IMAGE_NORMAL) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      if (maxDimension >= MAX_SIZE_EXPORT_IMAGE_WEAK) {
-        return true;
-      } else {
-        return false;
-      }
+    if (currentPassport.unit == PIXEL) {
+      return max(currentPassport.width, currentPassport.height) >
+          LIMITATION_DIMENSION_BY_PIXEl;
     }
+    double widthConvertedByPrintPoint =
+        FlutterConvert.convertUnit(
+          currentPassport.unit,
+          INCH,
+          currentPassport.width,
+        ) *
+        dpi;
+    double heightConvertedByPrintPoint =
+        FlutterConvert.convertUnit(
+          currentPassport.unit,
+          INCH,
+          currentPassport.height,
+        ) *
+        dpi;
+
+    return max(widthConvertedByPrintPoint, heightConvertedByPrintPoint) >
+        LIMITATION_DIMENSION_BY_PIXEl;
   }
+
+  // bool checkOverFlowSize(
+  //   Size screenSize,
+  //   PassportModel currentPassport,
+  //   double dpi,
+  // ) {
+  //   double widthConverted = FlutterConvert.convertUnit(
+  //     currentPassport.unit,
+  //     INCH,
+  //     currentPassport.width,
+  //   );
+  //   double heightConverted = FlutterConvert.convertUnit(
+  //     currentPassport.unit,
+  //     INCH,
+  //     currentPassport.height,
+  //   );
+
+  //   Size expandedSize = Size(widthConverted, heightConverted);
+
+  //   // Size(
+  //   //   widthConverted * valueResolution,
+  //   //   heightConverted * valueResolution,
+  //   // );
+  //   double maxDimension = max(expandedSize.width, expandedSize.height);
+  //   consolelog("maxDimension ${screenSize}");
+  //   if (screenSize.width > MIN_SIZE.width) {
+  //     if (maxDimension >= MAX_SIZE_EXPORT_IMAGE_NORMAL) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } else {
+  //     if (maxDimension >= MAX_SIZE_EXPORT_IMAGE_WEAK) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   }
+  // }
 
   void showWarningExport(BuildContext context) {
     showCustomAboutDialog(

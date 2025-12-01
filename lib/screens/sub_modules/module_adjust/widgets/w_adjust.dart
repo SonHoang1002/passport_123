@@ -97,17 +97,12 @@ Widget _buildPreviewSelectionImage({
   required double size,
 }) {
   return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(999),
-    ),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(999)),
     height: size,
     width: size,
     child: ClipRRect(
       borderRadius: BorderRadius.circular(999),
-      child: Image.file(
-        image,
-        fit: BoxFit.cover,
-      ),
+      child: Image.file(image, fit: BoxFit.cover),
     ),
   );
 }
@@ -139,8 +134,11 @@ Widget buildAdjustSubjectTitlePreview({
   required AdjustSubjectModel model,
 }) {
   consolelog("buildAdjustSubjectTitlePreview: ${model.toString()}");
-  final delta = double.parse((model.currentRatioValue - model.rootRatioValue)
-      .roundWithUnit(fractionDigits: 2));
+  final delta = double.parse(
+    (model.currentRatioValue - model.rootRatioValue).roundWithUnit(
+      fractionDigits: 2,
+    ),
+  );
   String additionalInformation = "";
   if (delta > 0) {
     additionalInformation = ":+${delta.roundWithUnit(fractionDigits: 2)}";
@@ -156,8 +154,9 @@ Widget buildAdjustSubjectTitlePreview({
         width: 160,
         margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            color: isDarkMode ? black05 : black03),
+          borderRadius: BorderRadius.circular(6),
+          color: isDarkMode ? black05 : black03,
+        ),
         alignment: Alignment.center,
         child: FittedBox(
           child: WTextContent(
@@ -168,15 +167,20 @@ Widget buildAdjustSubjectTitlePreview({
           ),
         ),
       ),
-      const SizedBox(
-        height: 10,
-      )
+      const SizedBox(height: 10),
     ],
   );
 }
 
-Widget buildBlurShadowImage1(Uint8List data, double? height, double? width,
-    {double? top, double? left, double? right, double? bottom}) {
+Widget buildBlurShadowImage1(
+  Uint8List data,
+  double? height,
+  double? width, {
+  double? top,
+  double? left,
+  double? right,
+  double? bottom,
+}) {
   return Positioned(
     top: top,
     left: left,
@@ -198,24 +202,31 @@ Widget buildBlurShadowImage1(Uint8List data, double? height, double? width,
 }
 
 Widget buildBlurShadowImage(
-    ui.Image image, double? height, double? width, Paint paint,
-    {double? top, double? left, double? right, double? bottom}) {
-  return Positioned(
-      top: top,
-      left: left,
-      right: right,
-      bottom: bottom,
-      child: CustomPaint(
-        painter: CustomPainterBlurredShadowImage(
-            paintBlur: paint, image: image, targetSize: Size(width!, height!)),
-      ));
-}
-
-Widget buildBlursReflection1(
-  Uint8List data,
+  ui.Image image,
   double? height,
   double? width,
-) {
+  Paint paint, {
+  double? top,
+  double? left,
+  double? right,
+  double? bottom,
+}) {
+  return Positioned(
+    top: top,
+    left: left,
+    right: right,
+    bottom: bottom,
+    child: CustomPaint(
+      painter: CustomPainterBlurredShadowImage(
+        paintBlur: paint,
+        image: image,
+        targetSize: Size(width!, height!),
+      ),
+    ),
+  );
+}
+
+Widget buildBlursReflection1(Uint8List data, double? height, double? width) {
   return ImageFiltered(
     imageFilter: PAINT_BLURRED.imageFilter!,
     child: Image.memory(
@@ -227,16 +238,14 @@ Widget buildBlursReflection1(
   );
 }
 
-Widget buildBlursReflection(
-  ui.Image image,
-  double? height,
-  double? width,
-) {
+Widget buildBlursReflection(ui.Image image, double? height, double? width) {
   return Opacity(
     opacity: 0.02,
     child: CustomPaint(
       painter: CustomPainterBlurredImage(
-          image: image, targetSize: Size(width!, height!)),
+        image: image,
+        targetSize: Size(width!, height!),
+      ),
     ),
   );
 }

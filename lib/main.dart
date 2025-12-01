@@ -33,13 +33,13 @@ import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(); //options: DefaultFirebasePlatform.currentPlatform
-  // await FirebaseAppCheck.instance.activate(
-  //   androidProvider: AndroidProvider.playIntegrity,
-  // );
+  await Firebase.initializeApp(); //options: DefaultFirebasePlatform.currentPlatform
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.playIntegrity,
+  );
   // ignore: unused_local_variable
-  // FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   await FlutterDisplayMode.setHighRefreshRate();
   // ignore: unused_local_variable
   final DisplayMode m = await FlutterDisplayMode.active;
@@ -85,7 +85,7 @@ void main() async {
   bool darkMode = themeMode == Brightness.dark;
   redoSystemStyle(darkMode);
   // add new user who are using this app
-  // await FirebaseHelpers().sendFirebaseAndroidId();
+  await FirebaseHelpers().sendFirebaseAndroidId();
 }
 
 Future<bool> _isOnBoard() async {

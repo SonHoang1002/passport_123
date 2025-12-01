@@ -37,7 +37,6 @@ class PassportModel {
   });
 
   Size get size => Size(width, height);
-
   PassportModel copyWith({
     String? title,
     double? height,
