@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:media_scanner/media_scanner.dart';
 import 'package:pass1_/a_test/pdf_function/generate_mimetype.dart';
-import 'package:pass1_/a_test/size_helpers.dart';
+import 'package:pass1_/helpers/size_helpers.dart';
 import 'package:pass1_/helpers/native_bridge/document_saver/document_file_save_plus.dart';
 import 'package:pass1_/helpers/native_bridge/method_channel.dart';
 import 'package:pass1_/helpers/random_number.dart';

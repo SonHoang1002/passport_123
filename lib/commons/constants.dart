@@ -11,13 +11,16 @@ import 'package:pass1_/models/instruction_model.dart';
 import 'package:pass1_/models/step_model.dart';
 import 'package:pdf/pdf.dart';
 
+// ignore: constant_identifier_names
 const Map<int, String> DATA_SEGMENT_RESOLUTION_1 = {
   0: "600dpi",
   1: "1200dpi",
   2: "Custom",
 };
+// ignore: constant_identifier_names
 const List<double> LIST_MIN_MAX_RESOLUTION_1 = [300, 1800];
 
+// ignore: constant_identifier_names
 const Map<int, String> DATA_SEGMENT_RESOLUTION_2 = {
   0: "300dpi",
   1: "600dpi",
@@ -375,8 +378,10 @@ List<CountryModel> LIST_COUNTRY_PASSPORT = [
 // ignore: constant_identifier_names
 const String DEFAULT_PASSPORT_COUNTRY = "United States";
 
+// ignore: constant_identifier_names
 const Map<int, String> EXPORT_SEGMENT_OBJECT = {0: "Photo", 1: "Paper"};
 
+// ignore: constant_identifier_names
 const Map<int, String> EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT = {
   0: "JPG",
   1: "PNG",

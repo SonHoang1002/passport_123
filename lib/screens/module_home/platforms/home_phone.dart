@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'package:pass1_/a_test/size_helpers.dart';
+import 'package:pass1_/a_test/crop_body_test.dart';
+import 'package:pass1_/helpers/size_helpers.dart';
 import 'package:pass1_/a_test/w_export_body.dart';
 import 'package:pass1_/helpers/file_helpers.dart';
 import 'package:pass1_/helpers/native_bridge/method_channel.dart';
@@ -389,7 +390,7 @@ class _HomePagePhoneState extends State<HomePagePhone>
           },
           onUpdateLoadingStatus: _updateLoadingStatus,
         ),
-        BodyCrop(
+        BodyCropTest(
           projectModel: _projectModel,
           matrix4: _matrix4Crop,
           imageSelectedSize: _imageSelectedSize ?? const Size(240, 240),

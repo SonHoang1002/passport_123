@@ -3,10 +3,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pass1_/models/export_size_model.dart';
 import 'package:pass1_/commons/colors.dart';
 import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/commons/extension.dart';
 import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 import 'package:pass1_/helpers/native_bridge/method_channel.dart';
 import 'package:pass1_/helpers/navigator_route.dart';
 import 'package:pass1_/models/country_passport_model.dart';
@@ -52,7 +53,7 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
     _controllerWidth = TextEditingController(
       text: widget.exportSizeModel.size.width.toString(),
     );
-    _handleFillSelectiontextField(_controllerWidth);
+    _handleFillSelectionTextField(_controllerWidth);
     _controllerHeight = TextEditingController(
       text: widget.exportSizeModel.size.height.toString(),
     );
@@ -60,7 +61,7 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
     _focusNodeWidth.requestFocus();
   }
 
-  void _handleFillSelectiontextField(TextEditingController controller) {
+  void _handleFillSelectionTextField(TextEditingController controller) {
     controller.selection = TextSelection(
       baseOffset: 0,
       extentOffset: controller.text.length,
@@ -68,6 +69,7 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
   }
 
   void _onTapInput(int indexInput) {
+    consolelog("_onTapInput 123123123");
     bool isTapWidthInput = indexInput == 0;
     bool isTapHeightInput = indexInput == 1;
 
@@ -79,7 +81,6 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
           "Invalid height value, return previous value.",
         );
       }
-      _handleFillSelectiontextField(_controllerHeight);
     } else if (isTapHeightInput) {
       double? parsedWidth = double.tryParse(_controllerWidth.text.trim());
       if (parsedWidth == null) {
@@ -88,7 +89,7 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
           "Invalid width value, return previous value.",
         );
       }
-      _handleFillSelectiontextField(_controllerWidth);
+      _handleFillSelectionTextField(_controllerWidth);
     } else {
       throw Exception("khong ho tro");
     }
@@ -114,24 +115,7 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
       // MyMethodChannel.showToast("Invalid height value, return previous value.");
     }
 
-    // if (width != null && height != null) {
-    //   double widthByPixel = FlutterConvert.convertUnit(
-    //     _currentUnit,
-    //     PIXEL,
-    //     width,
-    //   );
-    //   double heightByPixel = FlutterConvert.convertUnit(
-    //     _currentUnit,
-    //     PIXEL,
-    //     width,
-    //   );
-    //   if (width > 0 && height > 0) {
-    //     if (width > LIMITATION_DIMENSION_BY_PIXEl ||
-    //         height > LIMITATION_DIMENSION_BY_PIXEl) {
-    //       return;
-    //     }
-    //   }
-    // }
+    /// Limit kich co cua paper
 
     _currentExportSizeModel = _currentExportSizeModel.copyWith(
       size: Size(width, height),
@@ -144,11 +128,12 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
   Widget build(BuildContext context) {
     _isDarkMode = BlocProvider.of<ThemeBloc>(context, listen: true).isDarkMode;
     _size = MediaQuery.sizeOf(context);
+    consolelog("_currentExportSizeModel: $_currentExportSizeModel");
     return Dialog(
       child: FittedBox(
         child: Container(
           width: 350,
-          height: 182,
+          height: 182 + 80,
           decoration: BoxDecoration(
             color: Theme.of(context).dialogBackgroundColor,
             borderRadius: BorderRadius.circular(22),
@@ -195,6 +180,52 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      popNavigator(context);
+                    },
+                    child: Container(
+                      height: 45,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: _isDarkMode ? white : black,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: WTextContent(
+                          value: "Cancel",
+                          textColor: red,
+                          textSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  GestureDetector(
+                    onTap: () {
+                      _onSubmitted();
+                    },
+                    child: Container(
+                      height: 45,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: _isDarkMode ? white : black,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: WTextContent(
+                          value: "Apply",
+                          textColor: !_isDarkMode ? white : black,
+                          textSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -235,32 +266,42 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
               margin: const EdgeInsets.symmetric(horizontal: 10),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: TextField(
-                  focusNode: focusNode,
-                  onTap: onTapInput,
-                  cursorColor: red,
-                  onSubmitted: (value) {
-                    _onSubmitted();
-                  },
-                  keyboardType: TextInputType.number,
-                  controller: controller,
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                    fontSize: 16,
-                    height: 1,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: FONT_GOOGLESANS,
-                    color: Theme.of(context).textTheme.displayLarge!.color,
+                child: TextSelectionTheme(
+                  data: TextSelectionThemeData(
+                    // selectionColor: Theme.of(context).primaryColor,
                   ),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(bottom: 7, right: 10),
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    fillColor: Theme.of(context).badgeTheme.backgroundColor!,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: blue),
-                      borderRadius: BorderRadius.circular(10),
+                  child: TextField(
+                    focusNode: focusNode,
+                    onTap: () {
+                      onTapInput();
+                      _handleFillSelectionTextField(controller);
+                    },
+                    onSubmitted: (value) {
+                      _onSubmitted();
+                    },
+                    keyboardType: TextInputType.number,
+                    controller: controller,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: FONT_GOOGLESANS,
+                      color: Theme.of(context).textTheme.displayLarge!.color,
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(
+                        bottom: 7,
+                        right: 10,
+                      ),
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      fillColor: Theme.of(context).badgeTheme.backgroundColor!,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(color: blue),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                 ),
@@ -325,13 +366,7 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
             context: context,
             currentUnit: _currentUnit,
             onSelected: (value) {
-              if (_currentUnit == value) return;
-              _currentExportSizeModel = _currentExportSizeModel.changeUnit(
-                value,
-              );
-              setState(() {
-                _currentUnit = value;
-              });
+              _onChangeUnit(value);
               popNavigator(context);
             },
             width: 120,
@@ -340,6 +375,20 @@ class _WBodyDialogCustomSizeState extends State<WBodyDialogCustomSize> {
           scaleAlignment: Alignment.bottomRight,
         ),
       );
+    });
+  }
+
+  void _onChangeUnit(Unit targetUnit) {
+    if (_currentUnit == targetUnit) return;
+    _currentExportSizeModel = _currentExportSizeModel.changeUnit(targetUnit);
+    _controllerWidth.text = _currentExportSizeModel.width.roundWithUnit(
+      unitTitle: targetUnit.title,
+    );
+    _controllerHeight.text = _currentExportSizeModel.height.roundWithUnit(
+      unitTitle: targetUnit.title,
+    );
+    setState(() {
+      _currentUnit = targetUnit;
     });
   }
 }

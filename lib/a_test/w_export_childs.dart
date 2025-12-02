@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pass1_/a_test/size_helpers.dart';
+import 'package:pass1_/helpers/size_helpers.dart';
 import 'package:pass1_/a_test/w_preview_export.dart';
 import 'package:pass1_/commons/colors.dart';
 import 'package:pass1_/commons/constants.dart';
@@ -74,11 +74,11 @@ class WExports {
     final ratioWH = frameWidth / frameHeight;
     if (frameHeight != 0) {
       if (ratioWH > 1) {
-        // w > h
-        newHeight = newHeight * (1 / ratioWH);
+        newWidth = initFrame.width;
+        newHeight = newWidth / ratioWH;
       } else if (ratioWH < 1) {
-        // w < h
-        newWidth = newWidth * ratioWH;
+        newHeight = initFrame.height;
+        newWidth = newHeight * ratioWH;
       }
     }
     Size frameSize = Size(newWidth, newHeight);
@@ -326,6 +326,7 @@ class WExports {
     required BuildContext context,
     required Size screenSize,
     required int indexImageFormat,
+    required bool isDisable,
     required void Function() onSaveTo,
     required void Function() onSaveToLibrary,
   }) {
@@ -352,6 +353,7 @@ class WExports {
               backgroundColor: isDarkMode ? white : black,
               textColor: isDarkMode ? black : white,
               textSize: isSmallSize ? 13 : 15,
+              borderRadius: 25,
               onPressed: () {
                 onSaveTo();
               },
@@ -369,6 +371,7 @@ class WExports {
               backgroundColor: isDarkMode ? primaryDark1 : primaryLight1,
               textColor: white,
               textSize: isSmallSize ? 13 : 15,
+              borderRadius: 25,
               onPressed: () {
                 onSaveToLibrary();
               },
@@ -391,6 +394,7 @@ class WExports {
     bool textAlignCenter = false,
     double? maxHeight,
   }) {
+    consolelog("selectedValue: $selectedValue, listValue = $listValue");
     return DialogBody(
       listItem: listValue,
       selectedValue: selectedValue,

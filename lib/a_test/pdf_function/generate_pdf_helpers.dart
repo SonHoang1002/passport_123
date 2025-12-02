@@ -4,6 +4,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
 import 'package:pass1_/helpers/print_helper.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
@@ -275,6 +276,7 @@ class GeneratePdfHelpers {
     ExportSizeModel exportSize,
     int copyNumber,
     double dpi,
+    ui.Image image,
   ) async {
     double paperWidthByPixelPoint =
         FlutterConvert.convertUnit(
@@ -330,8 +332,8 @@ class GeneratePdfHelpers {
     double marginBottomByPixelPoint;
 
     double spacingHorizontalByPixelPoint, spacingVerticalByPixelPoint;
-
-    if (exportSize.unit == PIXEL) {
+    var exportUnit = exportSize.unit;
+    if (exportUnit == PIXEL) {
       marginLeftByPixelPoint = exportSize.marginModel.mLeft;
       marginTopByPixelPoint = exportSize.marginModel.mTop;
       marginRightByPixelPoint = exportSize.marginModel.mRight;
@@ -342,42 +344,38 @@ class GeneratePdfHelpers {
     } else {
       marginLeftByPixelPoint =
           FlutterConvert.convertUnit(
-            exportSize.unit,
+            exportUnit,
             INCH,
             marginByExportUnit.left,
           ) *
           dpi;
       marginTopByPixelPoint =
-          FlutterConvert.convertUnit(
-            exportSize.unit,
-            INCH,
-            marginByExportUnit.top,
-          ) *
+          FlutterConvert.convertUnit(exportUnit, INCH, marginByExportUnit.top) *
           dpi;
       marginRightByPixelPoint =
           FlutterConvert.convertUnit(
-            exportSize.unit,
+            exportUnit,
             INCH,
             marginByExportUnit.right,
           ) *
           dpi;
       marginBottomByPixelPoint =
           FlutterConvert.convertUnit(
-            exportSize.unit,
+            exportUnit,
             INCH,
             marginByExportUnit.bottom,
           ) *
           dpi;
       spacingHorizontalByPixelPoint =
           FlutterConvert.convertUnit(
-            exportSize.unit,
+            exportUnit,
             INCH,
             exportSize.spacingHorizontal,
           ) *
           dpi;
       spacingVerticalByPixelPoint =
           FlutterConvert.convertUnit(
-            exportSize.unit,
+            exportUnit,
             INCH,
             exportSize.spacingVertical,
           ) *
@@ -397,21 +395,21 @@ class GeneratePdfHelpers {
     }
     double passportWidthByPixelPoint;
     double passportHeightByPixelPoint;
-
-    if (currentPassport.unit == PIXEL) {
+    var currentPassportUnit = currentPassport.unit;
+    if (currentPassportUnit == PIXEL) {
       passportWidthByPixelPoint = currentPassport.width;
       passportHeightByPixelPoint = currentPassport.height;
     } else {
       passportWidthByPixelPoint =
           FlutterConvert.convertUnit(
-            currentPassport.unit,
+            currentPassportUnit,
             INCH,
             currentPassport.width,
           ) *
           dpi;
       passportHeightByPixelPoint =
           FlutterConvert.convertUnit(
-            currentPassport.unit,
+            currentPassportUnit,
             INCH,
             currentPassport.height,
           ) *
@@ -424,34 +422,34 @@ class GeneratePdfHelpers {
     );
 
     // giới hạn kích thước passportWidthByPixel ảnh
-    Size aroundAvailableSize = paperSizeByPixelPointLimited.copyWith(
-      width:
-          paperSizeByPixelPointLimited.width -
-          marginByPixelPoint.left -
-          marginByPixelPoint.right,
-      height:
-          paperSizeByPixelPointLimited.height -
-          marginByPixelPoint.top -
-          marginByPixelPoint.bottom,
-    );
+    Size aroundAvailableSizeByPixelPoint = paperSizeByPixelPointLimited
+        .copyWith(
+          width:
+              paperSizeByPixelPointLimited.width -
+              marginByPixelPoint.left -
+              marginByPixelPoint.right,
+          height:
+              paperSizeByPixelPointLimited.height -
+              marginByPixelPoint.top -
+              marginByPixelPoint.bottom,
+        );
 
     Size passportSizeByPixelLimited = getLimitImageInPaper(
-      aroundAvailableSize,
+      aroundAvailableSizeByPixelPoint,
       passportSizeByPixelPoint,
       isKeepSizeWhenSmall: true,
     );
 
     int countColumnIn1Page = max(
       1,
-      (aroundAvailableSize.width) ~/ passportSizeByPixelLimited.width,
+      (aroundAvailableSizeByPixelPoint.width) ~/
+          passportSizeByPixelLimited.width,
     );
 
     int countRowIn1Page = max(
       1,
-      (aroundAvailableSize.height) ~/ passportSizeByPixelLimited.height,
-    );
-    consolelog(
-      "passportSizeLimitedByPixel: $passportSizeByPixelLimited, countColumnIn1Page = $countColumnIn1Page, countRowIn1Page = $countRowIn1Page, margin = $marginByPixelPoint",
+      (aroundAvailableSizeByPixelPoint.height) ~/
+          passportSizeByPixelLimited.height,
     );
 
     int countImageOn1Page = countRowIn1Page * countColumnIn1Page;
@@ -461,17 +459,10 @@ class GeneratePdfHelpers {
       "passportSizeLimitedByPixel:  $passportSizeByPixelLimited, margin = $marginByPixelPoint, countColumnIn1Page = $countColumnIn1Page, countRowIn1Page = $countRowIn1Page, countPage = $countPage",
     );
 
-    Uint8List bytes = await projectModel.croppedFile!.readAsBytes();
-    final Completer<ui.Image> completer = Completer();
-    ui.decodeImageFromList(bytes, (ui.Image img) {
-      completer.complete(img);
-    });
-    ui.Image imageData = await completer.future;
-
     List<ui.Image> listResult = [];
     for (var indexPage = 0; indexPage < countPage; indexPage++) {
       ui.Image result = _generateSinglePdfImage(
-        imageData: imageData,
+        imageData: image,
         paperSizeByPixel: paperSizeByPixelPointLimited,
         passportSizeByPixel: passportSizeByPixelLimited,
         countImageNeedDraw: copyNumber,
@@ -494,7 +485,7 @@ class GeneratePdfHelpers {
     };
   }
 
-  Map<String, dynamic> drawPdfPage(
+  Map<String, dynamic> caculateDimensionsInPrintPointForPdf(
     ProjectModel projectModel,
     ExportSizeModel exportSize,
     int copyNumber,
@@ -502,56 +493,89 @@ class GeneratePdfHelpers {
     double dpi,
   ) {
     /// Tờ giấy đổi sang pixel, có sử dụng dpi kèm theo
-    double paperWidthByPoint = FlutterConvert.convertUnit(
-      exportSize.unit,
-      POINT,
-      exportSize.size.width,
-    );
+    double paperWidthByPoint, paperHeightByPoint;
 
-    double paperHeightByPoint = FlutterConvert.convertUnit(
-      exportSize.unit,
-      POINT,
-      exportSize.size.height,
-    );
+    EdgeInsets marginByCurrentUnit = exportSize.marginModel
+        .toEdgeInsetsByCurrentUnit();
+
+    double leftByPoint, topByPoint, rightByPoint, bottomByPoint;
+    double spacingHorizontalByPoint, spacingVerticalByPoint;
+    var exportUnit = exportSize.unit;
+    if (exportUnit == PIXEL) {
+      paperWidthByPoint = exportSize.width / dpi * 72;
+      paperHeightByPoint = exportSize.height / dpi * 72;
+
+      leftByPoint = marginByCurrentUnit.left / dpi * 72;
+      rightByPoint = marginByCurrentUnit.right / dpi * 72;
+      topByPoint = marginByCurrentUnit.top / dpi * 72;
+      bottomByPoint = marginByCurrentUnit.bottom / dpi * 72;
+
+      spacingHorizontalByPoint = exportSize.spacingHorizontal / dpi * 72;
+      spacingVerticalByPoint = exportSize.spacingVertical / dpi * 72;
+    } else {
+      paperWidthByPoint = FlutterConvert.convertUnit(
+        exportUnit,
+        POINT,
+        exportSize.width,
+      );
+
+      paperHeightByPoint = FlutterConvert.convertUnit(
+        exportUnit,
+        POINT,
+        exportSize.height,
+      );
+
+      leftByPoint = FlutterConvert.convertUnit(
+        exportUnit,
+        POINT,
+        marginByCurrentUnit.left,
+      );
+      topByPoint = FlutterConvert.convertUnit(
+        exportUnit,
+        POINT,
+        marginByCurrentUnit.top,
+      );
+      rightByPoint = FlutterConvert.convertUnit(
+        exportUnit,
+        POINT,
+        marginByCurrentUnit.right,
+      );
+      bottomByPoint = FlutterConvert.convertUnit(
+        exportUnit,
+        POINT,
+        marginByCurrentUnit.bottom,
+      );
+
+      spacingHorizontalByPoint = FlutterConvert.convertUnit(
+        exportUnit,
+        POINT,
+        exportSize.spacingHorizontal,
+      );
+
+      spacingVerticalByPoint = FlutterConvert.convertUnit(
+        exportUnit,
+        POINT,
+        exportSize.spacingVertical,
+      );
+    }
 
     Size paperSizeByPoint = Size(paperWidthByPoint, paperHeightByPoint);
 
-    EdgeInsets margin = exportSize.marginModel.toEdgeInsetsBy();
-
-    double leftByPoint = FlutterConvert.convertUnit(POINT, POINT, margin.left);
-    double topByPoint = FlutterConvert.convertUnit(POINT, POINT, margin.top);
-    double rightByPoint = FlutterConvert.convertUnit(
-      POINT,
-      POINT,
-      margin.right,
-    );
-    double bottomByPoint = FlutterConvert.convertUnit(
-      POINT,
-      POINT,
-      margin.bottom,
-    );
-
-    margin = EdgeInsets.fromLTRB(
+    EdgeInsets marginByPoint = EdgeInsets.fromLTRB(
       leftByPoint,
       topByPoint,
       rightByPoint,
       bottomByPoint,
     );
     //
-    double spacingHorizontalByPoint = FlutterConvert.convertUnit(
-      POINT,
-      POINT,
-      exportSize.spacingHorizontal,
-    );
 
-    double spacingVerticalByPoint = FlutterConvert.convertUnit(
-      POINT,
-      POINT,
-      exportSize.spacingVertical,
-    );
     Size passportSizeByPoint;
-    var currentPassport = projectModel.countryModel!.currentPassport;
-    if (currentPassport.unit == PIXEL) {
+    var currentPassport = projectModel.countryModel?.currentPassport;
+    if (currentPassport == null) {
+      throw Exception("Current Passport is null, please check!!");
+    }
+    var currentPassportUnit = currentPassport.unit;
+    if (currentPassportUnit == PIXEL) {
       passportSizeByPoint = Size(
         currentPassport.width / dpi * 72,
         currentPassport.height / dpi * 72,
@@ -559,12 +583,12 @@ class GeneratePdfHelpers {
     } else {
       passportSizeByPoint = Size(
         FlutterConvert.convertUnit(
-          currentPassport.unit,
+          currentPassportUnit,
           POINT,
           currentPassport.width,
         ),
         FlutterConvert.convertUnit(
-          currentPassport.unit,
+          currentPassportUnit,
           POINT,
           currentPassport.height,
         ),
@@ -573,31 +597,36 @@ class GeneratePdfHelpers {
     consolelog("passportSizeByPointpassportSizeByPoint = $passportSizeByPoint");
 
     // giới hạn kích thước passportWidthByPoint ảnh
-    Size aroundAvailableSize = paperSizeByPoint.copyWith(
-      width: paperSizeByPoint.width - margin.left - margin.right,
-      height: paperSizeByPoint.height - margin.top - margin.bottom,
+    Size aroundAvailableSizeByPoint = paperSizeByPoint.copyWith(
+      width: paperSizeByPoint.width - marginByPoint.left - marginByPoint.right,
+      height:
+          paperSizeByPoint.height - marginByPoint.top - marginByPoint.bottom,
     );
 
-    Size passportSizeLimitedByPoint = passportSizeByPoint;
+    Size passportSizeLimitedByPoint = getLimitImageInPaper(
+      aroundAvailableSizeByPoint,
+      passportSizeByPoint,
+      isKeepSizeWhenSmall: true,
+    );
 
     int countImageOn1Row = max(
       1,
-      (aroundAvailableSize.width) ~/ passportSizeLimitedByPoint.width,
+      (aroundAvailableSizeByPoint.width) ~/ passportSizeLimitedByPoint.width,
     );
 
     int countRowOn1Page = max(
       1,
-      (aroundAvailableSize.height) ~/ passportSizeLimitedByPoint.height,
+      (aroundAvailableSizeByPoint.height) ~/ passportSizeLimitedByPoint.height,
     );
     consolelog(
-      "passportSizeLimitedByPoint: $passportSizeLimitedByPoint, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, margin = $margin",
+      "passportSizeLimitedByPoint: $passportSizeLimitedByPoint, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, marginByPoint = $marginByPoint",
     );
 
     int countImageMaxOn1Page = countRowOn1Page * countImageOn1Row;
 
     int countPage = (copyNumber / countImageMaxOn1Page).ceil();
     consolelog(
-      "passportSizeLimitedByPoint:  $passportSizeLimitedByPoint, margin = $margin, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, countImageMaxOn1Page = $countImageMaxOn1Page, countPage = $countPage",
+      "passportSizeLimitedByPoint:  $passportSizeLimitedByPoint, marginByPoint = $marginByPoint, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, countImageMaxOn1Page = $countImageMaxOn1Page, countPage = $countPage",
     );
 
     // List<ui.Image> listResult = [];
@@ -626,7 +655,7 @@ class GeneratePdfHelpers {
       "passportSizeByPoint": passportSizeLimitedByPoint,
       "spacingHorizontalByPoint": spacingHorizontalByPoint,
       "spacingVerticalByPoint": spacingVerticalByPoint,
-      "marginByPoint": margin,
+      "marginByPoint": marginByPoint,
     };
   }
 
@@ -671,6 +700,9 @@ class GeneratePdfHelpers {
       0,
       (paperSizeByPixel.width - margin.left * 2 - tong_do_dai_can_ve) / 2,
     );
+    consolelog(
+      "passportSizeByPixel aspect ratio = ${passportSizeByPixel.aspectRatio}, imageData = ${imageData.width / imageData.height}",
+    );
 
     for (var indexRow = 0; indexRow < countRowIn1Page; indexRow++) {
       for (
@@ -688,12 +720,13 @@ class GeneratePdfHelpers {
             passportSizeByPixel.height * indexRow +
             spacingVerticalByPixel * (indexRow + 1);
         // Nếu là item là item có số thứ tự lớn hơn tổng số ảnh cần vẽ -> vẽ ra những item trong suốt
+        int currentImageIndex =
+            indexPage * countRowIn1Page * countColumnIn1Page +
+            indexRow * countColumnIn1Page +
+            indexColumn +
+            1;
 
-        bool isOverCountImageNeedDraw =
-            indexPage * countColumnIn1Page * countRowIn1Page +
-                indexRow * indexColumn +
-                (indexColumn + 1) >
-            countImageNeedDraw;
+        bool isOverCountImageNeedDraw = currentImageIndex > countImageNeedDraw;
         if (isOverCountImageNeedDraw) {
           canvas.drawRect(
             Rect.fromLTWH(

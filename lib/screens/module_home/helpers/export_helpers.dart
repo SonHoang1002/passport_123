@@ -47,66 +47,57 @@ class ExportHelpers {
     switch (indexImageFormat) {
       case 0: // JPG
       case 1: // PNG
-        // Lấy uiImage từ ảnh original đã crop
+        // Lấy extension để gen
+        final String extension = EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT.values
+            .toList()[indexImageFormat]
+            .toLowerCase();
 
-        // consolelog("indexImageFormatindexImageFormat = $indexImageFormat");
-        // (ui.Image, Uint8List) imageData = await _loadImageDataForPdfImageFormat(
-        //   projectModel,
-        //   indexImageFormat,
-        //   countrySelected,
-        //   screenSize,
-        //   valueResolutionDpi,
-        //   listPassportDimensionByInch,
-        //   quality,
-        // );
-        // Map<String, dynamic> drawResult = GeneratePdfHelpers().drawPdfImage(
-        //   projectModel,
-        //   exportSize,
-        //   copyNumber,
-        //   imageData.$1,
-        //   valueResolutionDpi,
-        // );
+        /// Nếu là png format -> lấy luôn ảnh đã crop để vẽ
+        /// Nếu là jpg format -> chỉnh quality trc khi đưa vào draw
+        File? resizedFile;
+        if (indexImageFormat == 0) {
+          final dirPath = (await getExternalStorageDirectory())!.path;
+          String outPath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
 
-        consolelog("indexImageFormatindexImageFormat = $indexImageFormat");
-        // (ui.Image, Uint8List) imageData = await _loadImageDataForPdfImageFormat(
-        //   projectModel,
-        //   indexImageFormat,
-        //   countrySelected,
-        //   screenSize,
-        //   valueResolutionDpi,
-        //   listPassportDimensionByInch,
-        //   quality,
-        // );
-        // Map<String, dynamic> drawResult = GeneratePdfHelpers().drawPdfImage(
-        //   projectModel,
-        //   exportSize,
-        //   copyNumber,
-        //   imageData.$1,
-        //   valueResolutionDpi,
-        // );
+          resizedFile = await MyMethodChannel.resizeAndResoluteImage(
+            inputPath: projectModel.croppedFile!.path,
+            format: indexImageFormat,
+            // listWH: [passportWidthByPixelLimited, passportHeightByPixelLimited],
+            // scaleWH: [1, 1],
+            outPath: outPath,
+            quality: quality,
+          );
+        } else {
+          resizedFile = projectModel.croppedFile!;
+        }
 
+        Uint8List bytes = await resizedFile!.readAsBytes();
+        final Completer<ui.Image> completer = Completer();
+        ui.decodeImageFromList(bytes, (ui.Image img) {
+          completer.complete(img);
+        });
+
+        ui.Image imageData = await completer.future;
+        consolelog(
+          "imageDataimageData size: = ${imageData.width}, ${imageData.height}",
+        );
         var drawResult = await GeneratePdfHelpers().drawPdfImageV1(
           projectModel,
           exportSize,
           copyNumber,
           valueResolutionDpi,
+          imageData,
         );
 
         List<ui.Image> listPdfImages = drawResult["listUiPdfImage"];
-        // Size paperSizeByPixel = drawResult["paperSizeByPixel"];
-        // Size passportSizeByPixel = drawResult["passportSizeByPixel"];
-        // double spacingHorizontalByPixel =
-        //     drawResult["spacingHorizontalByPixel"];
-        // double spacingVerticalByPixel = drawResult["spacingVerticalByPixel"];
-        // EdgeInsets marginByPixel = drawResult["marginByPixel"];
-
         Stopwatch stopwatch = Stopwatch();
         stopwatch.start();
         List<File> listMainFile = [];
 
         // Trường hợp
-        // số lượng ảnh lớn hơn 2 -> generate ra 2 ảnh duy nhất : ảnh đầu tiên và ảnh cuối cùng
+        // số lượng ảnh lớn hơn 2 -> Lấy ra 2 ảnh duy nhất : ảnh đầu tiên và ảnh cuối cùng , vì những ảnh ở giữa đều giống ảnh 1
         // con truong hop images.length == copynumber -> gen 1 anh duy nhat
+
         if (listPdfImages.length > 2) {
           List<File> listTempFile = [];
           List<ui.Image> collapseList = [
@@ -120,7 +111,8 @@ class ExportHelpers {
             ))?.buffer.asUint8List();
 
             final directory = await getExternalStorageDirectory();
-            final String path = '${directory!.path}/generated_pdf_image_$i.png';
+            final String path =
+                '${directory!.path}/generated_pdf_image_$i.$extension';
 
             File file = File(path);
             await file.writeAsBytes(bytes!);
@@ -140,7 +132,9 @@ class ExportHelpers {
               format: ui.ImageByteFormat.png,
             ))?.buffer.asUint8List();
             final directory = await getExternalStorageDirectory();
-            final String path = '${directory!.path}/generated_pdf_image_$i.png';
+
+            final String path =
+                '${directory!.path}/generated_pdf_image_$i.$extension';
             File file = File(path);
             await file.writeAsBytes(bytes!);
             listMainFile.add(file);
@@ -162,13 +156,14 @@ class ExportHelpers {
         //   quality,
         // );
 
-        Map<String, dynamic> drawResult = GeneratePdfHelpers().drawPdfPage(
-          projectModel,
-          exportSize,
-          copyNumber,
-          // imageData.$1,
-          valueResolutionDpi,
-        );
+        Map<String, dynamic> drawResult = GeneratePdfHelpers()
+            .caculateDimensionsInPrintPointForPdf(
+              projectModel,
+              exportSize,
+              copyNumber,
+              // imageData.$1,
+              valueResolutionDpi,
+            );
         Size paperSizeByPoint = drawResult["paperSizeByPoint"];
         Size passportSizeByPoint = drawResult["passportSizeByPoint"];
         double spacingHorizontalByPoint =

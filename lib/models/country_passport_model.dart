@@ -37,6 +37,7 @@ class PassportModel {
   });
 
   Size get size => Size(width, height);
+  double get aspectRatio => width / height;
   PassportModel copyWith({
     String? title,
     double? height,

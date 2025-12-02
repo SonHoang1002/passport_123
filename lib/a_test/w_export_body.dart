@@ -104,7 +104,7 @@ class _WExportBody1State extends State<WExportBody1> {
     }
   }
 
-  Future<double?> _handleGenerateSinglePhotoMedia() async {
+  Future<double?> _handleCaculateFileSize() async {
     if (!_isCaculating.value) {
       _isCaculating.value = true;
     }
@@ -113,7 +113,7 @@ class _WExportBody1State extends State<WExportBody1> {
     result = await _runGetFileSizeOnBackground();
     stopwatch.stop();
     consolelog(
-      "_handleGenerateSinglePhotoMedia call: ${stopwatch.elapsedMilliseconds}",
+      "_handleCaculateFileSize call: ${stopwatch.elapsedMilliseconds}",
     );
     if (_isCaculating.value) {
       _isCaculating.value = false;
@@ -150,7 +150,7 @@ class _WExportBody1State extends State<WExportBody1> {
       return result['fileSize'];
     } else {
       double sum = 0.0;
-      return sum;
+
       List<File> listPaperFile =
           await ExportHelpers.handleGenerateMultiplePaperMedia(
             projectModel: widget.projectModel,
@@ -163,6 +163,9 @@ class _WExportBody1State extends State<WExportBody1> {
             listPassportDimensionByInch: _listPassportDimensionByInch,
             quality: _vSliderCompressionPercent.value,
           );
+      consolelog(
+        "listPaperFilelistPaperFile : $listPaperFile, indexImageFormat = $indexImageFormat",
+      );
       _convertedPaperFiles = listPaperFile;
 
       for (var item in listPaperFile) {
@@ -274,9 +277,12 @@ class _WExportBody1State extends State<WExportBody1> {
   }
 
   ///
-  /// output: [ listFile, fileName]
+  /// output: {
+  /// "listFile": listFile,
+  /// "listFileName" : listFileName,
+  /// }
   ///
-  List<dynamic> preparSavedData() {
+  (List<File>, List<String>) prepareSavedData() {
     List<File> listFile = [];
     if (indexTab == 0) {
       listFile.add(_convertedPhotoFile!);
@@ -299,7 +305,7 @@ class _WExportBody1State extends State<WExportBody1> {
       listFileName.add(fileName);
     }
 
-    return [listFile, listFileName];
+    return (listFile, listFileName);
   }
 
   @override
@@ -428,7 +434,7 @@ class _WExportBody1State extends State<WExportBody1> {
                   ),
                   builder: (context, _, child) {
                     return FutureBuilder<double?>(
-                      future: _handleGenerateSinglePhotoMedia(),
+                      future: _handleCaculateFileSize(),
                       builder: (context, snapshot) {
                         double? data;
                         if (snapshot.connectionState == ConnectionState.done) {
@@ -613,42 +619,24 @@ class _WExportBody1State extends State<WExportBody1> {
           context: context,
           screenSize: _size,
           indexImageFormat: indexImageFormat,
+          isDisable: _isCaculating.value,
           onSaveTo: () async {
             if (_isCaculating.value) return;
-            List<dynamic> listData = preparSavedData();
-            // check overflow size
-            var overFlowSize = ExportHelpers().checkOverFlowSize(
-              _size,
-              widget.countrySelected.currentPassport,
-              dpi,
-            );
-            if (overFlowSize) {
-              ExportHelpers().showWarningExport(context);
-              return;
-            }
+            (List<File>, List<String>) listData = prepareSavedData();
+            consolelog("listDatalistData = $listData");
             _onShare(
               indexImageFormat: indexImageFormat,
-              files: listData[0],
-              listFileName: listData[1],
+              files: listData.$1,
+              listFileName: listData.$2,
             );
           },
           onSaveToLibrary: () async {
             if (_isCaculating.value) return;
-            // check overflow size
-            var overFlowSize = ExportHelpers().checkOverFlowSize(
-              _size,
-              widget.countrySelected.currentPassport,
-              dpi,
-            );
-            if (overFlowSize) {
-              ExportHelpers().showWarningExport(context);
-              return;
-            }
-            List<dynamic> listData = preparSavedData();
+            (List<File>, List<String>) listData = prepareSavedData();
             _onSaveToLibrary(
               indexImageFormat: indexImageFormat,
-              listFile: listData[0],
-              listFileName: listData[1],
+              listFile: listData.$1,
+              listFileName: listData.$2,
             );
           },
         );

@@ -68,6 +68,7 @@ class ProjectModel {
     this.cropModel,
     this.scaledCroppedImage,
   });
+
   void resetAllImage() async {
     selectedFile = scaledSelectedFile = bgRemovedFile = uiImageAdjusted =
         croppedFile = exportedFile = scaledCroppedImage = null;

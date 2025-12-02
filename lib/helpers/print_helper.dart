@@ -156,9 +156,6 @@ class PrintHelper {
       pageMode: PdfPageMode.fullscreen,
       version: PdfVersion.pdf_1_5,
     );
-    consolelog(
-      "generatePaperPdf format: $format, passportSizeDrawByPoint = $passportSizeDrawByPoint, copyNumber = $numberImage",
-    );
 
     Size imageSize = passportSizeDrawByPoint;
     consolelog("format.width = ${format.width}");
@@ -190,26 +187,13 @@ class PrintHelper {
       pw.MemoryImage(byteData),
       fit: pw.BoxFit.cover,
     );
-    consolelog("soAnhTrong1Trang = $soAnhTrong1Trang");
+    consolelog("imageMemory = ${imageMemory.width}, ${imageMemory.height}");
     // draw pdf page
     for (int i = 0; i < soTrangCanIn; i++) {
       int soAnh = soAnhTrong1Trang;
       if (i >= soTrangCanIn - 1) {
         soAnh = numberImage - soAnhTrong1Trang * (soTrangCanIn - 1);
       }
-
-      // int numberImageOnPage = 0;
-      // int soAnhConLai = numberImage - (i) * soAnhTrong1Trang;
-      // if (soAnhConLai >= soAnhTrong1Trang) {
-      //   numberImageOnPage = soAnhTrong1Trang;
-      // } else {
-      //   numberImageOnPage = soAnhConLai;
-      //   if (soAnhConLai < soAnhTrong1Dong) {
-      //     // vẽ thừa 1 số ảnh còn lại để căn trái list
-      //     numberImageOnPage = soAnhTrong1Dong;
-      //   }
-      // }
-      consolelog("soAnh: $soAnh");
       pdf.addPage(
         pw.Page(
           pageFormat: format,
@@ -230,6 +214,7 @@ class PrintHelper {
                     );
                   }
                   return pw.Container(
+                    color: PdfColors.black,
                     height: imageSize.height,
                     width: imageSize.width,
                     alignment: pw.Alignment.center,
