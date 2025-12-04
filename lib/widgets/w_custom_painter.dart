@@ -25,9 +25,33 @@ class HolePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+class HolePainter1 extends CustomPainter {
+  final Color backgroundColor;
+  final Rect targetCropRect; // <-- chứa vị trí + kích thước vùng cắt
+
+  HolePainter1({required this.backgroundColor, required this.targetCropRect});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.saveLayer(Rect.largest, Paint());
+
+    // Vẽ nền mờ
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      Paint()..color = backgroundColor,
+    );
+
+    // Xóa vùng cắt theo vị trí bạn truyền vào
+    canvas.drawRect(targetCropRect, Paint()..blendMode = BlendMode.clear);
+
+    canvas.restore();
   }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
 class FrameHolePainter extends CustomPainter {
@@ -154,4 +178,22 @@ class CustomPainterBlurredImage extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+class CustomClipImage extends CustomPainter {
+  final Rect imageRect;
+  final Rect clipRect;
+  CustomClipImage({required this.imageRect, required this.clipRect});
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.saveLayer(Rect.largest, Paint());
+    canvas.drawRect(imageRect, Paint()..color = Colors.white);
+    canvas.drawRect(clipRect, Paint()..blendMode = BlendMode.clear);
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
 }

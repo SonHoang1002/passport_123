@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+import 'package:pass1_/commons/extension.dart';
 import 'package:pass1_/helpers/adjust_helper.dart';
 
 class WRulerCustom extends StatefulWidget {
@@ -118,10 +118,11 @@ class _WRulerCustomState extends State<WRulerCustom> {
   }
 
   int lastMilli = DateTime.now().millisecondsSinceEpoch;
+
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.sizeOf(context);
-    if (_currentRatioValue != widget.currentRatioValue) {
+    if (!_currentRatioValue.equalTo(widget.currentRatioValue)) {
       _jumpToNewRatio();
     }
 

@@ -153,7 +153,7 @@
 //     if (widget.projectModel.uiImageAdjusted == null) return;
 //     final renderderBoxImage = _keyImage.currentContext?.size;
 //     // export cropped image
-//     List<dynamic> result = await exportCroppedImage(
+//     (File, ui.Image) result = await exportCroppedImage(
 //       uiImageAdjusted: widget.projectModel.uiImageAdjusted!,
 //       countryModel: widget.projectModel.countryModel!,
 //       scaleByInteractView: _transformImageController.value.getMaxScaleOnAxis(),
@@ -174,18 +174,18 @@
 //     consolelog("result result ${result}");
 //     widget.onUpdateProject(
 //       widget.projectModel
-//         ..croppedFile = result[0]
-//         ..uiImageCropped = result[1]
+//         ..croppedFile = result.$1
+//         ..uiImageCropped = result.$2
 //         ..scaledCroppedImage = null,
 //     );
 //     widget.onUpdateMatrix(_transformImageController.value);
 //     widget.onUpdateCropModel(_cropModel);
 
 //     File? scaleCroppedFile = await _handleGenerateScaledCroppedImage(
-//       result[0],
+//       result.$1,
 //       Size(
-//         result[1].width.toDouble(),
-//         result[1].height.toDouble(),
+//         result.$2.width.toDouble(),
+//         result.$2.height.toDouble(),
 //       ),
 //     );
 //     ui.Image image1 =

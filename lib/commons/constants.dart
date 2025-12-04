@@ -490,8 +490,11 @@ const double PRINT_MARGIN_AROUND_IMAGE_BY_POINT = 0.5 / 10 / 2.54 * 72; // 0.5mm
 const double PRINT_DEFAULT_DPI = 600;
 // a = |1 1 1 1 1|                          |5|
 //     |1 1 1 1 1|                          |6|
-//     |1 1 1 1 1|        x                 |7|                  
-//     |1 1 1 1 1|                          |8|                       
-                                          
-                                    
-      
+//     |1 1 1 1 1|        x                 |7|
+//     |1 1 1 1 1|                          |8|
+
+// ignore: constant_identifier_names
+const double EPSILON_E5 = 1e-5;
+
+// ignore: constant_identifier_names
+const double EPSILON_E10 = 1e-10;
