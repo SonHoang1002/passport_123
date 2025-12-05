@@ -7,7 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pass1_/commons/extension.dart';
 import 'package:pass1_/helpers/export_images/export_cropped.dart';
-import 'package:pass1_/helpers/rotate_helper.dart';
+import 'package:pass1_/helpers/crop_helpers.dart';
 import 'package:pass1_/helpers/size_helpers.dart';
 import 'package:pass1_/helpers/contain_offset.dart';
 import 'package:pass1_/helpers/log_custom.dart';
@@ -137,9 +137,10 @@ class _BodyCropTestState extends State<BodyCropTest>
   bool get isHaveSnapCenter => false;
 
   set setCropModel(CropModel cropModel) {
-    consolelog("setCropModel: ${cropModel}");
     _cropModel = cropModel;
   }
+
+  double get angleByRadian => _cropModel.getAngleByRadian;
 
   @override
   void initState() {
@@ -372,12 +373,110 @@ class _BodyCropTestState extends State<BodyCropTest>
     setState(() {});
   }
 
+  void _onRulerStart() {
+    return;
+
+    /// Chiếu điểm focal point ( rect foc) xuống hệ quy chiếu ảnh
+    Offset focalPointInImage = _renderBoxImage!.globalToLocal(
+      _renderBoxGestureArea!.localToGlobal(_rectCropHole.center),
+    );
+
+    /// Chiếu điểm center của ảnh xuống hệ quy chiếu ảnh
+    Offset imageCenterInImageCoord = _renderBoxImage!.globalToLocal(
+      _renderBoxGestureArea!.localToGlobal(_rectImage.center),
+    );
+
+    /// Vector từ focal point đến center của ảnh trong hệ quy chiếu ảnh
+    Offset rotationVectorInImageCoord =
+        imageCenterInImageCoord - focalPointInImage;
+
+    double custonAngleByRadian = angleByRadian == 0 ? 1 : angleByRadian;
+
+    Offset scaleVector = rotationVectorInImageCoord / custonAngleByRadian;
+
+    /// Tính toạ độ center mới của ảnh trong hệ quy chiếu ảnh
+    Offset newImageCenterInImageCoord = scaleVector + focalPointInImage;
+
+    /// Chuyển ảnh về quy chiếu gesture area
+    Offset newImageCenterInGestureCoord = _renderBoxGestureArea!.globalToLocal(
+      _renderBoxImage!.localToGlobal(newImageCenterInImageCoord),
+    );
+
+    _startRectImage = Rect.fromCenter(
+      center: newImageCenterInGestureCoord,
+      width: _startRectImage.width / custonAngleByRadian,
+      height: _startRectImage.height / custonAngleByRadian,
+    );
+  }
+
+  void _onRulerChangeV1(double value) {
+    if (isInitting) return;
+    _isGesturingImage = true;
+
+    double deltaAngleByDegree = (value - _cropModel.currentRotateValue) * 90;
+    double deltaAngleByRadian = deltaAngleByDegree.toRadianFromDegree;
+    _cropModel.currentRotateValue = value;
+
+    consolelog("rotatedScale: $deltaAngleByDegree");
+    _renderBoxImage =
+        _keyImage.currentContext?.findRenderObject() as RenderBox?;
+    if (_renderBoxImage == null) {
+      throw Exception("_renderBoxImage is null");
+    }
+
+    /// Chiếu điểm focal point ( rect focal ) xuống hệ quy chiếu ảnh
+    Offset focalPointInImage = _renderBoxImage!.globalToLocal(
+      _renderBoxGestureArea!.localToGlobal(_rectCropHole.center),
+    );
+
+    /// Chiếu điểm center của ảnh xuống hệ quy chiếu ảnh
+    Offset imageCenterInImageCoord = _renderBoxImage!.globalToLocal(
+      _renderBoxGestureArea!.localToGlobal(_rectImage.center),
+    );
+
+    /// Vector từ focal point đến center của ảnh trong hệ quy chiếu ảnh
+    Offset rotationVectorInImageCoord =
+        imageCenterInImageCoord - focalPointInImage;
+
+    // Xoay vector theo delta angle trong hệ quy chiếu của image
+    Offset rotatedVectorInImageCoord = Offset(
+      rotationVectorInImageCoord.dx * cos(deltaAngleByRadian) -
+          rotationVectorInImageCoord.dy * sin(deltaAngleByRadian),
+      rotationVectorInImageCoord.dx * sin(deltaAngleByRadian) +
+          rotationVectorInImageCoord.dy * cos(deltaAngleByRadian),
+    );
+
+    /// Tính toạ độ center mới của ảnh trong hệ quy chiếu ảnh
+    Offset imageCenterInImageCoordRotated =
+        rotatedVectorInImageCoord + focalPointInImage;
+
+    /// Chuyển ảnh về quy chiếu gesture area
+    Offset newImageCenterInGestureCoord = _renderBoxGestureArea!.globalToLocal(
+      _renderBoxImage!.localToGlobal(imageCenterInImageCoordRotated),
+    );
+
+    /// Cập nhật lại giá trị của trv
+    _rectImage = Rect.fromCenter(
+      center: newImageCenterInGestureCoord,
+      width: _startRectImage.width,
+      height: _startRectImage.height,
+    );
+
+    setState(() {});
+  }
+
   void _onRulerChange(double value) {
     if (isInitting) return;
-    consolelog("_onRulerChange: $value");
     _isGesturingImage = true;
-    double deltaAngle = (value - _cropModel.currentRotateValue) * 90 * pi / 180;
+
+    double deltaAngleByDegree = (value - _cropModel.currentRotateValue) * 90;
+    double deltaAngleByRadian = deltaAngleByDegree.toRadianFromDegree;
     _cropModel.currentRotateValue = value;
+
+    // final scale = deltaAngleByDegree.clamp(-45, 45);
+    // double rotatedScale =
+    //     cos((45 - scale.abs()) * pi / 180) / (cos(45 * pi / 180));
+    // rotatedScale = 1;
 
     _renderBoxImage =
         _keyImage.currentContext?.findRenderObject() as RenderBox?;
@@ -399,12 +498,12 @@ class _BodyCropTestState extends State<BodyCropTest>
     Offset rotationVectorInImageCoord =
         imageCenterInImageCoord - focalPointInImage;
 
-    // Xoay vector theo delta angle ttrong hệ quy cchiếu nhtm===
+    // Xoay vector theo delta angle trong hệ quy chiếu của image
     Offset rotatedVectorInImageCoord = Offset(
-      rotationVectorInImageCoord.dx * cos(deltaAngle) -
-          rotationVectorInImageCoord.dy * sin(deltaAngle),
-      rotationVectorInImageCoord.dx * sin(deltaAngle) +
-          rotationVectorInImageCoord.dy * cos(deltaAngle),
+      rotationVectorInImageCoord.dx * cos(deltaAngleByRadian) -
+          rotationVectorInImageCoord.dy * sin(deltaAngleByRadian),
+      rotationVectorInImageCoord.dx * sin(deltaAngleByRadian) +
+          rotationVectorInImageCoord.dy * cos(deltaAngleByRadian),
     );
 
     /// Tính toạ độ center mới của ảnh trong hệ quy chiếu ảnh
@@ -424,6 +523,11 @@ class _BodyCropTestState extends State<BodyCropTest>
     );
 
     setState(() {});
+  }
+
+  void _onRulerEnd() {
+    _onShowFullImage(false);
+    _startRectImage = Rect.zero;
   }
 
   // change hole size
@@ -562,31 +666,22 @@ class _BodyCropTestState extends State<BodyCropTest>
         if (isHaveLimitWhenGesture) {
           newRectImage = newRectImage.limitSelfToInclude(
             _rectCropHole,
-            angleByRadian: _cropModel.getAngleByRadian,
+            angleByRadian: angleByRadian,
             pivot: newRectImage.center,
           );
         }
-        consolelog(
-          "_cropModel.getAngleByRadian: ${_cropModel.getAngleByRadian}",
-        );
         _rectImage = newRectImage;
         setState(() {});
       } else if (details.pointerCount == 2) {
+        ///
         // 1. Tính toán kích thước mới sau khi scale
         Size targetSize = _startRectImage.size * scale;
 
-        double minWidth = _rectCropHole.width;
-        double minHeight = _rectCropHole.height;
-        double aspect = _startRectImage.width / _startRectImage.height;
-
-        // 2. Đảm bảo không nhỏ hơn crop hole
-        if (targetSize.width < minWidth) {
-          targetSize = Size(minWidth, minWidth / aspect);
-        }
-
-        if (targetSize.height < minHeight) {
-          targetSize = Size(minHeight * aspect, minHeight);
-        }
+        targetSize = CropHelpers.limitScaleSize(
+          angleByRadian: angleByRadian,
+          innerRect: _rectCropHole,
+          outerSize: targetSize,
+        );
         _renderBoxImage =
             _keyImage.currentContext?.findRenderObject() as RenderBox?;
         if (_renderBoxImage == null) {
@@ -648,7 +743,7 @@ class _BodyCropTestState extends State<BodyCropTest>
           newRectInGestureCoordinate = newRectInGestureCoordinate
               .limitSelfToInclude(
                 _rectCropHole,
-                angleByRadian: _cropModel.getAngleByRadian,
+                angleByRadian: angleByRadian,
                 pivot: newRectInGestureCoordinate.center,
               );
         }
@@ -670,71 +765,19 @@ class _BodyCropTestState extends State<BodyCropTest>
     consolelog("_cropModel updated: $_cropModel");
   }
 
-  // // cái ảnh xoay -alpha, khung crop xoay -alpha
-  // // thì cái ảnh sẽ ở góc 0, khung crop góc -alpha
-  // // tính khung bao ngoài khung crop
-  // // xong limit vào ảnh góc 0
-  // // lúc drag thì tính thế này
-  // // còn lúc xoay mà limit thì a chưa nghĩ ra :v
-
-  // void _onScaleEnd(ScaleEndDetails details) {
-  //   double angleByRadian = _cropModel.getAngleByRadian;
-  //   bool isRotatedImageOctagonContainsCropRect =
-  //       RotateHelper.isRotatedSeftOctagonContains(
-  //     outerRect: _rectImage,
-  //     innerRect: _rectCropHole,
-  //     angleByRadianForOuter: angleByRadian,
-  //   );
-  //   consolelog(
-  //       "isRotatedImageOctagonContainsCropRect: $isRotatedImageOctagonContainsCropRect");
-  //   Rect limitRectOrigin = _rectImage.limitSelfToInclude(_rectCropHole);
-  //   if (!_cropModel.getAngleByRadian.equalTo(0.0)) {
-  //     /// Tôi có
-  //     /// + _rectImage, angleByRadian, điểm xoay tại center của _rectImage,
-  //     /// + cropRect
-  //     ///
-  //     /// Khi thả tay, tôi cần tính lại rect mới cho _rectImage ( rect mới là X ),
-  //     /// mà ở đó, khi xoay X tại center của chính nó,
-  //     /// thì crop Rect sẽ luôn luôn nằm trong phần diện tích nối bởi 4 điểm góc đã xoay
-  //     Rect surroundingRotatedCropRect = RotateHelper.getRotatedRect(
-  //       _rectCropHole,
-  //       angleByRadian,
-  //       pivotPoint: _rectCropHole.center,
-  //     );
-  //     limitRectOrigin = _rectImage.limitSelfWith(surroundingRotatedCropRect);
-  //   }
-  //   final SpringDescription spring = SpringDescription(
-  //     mass: 1.0,
-  //     stiffness: 100.0,
-  //     damping: 15.0,
-  //   );
-  //   // Animation cho mỗi thuộc tính của Rect
-  //   _animateRectWithSpring(
-  //     from: _rectImage,
-  //     to: limitRectOrigin,
-  //     spring: spring,
-  //   );
-  //   _startGlobalPosition = Offset.zero;
-  //   _startRectImage = Rect.zero;
-  //   _isGesturingImage = false;
-  //   setState(() {});
-  // }
-
   void _onScaleEnd(ScaleEndDetails details) {
-    final double angle = _cropModel.getAngleByRadian;
-
     Rect targetRect = _rectImage;
 
-    if (angle.equalTo(0.0)) {
+    if (angleByRadian.equalTo(0.0)) {
       /// Trường hợp góc 0° như iOS scroll view
       targetRect = _rectImage.limitSelfToInclude(_rectCropHole);
     } else {
       /// Trường hợp góc ≠ 0°
       /// Tính rect mới sao cho ảnh quay luôn bao trọn cropRect
-      targetRect = RotatedCropHelpers.limitOuterOctagonToIncludeInnerOctagon(
+      targetRect = CropHelpers.limitOuterOctagonToIncludeInnerOctagon(
         outerRect: _rectImage,
         innerRect: _rectCropHole,
-        angleByRadian: angle,
+        angleByRadian: angleByRadian,
       );
     }
 
@@ -910,7 +953,7 @@ class _BodyCropTestState extends State<BodyCropTest>
                               // size: MediaQuery.sizeOf(context),
                             ),
                           ),
-                          _buildTestWidget(),
+                          // _buildTestWidget(),
                         ],
                       ),
                       //country dialog + slider ruler
@@ -956,9 +999,8 @@ class _BodyCropTestState extends State<BodyCropTest>
                                       onValueChange: (value) {
                                         _onRulerChange(value);
                                       },
-                                      onEnd: (value) {
-                                        _onShowFullImage(false);
-                                      },
+                                      onStart: _onRulerStart,
+                                      onEnd: _onRulerEnd,
                                     ),
                             ],
                           ),
@@ -1012,7 +1054,7 @@ class _BodyCropTestState extends State<BodyCropTest>
       decoration: BoxDecoration(),
       child: Transform.rotate(
         alignment: Alignment.center,
-        angle: _cropModel.getAngleByRadian,
+        angle: angleByRadian,
         child: Container(
           child: widget.uiImageAdjusted != null
               ? RawImage(
@@ -1109,7 +1151,7 @@ class _BodyCropTestState extends State<BodyCropTest>
     }
     return Transform.rotate(
       alignment: Alignment.center,
-      angle: _cropModel.getAngleByRadian,
+      angle: angleByRadian,
       child: SizedBox(
         key: key,
         height: _rectImage.height,
@@ -1140,26 +1182,14 @@ class _BodyCropTestState extends State<BodyCropTest>
       left: _rectCropHole.topLeft.dx,
       top: _rectCropHole.topLeft.dy,
       child: Transform.rotate(
-        angle: 34 / 180 * pi,
+        angle: angleByRadian,
         child: Container(
-          color: red.withAlpha(30),
           width: _rectCropHole.width,
           height: _rectCropHole.height,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTestWidget1() {
-    return Positioned(
-      left: _rectImage.topLeft.dx,
-      top: _rectImage.topLeft.dy,
-      child: Transform.rotate(
-        angle: 0,
-        child: Container(
-          color: black,
-          width: _rectImage.width,
-          height: _rectImage.height,
+          child: WTextContent(
+            value:
+                "getAngleByDegree: ${_cropModel.getAngleByDegreeLimited.toStringAsFixed(2)}",
+          ),
         ),
       ),
     );

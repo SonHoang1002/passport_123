@@ -55,10 +55,7 @@ extension DoubleExtension on double {
   ///
   /// [epsilon] là sai số nhỏ nhất chấp nhận được (mặc định [EPSILON_E5])
   /// Có thể dùng an toàn cho cả số học và hình học.
-  bool equalTo(
-    double other, {
-    double epsilon = EPSILON_E5,
-  }) {
+  bool equalTo(double other, {double epsilon = EPSILON_E5}) {
     final diff = (this - other).abs();
     return diff.abs() <= epsilon;
   }
@@ -92,10 +89,7 @@ extension SizeExtension on Size {
 }
 
 extension OffsetExtension on Offset {
-  Offset getProjectionWith(
-    Offset target1,
-    Offset target2,
-  ) {x
+  Offset getProjectionWith(Offset target1, Offset target2) {
     Offset start = this;
     // Vector chỉ phương của đường thẳng
     final dx = target2.dx - target1.dx;
@@ -113,10 +107,7 @@ extension OffsetExtension on Offset {
     final t = (vx * dx + vy * dy) / lenSq;
 
     // Tính điểm chiếu
-    return Offset(
-      target1.dx + t * dx,
-      target1.dy + t * dy,
-    );
+    return Offset(target1.dx + t * dx, target1.dy + t * dy);
   }
 
   /// Expand to rect from current offset
@@ -137,19 +128,13 @@ extension OffsetExtension on Offset {
     return [dx, dy];
   }
 
-  bool equalTo(
-    Offset other, {
-    double epsilon = EPSILON_E5,
-  }) {
+  bool equalTo(Offset other, {double epsilon = EPSILON_E5}) {
     return (dx - other.dx).abs() <= epsilon && (dy - other.dy).abs() <= epsilon;
   }
 
   /// Lấy trung điểm giữa đạon thẳng tạo bởi 2 điểm
   Offset midPointWith(Offset other) {
-    return Offset(
-      (dx + other.dx) / 2,
-      (dy + other.dy) / 2,
-    );
+    return Offset((dx + other.dx) / 2, (dy + other.dy) / 2);
   }
 
   Offset get normalized {
@@ -185,7 +170,8 @@ extension OffsetExtension on Offset {
     Offset vectorAB = B - A;
     Offset vectorAP = this - A;
 
-    double t = (vectorAB.dx * vectorAP.dx + vectorAB.dy * vectorAP.dy) /
+    double t =
+        (vectorAB.dx * vectorAP.dx + vectorAB.dy * vectorAP.dy) /
         (vectorAB.dx * vectorAB.dx + vectorAB.dy * vectorAB.dy);
     if (clampToSegment) {
       t = t.clamp(0, 1);
@@ -229,9 +215,7 @@ extension OffsetExtension on Offset {
   /// };
   ///
   /// Note: Ray Casting algorithm
-  bool isContainedPointIn4Points(
-    Map<String, Offset> listPoint,
-  ) {
+  bool isContainedPointIn4Points(Map<String, Offset> listPoint) {
     Offset topLeft = listPoint["topLeft"]!;
     Offset topRight = listPoint["topRight"]!;
     Offset bottomRight = listPoint["bottomRight"]!;
@@ -407,10 +391,7 @@ extension OffsetExtension on Offset {
         u >= -epsilon &&
         u <= 1 + epsilon) {
       // Tính tọa độ giao điểm
-      return Offset(
-        start1.dx + t * dx1,
-        start1.dy + t * dy1,
-      );
+      return Offset(start1.dx + t * dx1, start1.dy + t * dy1);
     }
 
     // Giao điểm nằm ngoài một trong hai đoạn thẳng
@@ -419,7 +400,8 @@ extension OffsetExtension on Offset {
 
   bool isOnSegment(Offset start, Offset end, [double epsilon = EPSILON_E5]) {
     // Kiểm tra cross product gần 0 (đồng tuyến)
-    double crossProduct = (dx - start.dx) * (end.dy - start.dy) -
+    double crossProduct =
+        (dx - start.dx) * (end.dy - start.dy) -
         (dy - start.dy) * (end.dx - start.dx);
 
     if (crossProduct.abs() > epsilon) {
@@ -482,14 +464,24 @@ extension PairExtension on (bool, bool, bool, bool) {
 }
 
 extension RectExtension on Rect {
+  Rect get reverse {
+    return Rect.fromCenter(center: center, width: height, height: width);
+  }
+
   Rect operator /(int other) {
     return Rect.fromCenter(
-        center: center, width: width / other, height: height / other);
+      center: center,
+      width: width / other,
+      height: height / other,
+    );
   }
 
   Rect operator *(int other) {
     return Rect.fromCenter(
-        center: center, width: width * other, height: height * other);
+      center: center,
+      width: width * other,
+      height: height * other,
+    );
   }
 
   /// Expand rect with distance
@@ -567,9 +559,13 @@ extension RectExtension on Rect {
     double limitedHeight = math.min(height, outerRect.height);
     return Rect.fromLTWH(
       left.clamp(
-          outerRect.left, outerRect.left + (outerRect.width - limitedWidth)),
+        outerRect.left,
+        outerRect.left + (outerRect.width - limitedWidth),
+      ),
       top.clamp(
-          outerRect.top, outerRect.top + (outerRect.height - limitedHeight)),
+        outerRect.top,
+        outerRect.top + (outerRect.height - limitedHeight),
+      ),
       limitedWidth,
       limitedHeight,
     );
@@ -578,33 +574,30 @@ extension RectExtension on Rect {
   /// Ensure [self] must include inner rect
   ///
   /// Đảm bảo rằng chính rect hiện tại phải chứa [inner]
-  Rect limitSelfToInclude(
-    Rect inner, {
-    double? angleByRadian,
-    Offset? pivot,
-  }) {
+  Rect limitSelfToInclude(Rect inner, {double? angleByRadian, Offset? pivot}) {
     Rect outer = this;
     if (angleByRadian != null && pivot != null) {
       // Xoay rect inner ngược chiều kim đồng hồ với góc angleByRadian quanh pivot
       final cosAngle = math.cos(-angleByRadian);
       final sinAngle = math.sin(-angleByRadian);
 
-      List<Offset> rotatedPoints = [
-        outer.topLeft,
-        outer.topRight,
-        outer.bottomRight,
-        outer.bottomLeft,
-      ].map((point) {
-        final translatedX = point.dx - pivot.dx;
-        final translatedY = point.dy - pivot.dy;
+      List<Offset> rotatedPoints =
+          [
+            outer.topLeft,
+            outer.topRight,
+            outer.bottomRight,
+            outer.bottomLeft,
+          ].map((point) {
+            final translatedX = point.dx - pivot.dx;
+            final translatedY = point.dy - pivot.dy;
 
-        final rotatedX =
-            translatedX * cosAngle - translatedY * sinAngle + pivot.dx;
-        final rotatedY =
-            translatedX * sinAngle + translatedY * cosAngle + pivot.dy;
+            final rotatedX =
+                translatedX * cosAngle - translatedY * sinAngle + pivot.dx;
+            final rotatedY =
+                translatedX * sinAngle + translatedY * cosAngle + pivot.dy;
 
-        return Offset(rotatedX, rotatedY);
-      }).toList();
+            return Offset(rotatedX, rotatedY);
+          }).toList();
 
       double minX = rotatedPoints.map((p) => p.dx).reduce(math.min);
       double maxX = rotatedPoints.map((p) => p.dx).reduce(math.max);

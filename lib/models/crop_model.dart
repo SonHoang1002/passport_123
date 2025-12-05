@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:pass1_/helpers/crop_helpers.dart';
 import 'package:pass1_/helpers/random_number.dart';
 
 // class CropModel {
@@ -78,8 +79,13 @@ class CropModel {
     );
   }
 
-  double get getAngleByRadian =>
-      (currentRotateValue - instructionRotateValue) * 90 * pi / 180;
+  double get getAngleByDegree =>
+      (currentRotateValue - instructionRotateValue) * 90;
+
+  double get getAngleByDegreeLimited =>
+      CropHelpers.limitAngleDegree(getAngleByDegree);
+
+  double get getAngleByRadian => getAngleByDegree * pi / 180;
 
   CropModel copyWith({
     double? instructionRotateValue,

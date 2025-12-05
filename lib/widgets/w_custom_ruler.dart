@@ -9,8 +9,9 @@ class WRulerCustom extends StatefulWidget {
   final double instructionRatioValue;
   final double currentRatioValue;
   final int dividers;
-  final Function(double newRatio) onValueChange;
-  final Function(double value)? onEnd;
+  final void Function(double newRatio) onValueChange;
+  final void Function()? onEnd;
+  final void Function()? onStart;
   final Color? checkPointColor;
   const WRulerCustom({
     super.key,
@@ -19,6 +20,7 @@ class WRulerCustom extends StatefulWidget {
     required this.currentRatioValue,
     required this.dividers,
     required this.onValueChange,
+    this.onStart,
     this.onEnd,
     this.checkPointColor,
   });
@@ -118,7 +120,6 @@ class _WRulerCustomState extends State<WRulerCustom> {
   }
 
   int lastMilli = DateTime.now().millisecondsSinceEpoch;
-
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.sizeOf(context);
@@ -149,6 +150,7 @@ class _WRulerCustomState extends State<WRulerCustom> {
                 }
 
                 if (scrollNotification is ScrollStartNotification) {
+                  widget.onStart?.call();
                 } else if (scrollNotification is ScrollUpdateNotification) {
                   final pixelsPerMilli =
                       scrollNotification.scrollDelta! / timeDiff;
@@ -166,9 +168,7 @@ class _WRulerCustomState extends State<WRulerCustom> {
                   }
                   return true;
                 } else if (scrollNotification is ScrollEndNotification) {
-                  widget.onEnd != null
-                      ? widget.onEnd!(scrollNotification.metrics.pixels)
-                      : null;
+                  widget.onEnd?.call();
                 }
                 return true;
               },
