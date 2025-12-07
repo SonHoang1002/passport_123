@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'package:color_picker_android/color_picker_flutter.dart';
-import 'package:color_picker_android/helpers/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_filters/flutter_image_filters.dart';
@@ -343,61 +341,61 @@ class _TestBodyAdjustPhoneState extends State<BodyAdjustPhone> {
 
   void _onSelectBackground(dynamic newBackground) async {
     // open sheet background
-    if (_listBackground.last == newBackground) {
-      // lay cac mau da luu trong SharedPreferences
-      List<String> listColorString = await SharedPreferencesHelper()
-          .getColorSaved();
-      List<Color> listSavedColor = listColorString
-          .map((e) => convertHexStringToColor(e))
-          .toList();
-      dynamic currentColor = widget.projectModel.background;
-      if (currentColor is File ||
-          currentColor is String ||
-          currentColor == null) {
-        currentColor = isDarkMode ? black : white;
-      }
-      // ignore: use_build_context_synchronously
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return ColorPickerPhone(
-            currentColor: currentColor,
-            onDone: (value) {
-              _indexBackgroundSelected = _listBackground.length - 1;
-              _onUpdateBackgroundProperty(value);
-              setState(() {});
-              popNavigator(context);
-            },
-            listColorSaved: listSavedColor,
-            isLightMode: !isDarkMode,
-            onColorSave: (color) async {
-              if (color == null) return;
-              if (listSavedColor.contains(color)) {
-                listSavedColor = List.from(
-                  listSavedColor.where((element) => element != color).toList(),
-                );
-              } else {
-                listSavedColor = [color, ...List.from(listSavedColor)];
-              }
-              var abc = listSavedColor
-                  .map((e) => convertColorToHexString(e))
-                  .toList();
-              consolelog('listSavedColor: $abc');
-              await SharedPreferencesHelper().updateColorSaved(abc);
-            },
-          );
-        },
-        isScrollControlled: true,
-        backgroundColor: transparent,
-      );
-      return;
-    }
-    final index = _listBackground.indexOf(newBackground);
-    if (index != -1) {
-      _indexBackgroundSelected = index;
-    }
-    _onUpdateBackgroundProperty(newBackground);
-    setState(() {});
+    // if (_listBackground.last == newBackground) {
+    //   // lay cac mau da luu trong SharedPreferences
+    //   List<String> listColorString = await SharedPreferencesHelper()
+    //       .getColorSaved();
+    //   List<Color> listSavedColor = listColorString
+    //       .map((e) => convertHexStringToColor(e))
+    //       .toList();
+    //   dynamic currentColor = widget.projectModel.background;
+    //   if (currentColor is File ||
+    //       currentColor is String ||
+    //       currentColor == null) {
+    //     currentColor = isDarkMode ? black : white;
+    //   }
+    //   // ignore: use_build_context_synchronously
+    //   showModalBottomSheet(
+    //     context: context,
+    //     builder: (context) {
+    //       return ColorPickerPhone(
+    //         currentColor: currentColor,
+    //         onDone: (value) {
+    //           _indexBackgroundSelected = _listBackground.length - 1;
+    //           _onUpdateBackgroundProperty(value);
+    //           setState(() {});
+    //           popNavigator(context);
+    //         },
+    //         listColorSaved: listSavedColor,
+    //         isLightMode: !isDarkMode,
+    //         onColorSave: (color) async {
+    //           if (color == null) return;
+    //           if (listSavedColor.contains(color)) {
+    //             listSavedColor = List.from(
+    //               listSavedColor.where((element) => element != color).toList(),
+    //             );
+    //           } else {
+    //             listSavedColor = [color, ...List.from(listSavedColor)];
+    //           }
+    //           var abc = listSavedColor
+    //               .map((e) => convertColorToHexString(e))
+    //               .toList();
+    //           consolelog('listSavedColor: $abc');
+    //           await SharedPreferencesHelper().updateColorSaved(abc);
+    //         },
+    //       );
+    //     },
+    //     isScrollControlled: true,
+    //     backgroundColor: transparent,
+    //   );
+    //   return;
+    // }
+    // final index = _listBackground.indexOf(newBackground);
+    // if (index != -1) {
+    //   _indexBackgroundSelected = index;
+    // }
+    // _onUpdateBackgroundProperty(newBackground);
+    // setState(() {});
   }
 
   void _onUpdateOffset(Offset globalPosition) {

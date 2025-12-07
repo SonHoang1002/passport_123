@@ -40,14 +40,16 @@ class CropHelpers {
       -angleByRadian,
     );
 
+    /// Tính toán rect outer tại hệ quy chiếu inner
     Rect transverseOuterRectInInnerCoord = Rect.fromCenter(
       center: outerCenterInInnerCoord,
       width: outerRect.width,
       height: outerRect.height,
     );
-
+    // Lấy rect bao quanh của inner
     Rect surroundingRotatedCropRect = getRotatedRect(innerRect, angleByRadian);
 
+    /// limit
     Rect limitTransverseOuterRectInInnerCoord = transverseOuterRectInInnerCoord
         .limitSelfToInclude(surroundingRotatedCropRect);
 
@@ -62,6 +64,68 @@ class CropHelpers {
       width: outerRect.width,
       height: outerRect.height,
     );
+  }
+
+  static double getTargetMaxScaleSizeToOuterContainRotatedInner({
+    required Rect outerRect,
+    required Rect innerRect,
+    required double angleByRadian,
+  }) {
+    Offset outerCenterInInnerCoord = getRotatedPointByAngle(
+      innerRect.center,
+      outerRect.center,
+      -angleByRadian,
+    );
+    Rect transverseOuterRectInInnerCoord = Rect.fromCenter(
+      center: outerCenterInInnerCoord,
+      width: outerRect.width,
+      height: outerRect.height,
+    );
+    Rect surroundingRotatedCropRect = getRotatedRect(innerRect, angleByRadian);
+
+    double translateTopEdge =
+        transverseOuterRectInInnerCoord.top -
+        surroundingRotatedCropRect.top; // outer nằm trong thì > 0
+    double translateLeftEdge =
+        transverseOuterRectInInnerCoord.left -
+        surroundingRotatedCropRect.left; // outer nằm trong thì > 0
+    double translateRightEdge =
+        -(transverseOuterRectInInnerCoord.right -
+            surroundingRotatedCropRect.right); // outer nằm trong thì > 0
+    double translateBottomEdge =
+        -(transverseOuterRectInInnerCoord.bottom -
+            surroundingRotatedCropRect.bottom); // outer nằm trong thì > 0
+
+    List<double> listTranslate = [
+      translateLeftEdge,
+      translateTopEdge,
+      translateRightEdge,
+      translateBottomEdge,
+    ];
+
+    /// Lấy khoảng cách lớn giữa hai rect bên trên
+    double maxTranslate = 0;
+    int indexOfEdgeHasMaxDistance = -1;
+
+    for (var i = 0; i < listTranslate.length; i++) {
+      double item = listTranslate[i];
+      if (item > 0 && item > maxTranslate) {
+        maxTranslate = item;
+        indexOfEdgeHasMaxDistance = i;x
+      }
+    }
+    double targetScale = 1;
+    if (indexOfEdgeHasMaxDistance == 0 || indexOfEdgeHasMaxDistance == 2) {
+      targetScale = (outerRect.width + maxTranslate * 2) / outerRect.width;
+    }
+    if (indexOfEdgeHasMaxDistance == 1 || indexOfEdgeHasMaxDistance == 3) {
+      targetScale = (outerRect.height + maxTranslate * 2) / outerRect.height;
+    }
+    consolelog(
+      "indexOfEdgeHasMaxDistance = $indexOfEdgeHasMaxDistance, targetScale = $targetScale",
+    );
+
+    return targetScale;
   }
 
   static Offset getRotatedPointByAngle(
