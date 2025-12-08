@@ -165,7 +165,7 @@ class _HomePagePhoneState extends State<HomePageTablet>
       stopwatch.stop();
     } catch (e) {
       _projectModel.bgRemovedFile = _projectModel.selectedFile;
-      consolelog("_onRemoveImageBackground error: ${e}");
+      consolelog("_onRemoveImageBackground error: $e");
     }
     setState(() {});
   }
@@ -421,7 +421,8 @@ class _HomePagePhoneState extends State<HomePageTablet>
             setState(() {});
           },
           onUpdateCropModel: (cropModel) {
-            _projectModel = _projectModel..cropModel = cropModel;
+            consolelog("onUpdateCropModel call: $cropModel");
+            _projectModel = _projectModel.copyWith(cropModel: cropModel);
             setState(() {});
           },
           uiImageAdjusted: (_projectModel.uiImageAdjusted),

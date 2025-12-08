@@ -66,7 +66,7 @@ class CropHelpers {
     );
   }
 
-  static double getTargetMaxScaleSizeToOuterContainRotatedInner({
+  static Size getTargetMaxScaleSizeToOuterContainRotatedInner({
     required Rect outerRect,
     required Rect innerRect,
     required double angleByRadian,
@@ -110,22 +110,124 @@ class CropHelpers {
     for (var i = 0; i < listTranslate.length; i++) {
       double item = listTranslate[i];
       if (item > 0 && item > maxTranslate) {
+        indexOfEdgeHasMaxDistance = i;
         maxTranslate = item;
-        indexOfEdgeHasMaxDistance = i;x
       }
     }
-    double targetScale = 1;
-    if (indexOfEdgeHasMaxDistance == 0 || indexOfEdgeHasMaxDistance == 2) {
-      targetScale = (outerRect.width + maxTranslate * 2) / outerRect.width;
-    }
-    if (indexOfEdgeHasMaxDistance == 1 || indexOfEdgeHasMaxDistance == 3) {
-      targetScale = (outerRect.height + maxTranslate * 2) / outerRect.height;
-    }
-    consolelog(
-      "indexOfEdgeHasMaxDistance = $indexOfEdgeHasMaxDistance, targetScale = $targetScale",
-    );
+    double ratio = outerRect.size.aspectRatio;
+    double targetWidth, targetHeight;
+    switch (indexOfEdgeHasMaxDistance) {
+      case 0:
+        // Tỉ lệ từ cạnh left của crop rect đến cạnh left của outer rect
+        double distanceCropCenterToTransverseOuterLeftEdge =
+            (surroundingRotatedCropRect.center.dx -
+            transverseOuterRectInInnerCoord.left);
 
-    return targetScale;
+        /// Ở phía từ center của crop đến cạnh left của outer, tính khoảng cách mới
+        double distanceWidthCenterInnerRectToNewRotatedOuterLeftEdge =
+            maxTranslate + distanceCropCenterToTransverseOuterLeftEdge;
+
+        /// Theo công thức: dLeftNew / dLeftOld = đRightNew / dRightOld; -> tính dRightNew
+        double distanceWidthCenterInnerRectToNewRotatedOuterRightEdge =
+            distanceWidthCenterInnerRectToNewRotatedOuterLeftEdge /
+            distanceCropCenterToTransverseOuterLeftEdge *
+            (transverseOuterRectInInnerCoord.width -
+                distanceCropCenterToTransverseOuterLeftEdge);
+
+        targetWidth =
+            distanceWidthCenterInnerRectToNewRotatedOuterRightEdge +
+            distanceWidthCenterInnerRectToNewRotatedOuterLeftEdge;
+        targetHeight = targetWidth / ratio;
+
+        break;
+      case 1:
+        // Tỉ lệ từ cạnh top của crop rect đến cạnh top của outer rect
+        double distanceCropCenterToTransverseOuterTopEdge =
+            (surroundingRotatedCropRect.center.dy -
+            transverseOuterRectInInnerCoord.top);
+
+        /// Ở phía từ center của crop đến cạnh top của outer, tính khoảng cách mới
+        double distanceWidthCenterInnerRectToNewRotatedOuterTopEdge =
+            maxTranslate + distanceCropCenterToTransverseOuterTopEdge;
+
+        /// Theo công thức: dTopNew / dTopOld = dBottomNew / dBottomOld; -> tính dBottomNew
+        double distanceWidthCenterInnerRectToNewRotatedOuterBottomEdge =
+            distanceWidthCenterInnerRectToNewRotatedOuterTopEdge /
+            distanceCropCenterToTransverseOuterTopEdge *
+            (transverseOuterRectInInnerCoord.height -
+                distanceCropCenterToTransverseOuterTopEdge);
+
+        targetHeight =
+            distanceWidthCenterInnerRectToNewRotatedOuterBottomEdge +
+            distanceWidthCenterInnerRectToNewRotatedOuterTopEdge;
+        targetWidth = targetHeight * ratio;
+        break;
+      case 2:
+        // Tỉ lệ từ cạnh left của crop rect đến cạnh right của outer rect
+        double distanceCropCenterToTransverseOuterRightEdge =
+            transverseOuterRectInInnerCoord.width -
+            (surroundingRotatedCropRect.center.dx -
+                transverseOuterRectInInnerCoord.left);
+
+        /// Ở phía từ center của crop đến cạnh right của outer, tính khoảng cách mới
+        double distanceWidthCenterInnerRectToNewRotatedOuterRightEdge =
+            maxTranslate + distanceCropCenterToTransverseOuterRightEdge;
+
+        /// Theo công thức: dLeftNew / dLeftOld = đRightNew / dRightOld; -> tính dRightNew
+        double distanceWidthCenterInnerRectToNewRotatedOuterLeftEdge =
+            distanceWidthCenterInnerRectToNewRotatedOuterRightEdge /
+            distanceCropCenterToTransverseOuterRightEdge *
+            (transverseOuterRectInInnerCoord.width -
+                distanceCropCenterToTransverseOuterRightEdge);
+
+        targetWidth =
+            distanceWidthCenterInnerRectToNewRotatedOuterRightEdge +
+            distanceWidthCenterInnerRectToNewRotatedOuterLeftEdge;
+        targetHeight = targetWidth / ratio;
+        break;
+      case 3:
+        // Tỉ lệ từ cạnh top của crop rect đến cạnh bottom của outer rect
+        double distanceCropCenterToTransverseOuterBottomEdge =
+            transverseOuterRectInInnerCoord.height -
+            (surroundingRotatedCropRect.center.dy -
+                transverseOuterRectInInnerCoord.top);
+
+        /// Ở phía từ center của crop đến cạnh top của outer, tính khoảng cách mới
+        double distanceWidthCenterInnerRectToNewRotatedOuterBottomEdge =
+            maxTranslate + distanceCropCenterToTransverseOuterBottomEdge;
+
+        /// Theo công thức: dTopNew / dTopOld = dBottomNew / dBottomOld; -> tính dTopNew
+        double distanceWidthCenterInnerRectToNewRotatedOuterTopEdge =
+            distanceWidthCenterInnerRectToNewRotatedOuterBottomEdge /
+            distanceCropCenterToTransverseOuterBottomEdge *
+            (transverseOuterRectInInnerCoord.height -
+                distanceCropCenterToTransverseOuterBottomEdge);
+
+        targetHeight =
+            distanceWidthCenterInnerRectToNewRotatedOuterBottomEdge +
+            distanceWidthCenterInnerRectToNewRotatedOuterTopEdge;
+        targetWidth = targetHeight * ratio;
+        break;
+      default:
+        targetHeight = outerRect.height;
+        targetWidth = outerRect.width;
+        break;
+    }
+    // if ([0, 2].contains(indexOfEdgeHasMaxDistance)) {
+    //   targetWidth = outerRect.width + maxTranslate * 2;
+    //   targetHeight = targetWidth / ratio;
+    // } else if ([1, 3].contains(indexOfEdgeHasMaxDistance)) {
+    //   targetHeight = outerRect.height + maxTranslate * 2;
+    //   targetWidth = targetHeight * ratio;
+    // } else {
+    // targetHeight = outerRect.height;
+    // targetWidth = outerRect.width;
+    // }
+    Size targetSize = Size(targetWidth, targetHeight);
+    consolelog(
+      "indexOfEdgeHasMaxDistance = $indexOfEdgeHasMaxDistance, distance: ${listTranslate}, outerRect size = ${outerRect.size}, targetSize = $targetSize",
+    );
+    return targetSize;
   }
 
   static Offset getRotatedPointByAngle(

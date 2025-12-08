@@ -100,9 +100,9 @@ class _BodyCropTestState extends State<BodyCropTest>
     /// Lấy điểm center của crop, chiếu xuống ảnh, tìm điểm center đã xoay tại focal in image coord
     // _renderBoxImage = _keyImage.currentContext!.findRenderObject() as RenderBox;
     // Offset cropCenterInImageCoord = _renderBoxImage!.globalToLocal(
-    //     _renderBoxCountryDialog!.localToGlobal(_rectCropHole.center));
+    //     _renderBoxCountryDialog!.localToGlobal(getRectCrop.center));
     // Offset imageCenterInImageCoord = _renderBoxImage!.globalToLocal(
-    //     _renderBoxCountryDialog!.localToGlobal(_rectImage.center));
+    //     _renderBoxCountryDialog!.localToGlobal(getRectImage.center));
     // Offset inverseImageCenterInImageCoord = RotateHelper.getRotatedPointByAngle(
     //   cropCenterInImageCoord,
     //   imageCenterInImageCoord,
@@ -114,10 +114,10 @@ class _BodyCropTestState extends State<BodyCropTest>
 
     // Rect inverseImageRect = Rect.fromCenter(
     //   center: inverseImageCenterInGestureCoord,
-    //   width: _rectImage.width,
-    //   height: _rectImage.height,
+    //   width: getRectImage.width,
+    //   height: getRectImage.height,
     // );
-    Rect checkRect = _rectImage;
+    Rect checkRect = getRectImage;
     double ratioLeftInImage =
         (rectCrop.left - checkRect.left) / checkRect.width;
     double ratioTopInImage = (rectCrop.top - checkRect.top) / checkRect.height;
@@ -138,7 +138,26 @@ class _BodyCropTestState extends State<BodyCropTest>
 
   set setCropModel(CropModel cropModel) {
     _cropModel = cropModel;
+    widget.onUpdateCropModel(_cropModel);
   }
+
+  Rect get getRectImage => _rectImage;
+  set setRectImage(Rect newRect) {
+    _rectImage = newRect;
+    setCropModel = _cropModel.copyWith(
+      ratioLeftInImage:
+          (getRectCrop.left - getRectImage.left) / getRectImage.width,
+      ratioTopInImage:
+          (getRectCrop.top - getRectImage.top) / getRectImage.height,
+      ratioRightInImage:
+          -(getRectCrop.right - getRectImage.right) / getRectImage.width,
+      ratioBottomInImage:
+          -(getRectCrop.bottom - getRectImage.bottom) / getRectImage.height,
+      previewImageRectInCropScreen: newRect,
+    );
+  }
+
+  Rect get getRectCrop => _rectCropHole;
 
   double get angleByRadian => _cropModel.getAngleByRadian;
 
@@ -207,25 +226,31 @@ class _BodyCropTestState extends State<BodyCropTest>
       );
       if (widget.projectModel.cropModel != null) {
         setCropModel = widget.projectModel.cropModel!.copyWith();
-        consolelog(
-          "widget.projectModel.cropModel != null: new data ${widget.projectModel.cropModel}",
-        );
-        consolelog(
-          "widget.projectModel.cropModel != null: current $_cropModel",
-        );
-        double imageWidth =
-            (widthCropHole /
-            (1 - _cropModel.ratioLeftInImage - _cropModel.ratioRightInImage));
-        double imageHeight =
-            (heightCropHole /
-            (1 - _cropModel.ratioTopInImage - _cropModel.ratioBottomInImage));
+        if (widget.projectModel.cropModel!.previewImageRectInCropScreen !=
+            null) {
+          setRectImage =
+              widget.projectModel.cropModel!.previewImageRectInCropScreen!;
+        } else {
+          consolelog(
+            "widget.projectModel.cropModel != null: new data ${widget.projectModel.cropModel}",
+          );
+          consolelog(
+            "widget.projectModel.cropModel != null: current $_cropModel",
+          );
+          double imageWidth =
+              (widthCropHole /
+              (1 - _cropModel.ratioLeftInImage - _cropModel.ratioRightInImage));
+          double imageHeight =
+              (heightCropHole /
+              (1 - _cropModel.ratioTopInImage - _cropModel.ratioBottomInImage));
 
-        _rectImage = Rect.fromLTWH(
-          _rectCropHole.left - imageWidth * _cropModel.ratioLeftInImage,
-          _rectCropHole.top - imageHeight * _cropModel.ratioTopInImage,
-          imageWidth,
-          imageHeight,
-        );
+          setRectImage = Rect.fromLTWH(
+            getRectCrop.left - imageWidth * _cropModel.ratioLeftInImage,
+            getRectCrop.top - imageHeight * _cropModel.ratioTopInImage,
+            imageWidth,
+            imageHeight,
+          );
+        }
       } else {
         double imageWidth, imageHeight;
         double ratioImage = widget.imageSelectedSize.aspectRatio;
@@ -240,12 +265,12 @@ class _BodyCropTestState extends State<BodyCropTest>
           imageWidth = widthCropHole;
           imageHeight = heightCropHole;
         }
-        _rectImage = Rect.fromCenter(
+        setRectImage = Rect.fromCenter(
           center: centerGestureArea,
           width: imageWidth,
           height: imageHeight,
         );
-        var ratios = generateRatioCropModel(_rectImage, _rectCropHole);
+        var ratios = generateRatioCropModel(getRectImage, getRectCrop);
         setCropModel = CropModel.create(
           instructionRotateValue: 0.5,
           currentRotateValue: 0.5,
@@ -255,7 +280,7 @@ class _BodyCropTestState extends State<BodyCropTest>
           ratioBottomInImage: ratios.$4,
         );
       }
-      _rectImageInitial = _rectImage;
+      _rectImageInitial = getRectImage;
 
       isInitting = false;
       setState(() {});
@@ -281,7 +306,7 @@ class _BodyCropTestState extends State<BodyCropTest>
     //       180,
     //   matrix: _transformImageController.value,
     //   imageSizePreview: renderderBoxImage!,
-    //   frameSize: _rectCropHole,
+    //   frameSize: getRectCrop,
     // );
 
     // consolelog("result result ${result}");
@@ -310,30 +335,19 @@ class _BodyCropTestState extends State<BodyCropTest>
 
   Future<void> _onExportCroppedV1() async {
     if (widget.projectModel.uiImageAdjusted == null) return;
-    // export cropped image
-    // (File, ui.Image) result = await exportCroppedImageV2(
-    //   uiImageAdjusted: widget.projectModel.uiImageAdjusted!,
-    //   countryModel: widget.projectModel.countryModel!,
-    //   cropModel: _cropModel,
-    // );
-
-    (File, ui.Image) result = await exportCroppedImageMatchDisplay(
+    (File, ui.Image) result = await exportCropImageV1(
       uiImageAdjusted: widget.projectModel.uiImageAdjusted!,
-      countryModel: widget.projectModel.countryModel!,
       cropModel: _cropModel,
-      rectCropHolePreview: _rectCropHole,
-      rectImagePreview: _rectImage,
-      scaleWithInit: _rectImage.size.scaleWith(_rectImageInitial.size),
+      previewRectImage: getRectImage,
+      previewRectCrop: getRectCrop,
     );
 
-    consolelog("result result $result");
     widget.onUpdateProject(
       widget.projectModel
         ..croppedFile = result.$1
         ..uiImageCropped = result.$2
         ..scaledCroppedImage = null,
     );
-    // widget.onUpdateMatrix(_transformImageController.value);
     widget.onUpdateCropModel(_cropModel);
 
     File? scaleCroppedFile = await _handleGenerateScaledCroppedImage(
@@ -391,12 +405,12 @@ class _BodyCropTestState extends State<BodyCropTest>
 
     /// Chiếu điểm focal point ( rect foc) xuống hệ quy chiếu ảnh
     Offset focalPointInImage = _renderBoxImage!.globalToLocal(
-      _renderBoxGestureArea!.localToGlobal(_rectCropHole.center),
+      _renderBoxGestureArea!.localToGlobal(getRectCrop.center),
     );
 
     /// Chiếu điểm center của ảnh xuống hệ quy chiếu ảnh
     Offset imageCenterInImageCoord = _renderBoxImage!.globalToLocal(
-      _renderBoxGestureArea!.localToGlobal(_rectImage.center),
+      _renderBoxGestureArea!.localToGlobal(getRectImage.center),
     );
 
     /// Vector từ focal point đến center của ảnh trong hệ quy chiếu ảnh
@@ -421,66 +435,64 @@ class _BodyCropTestState extends State<BodyCropTest>
     );
 
     /// Cập nhật lại giá trị của trv
-    _rectImage = Rect.fromCenter(
+    setRectImage = Rect.fromCenter(
       center: newImageCenterInGestureCoord,
-      width: _rectImage.width,
-      height: _rectImage.height,
+      width: getRectImage.width,
+      height: getRectImage.height,
     );
-
+    _cropModel.previewImageRectInCropScreen = getRectImage;
     setState(() {});
   }
 
   void _onRulerEnd() {
+    consolelog("_onRulerEnd call");
     _onShowFullImage(false);
     _handleScaleSnapImageToCropFitted();
   }
 
-  /// Hmf này có nhiệm vụ như sau
-  /// -
   void _handleScaleSnapImageToCropFitted() {
-    double targetScale =
+    Size targetSize =
         CropHelpers.getTargetMaxScaleSizeToOuterContainRotatedInner(
-          outerRect: _rectImage,
-          innerRect: _rectCropHole,
+          outerRect: getRectImage,
+          innerRect: getRectCrop,
           angleByRadian: angleByRadian,
         );
 
-    Size targetSize = _rectImage.size * targetScale;
+    final double targetScale = targetSize.width / getRectImage.width;
 
-    /// Chiếu điểm focal point ( rect foc) xuống hệ quy chiếu ảnh
-    Offset focalPointInImage = _renderBoxImage!.globalToLocal(
-      _renderBoxGestureArea!.localToGlobal(_rectCropHole.center),
+    // focal point (trong image coord)
+    Offset focalInImageCoord = _renderBoxImage!.globalToLocal(
+      _renderBoxGestureArea!.localToGlobal(getRectCrop.center),
     );
 
-    /// Chiếu điểm center của ảnh xuống hệ quy chiếu ảnh
-    Offset imageCenterInImageCoord = _renderBoxImage!.globalToLocal(
-      _renderBoxGestureArea!.localToGlobal(_rectImage.center),
+    // image center (trong image coord)
+    Offset centerInImageCoord = _renderBoxImage!.globalToLocal(
+      _renderBoxGestureArea!.localToGlobal(getRectImage.center),
     );
 
-    /// Vector từ focal point đến center của ảnh trong hệ quy chiếu ảnh
-    Offset rotationVectorInImageCoord =
-        imageCenterInImageCoord - focalPointInImage;
+    // scale vector đúng
+    Offset newCenterInImage =
+        focalInImageCoord +
+        (centerInImageCoord - focalInImageCoord) * (targetScale);
 
-    Offset newImageCenterInImageCoord =
-        rotationVectorInImageCoord * targetScale + focalPointInImage;
-
-    /// Chuyển ảnh về quy chiếu gesture area
-    Offset newImageCenterInGestureCoord = _renderBoxGestureArea!.globalToLocal(
-      _renderBoxImage!.localToGlobal(newImageCenterInImageCoord),
+    // convert về gesture coord
+    Offset newCenterInGestureCoord = _renderBoxGestureArea!.globalToLocal(
+      _renderBoxImage!.localToGlobal(newCenterInImage),
     );
 
     Rect targetRect = Rect.fromCenter(
-      center: newImageCenterInGestureCoord,
+      center: newCenterInGestureCoord,
       width: targetSize.width,
       height: targetSize.height,
     );
+
     final spring = SpringDescription(
       mass: 1.0,
       stiffness: 100.0,
       damping: 15.0,
     );
 
-    _animateRectWithSpring(from: _rectImage, to: targetRect, spring: spring);
+    _animateRectWithSpring(from: getRectImage, to: targetRect, spring: spring);
   }
 
   // change hole size
@@ -509,7 +521,7 @@ class _BodyCropTestState extends State<BodyCropTest>
       newHeight = _rectCropHoleOriginal.height * (1 / ratioWH);
     }
     _rectCropHole = Rect.fromCenter(
-      center: _rectCropHole.center,
+      center: getRectCrop.center,
       width: newWidth,
       height: newHeight,
     );
@@ -563,7 +575,7 @@ class _BodyCropTestState extends State<BodyCropTest>
     }
     final Offset convertedPositionInGestureCoor = _renderBoxGestureArea!
         .globalToLocal(globalPosition);
-    bool isTapCrop = _rectCropHole.contains(convertedPositionInGestureCoor);
+    bool isTapCrop = getRectCrop.contains(convertedPositionInGestureCoor);
     if (isTapCrop) {
       _isGesturingImage = true;
     } else {
@@ -578,7 +590,7 @@ class _BodyCropTestState extends State<BodyCropTest>
 
   void _onTapDown(TapDownDetails details) {
     _startGlobalPosition = details.globalPosition;
-    _startRectImage = _rectImage;
+    _startRectImage = getRectImage;
     _handleCheckFocusCountryDialog(details.globalPosition);
     _handleCheckFocusCrop(details.globalPosition);
     setState(() {});
@@ -586,7 +598,7 @@ class _BodyCropTestState extends State<BodyCropTest>
 
   void _onScaleStart(ScaleStartDetails details) {
     _startGlobalPosition = details.focalPoint;
-    _startRectImage = _rectImage;
+    _startRectImage = getRectImage;
     _handleCheckFocusCountryDialog(details.focalPoint);
     _handleCheckFocusCrop(details.focalPoint);
   }
@@ -602,7 +614,7 @@ class _BodyCropTestState extends State<BodyCropTest>
         if (isHaveSnapCenter) {
           // Thêm snap vào điểm center của crop hole
           Offset centerImage = newRectImage.center;
-          Offset centerCropHole = _rectCropHole.center;
+          Offset centerCropHole = getRectCrop.center;
           double snapThreshold = 5.0; // ngưỡng snap
           if ((centerImage.dx - centerCropHole.dx).abs() < snapThreshold) {
             centerImage = Offset(centerCropHole.dx, centerImage.dy);
@@ -612,18 +624,18 @@ class _BodyCropTestState extends State<BodyCropTest>
           }
           newRectImage = Rect.fromCenter(
             center: centerImage,
-            width: _rectImage.width,
-            height: _rectImage.height,
+            width: getRectImage.width,
+            height: getRectImage.height,
           );
         }
         if (isHaveLimitWhenGesture) {
           newRectImage = newRectImage.limitSelfToInclude(
-            _rectCropHole,
+            getRectCrop,
             angleByRadian: angleByRadian,
             pivot: newRectImage.center,
           );
         }
-        _rectImage = newRectImage;
+        setRectImage = newRectImage;
         setState(() {});
       } else if (details.pointerCount == 2) {
         ///
@@ -632,7 +644,7 @@ class _BodyCropTestState extends State<BodyCropTest>
 
         targetSize = CropHelpers.limitScaleSize(
           angleByRadian: angleByRadian,
-          innerRect: _rectCropHole,
+          innerRect: getRectCrop,
           outerSize: targetSize,
         );
         _renderBoxImage =
@@ -678,7 +690,7 @@ class _BodyCropTestState extends State<BodyCropTest>
         if (isHaveSnapCenter) {
           // Thêm snap vào điểm center của crop hole
           Offset centerImage = newRectInGestureCoordinate.center;
-          Offset centerCropHole = _rectCropHole.center;
+          Offset centerCropHole = getRectCrop.center;
           double snapThreshold = 5.0; // ngưỡng snap
           if ((centerImage.dx - centerCropHole.dx).abs() < snapThreshold) {
             centerImage = Offset(centerCropHole.dx, centerImage.dy);
@@ -695,20 +707,20 @@ class _BodyCropTestState extends State<BodyCropTest>
         if (isHaveLimitWhenGesture) {
           newRectInGestureCoordinate = newRectInGestureCoordinate
               .limitSelfToInclude(
-                _rectCropHole,
+                getRectCrop,
                 angleByRadian: angleByRadian,
                 pivot: newRectInGestureCoordinate.center,
               );
         }
 
         setState(() {
-          _rectImage = newRectInGestureCoordinate;
+          setRectImage = newRectInGestureCoordinate;
         });
       } else {
         /// Chua ho tro
       }
     }
-    var ratios = generateRatioCropModel(_rectImage, _rectCropHole);
+    var ratios = generateRatioCropModel(getRectImage, getRectCrop);
     _cropModel
       ..ratioLeftInImage = ratios.$1
       ..ratioTopInImage = ratios.$2
@@ -727,17 +739,17 @@ class _BodyCropTestState extends State<BodyCropTest>
   }
 
   void _handleSnapImageToCropFitted() {
-    Rect targetRect = _rectImage;
+    Rect targetRect = getRectImage;
 
     if (angleByRadian.equalTo(0.0)) {
       /// Trường hợp góc 0° như iOS scroll view
-      targetRect = _rectImage.limitSelfToInclude(_rectCropHole);
+      targetRect = getRectImage.limitSelfToInclude(getRectCrop);
     } else {
       /// Trường hợp góc ≠ 0°
       /// Tính rect mới sao cho ảnh quay luôn bao trọn cropRect
       targetRect = CropHelpers.limitOuterOctagonToIncludeInnerOctagon(
-        outerRect: _rectImage,
-        innerRect: _rectCropHole,
+        outerRect: getRectImage,
+        innerRect: getRectCrop,
         angleByRadian: angleByRadian,
       );
     }
@@ -748,7 +760,7 @@ class _BodyCropTestState extends State<BodyCropTest>
       damping: 15.0,
     );
 
-    _animateRectWithSpring(from: _rectImage, to: targetRect, spring: spring);
+    _animateRectWithSpring(from: getRectImage, to: targetRect, spring: spring);
   }
 
   double durationSpringSimulatorByMilis = 750;
@@ -789,7 +801,7 @@ class _BodyCropTestState extends State<BodyCropTest>
       final newHeight = heightSimulation.x(time);
 
       setState(() {
-        _rectImage = Rect.fromLTWH(newLeft, newTop, newWidth, newHeight);
+        setRectImage = Rect.fromLTWH(newLeft, newTop, newWidth, newHeight);
       });
 
       // Kiểm tra xem animation đã done chưa
@@ -802,7 +814,7 @@ class _BodyCropTestState extends State<BodyCropTest>
 
         // Đảm bảo giá trị cuối chính xác
         setState(() {
-          _rectImage = to;
+          setRectImage = to;
         });
       }
     });
@@ -853,22 +865,22 @@ class _BodyCropTestState extends State<BodyCropTest>
                       Stack(
                         children: [
                           Positioned(
-                            left: _rectCropHole.left,
-                            top: _rectCropHole.top,
+                            left: getRectCrop.left,
+                            top: getRectCrop.top,
                             child: Container(
                               color: black,
-                              width: _rectCropHole.width,
-                              height: _rectCropHole.height,
+                              width: getRectCrop.width,
+                              height: getRectCrop.height,
                             ),
                           ),
                           // image
                           Positioned(
-                            left: _rectImage.left,
-                            top: _rectImage.top,
+                            left: getRectImage.left,
+                            top: getRectImage.top,
                             child: AnimatedOpacity(
                               opacity: _isGesturingImage ? 1 : 0,
                               duration: const Duration(milliseconds: 300),
-                              child: _buildImage(clipBehavior: Clip.hardEdge),
+                              child: _buildImage(),
                             ),
                           ),
 
@@ -881,7 +893,7 @@ class _BodyCropTestState extends State<BodyCropTest>
                                 backgroundColor: Theme.of(
                                   context,
                                 ).scaffoldBackgroundColor,
-                                targetCropRect: _rectCropHole,
+                                targetCropRect: getRectCrop,
                               ),
                               size: MediaQuery.sizeOf(context),
                             ),
@@ -889,23 +901,25 @@ class _BodyCropTestState extends State<BodyCropTest>
 
                           // dat hinh anh o day de lang nghe cu chi cua nguoi dung -> sau do ap dung vao anh ben tren de rotate, scale, tranform,...
                           Positioned(
-                            left: _rectImage.left,
-                            top: _rectImage.top,
+                            left: getRectImage.left,
+                            top: getRectImage.top,
                             child: _buildClipImage(
-                              clipBehavior: Clip.hardEdge,
+                              clipBehavior: _isGesturingImage
+                                  ? Clip.none
+                                  : Clip.hardEdge,
                               key: _keyImage,
                             ),
                           ),
                           // rectangle frame
                           Positioned(
-                            left: _rectCropHole.left,
-                            top: _rectCropHole.top,
+                            left: getRectCrop.left,
+                            top: getRectCrop.top,
                             child: CustomPaint(
                               painter: FrameHolePainter(
-                                targetSize: _rectCropHole.size,
+                                targetSize: getRectCrop.size,
                                 lineColor: isDarkMode ? white : black,
                               ),
-                              size: _rectCropHole.size,
+                              size: getRectCrop.size,
                               // size: MediaQuery.sizeOf(context),
                             ),
                           ),
@@ -964,14 +978,14 @@ class _BodyCropTestState extends State<BodyCropTest>
                       ),
                       // face arrange + gesture area
                       Positioned(
-                        left: _rectCropHole.left,
-                        top: _rectCropHole.top,
+                        left: getRectCrop.left,
+                        top: getRectCrop.top,
                         child: SizedBox(
-                          height: _rectCropHole.height,
-                          width: _rectCropHole.width,
+                          height: getRectCrop.height,
+                          width: getRectCrop.width,
                           child: WFaceArrangeComponents(
                             projectModel: widget.projectModel,
-                            frameSize: _rectCropHole.size,
+                            frameSize: getRectCrop.size,
                             opacity: _isGesturingImage ? 1 : 0,
                           ),
                         ),
@@ -1001,129 +1015,26 @@ class _BodyCropTestState extends State<BodyCropTest>
     );
   }
 
-  Widget _buildImage({required Clip clipBehavior, Key? key}) {
-    if (widget.projectModel.uiImageAdjusted == null) {
-      return const CustomLoadingIndicator();
-    }
-    return Container(
-      clipBehavior: clipBehavior,
-      decoration: BoxDecoration(),
-      child: Transform.rotate(
-        alignment: Alignment.center,
-        angle: angleByRadian,
-        child: Container(
-          child: widget.uiImageAdjusted != null
-              ? RawImage(
-                  image: widget.uiImageAdjusted!,
-                  key: key,
-                  height: _rectImage.height,
-                  width: _rectImage.width,
-                  fit: BoxFit.fill,
-                )
-              : Image.memory(
-                  key: key,
-                  widget.projectModel.selectedFile!.readAsBytesSync(),
-                  gaplessPlayback: true,
-                  height: _rectImage.height,
-                  width: _rectImage.width,
-                  frameBuilder:
-                      (context, child, frame, wasSynchronouslyLoaded) {
-                        return child;
-                      },
-                  fit: BoxFit.fill,
-                ),
-        ),
-      ),
-    );
-
-    // if (widget.projectModel.uiImageAdjusted == null) {
-    //   return const CustomLoadingIndicator();
-    // }
-    // double degree;
-    // if (_cropModel == null) {
-    //   degree = 0.0;
-    // } else {
-    //   degree = (_cropModel!.currentRotateValue -
-    //           _cropModel!.instructionRotateValue) /
-    //       4; // *90/360
-    // }
-    // return SizedBox(
-    //   height: _rectCropHole.height,
-    //   width: _rectCropHole.width,
-    //   child: InteractiveViewer(
-    //     boundaryMargin: EdgeInsets.symmetric(
-    //       horizontal:
-    //           _cropModel != null ? (_cropModel!.width * 3 / 4) : 500,
-    //       vertical:
-    //           _cropModel != null ? (_cropModel!.height * 3 / 4) : 500,
-    //     ),
-    //     transformationController: _transformImageController,
-    //     clipBehavior: clipBehavior,
-    //     minScale: 1,
-    //     maxScale: 10,
-    //     interactionEndFrictionCoefficient: 1001,
-    //     onInteractionStart: _onInteractionStart,
-    //     onInteractionEnd: _onInteractionEnd,
-    //     onInteractionUpdate: _onInteractionUpdate,
-    //     child: OverflowBox(
-    //       alignment: Alignment.center,
-    //       minWidth: 0.0,
-    //       minHeight: 0.0,
-    //       maxWidth: double.infinity,
-    //       maxHeight: double.infinity,
-    //       child: RotationTransition(
-    //         turns: AlwaysStoppedAnimation(degree),
-    //         child: Transform.scale(
-    //             scale: 1,
-    //             child: widget.uiImageAdjusted != null
-    //                 ? RawImage(
-    //                     image: widget.uiImageAdjusted!,
-    //                     key: key,
-    //                     height: _cropModel?.size.height,
-    //                     width: _cropModel?.size.width,
-    //                     fit: BoxFit.fill,
-    //                   )
-    //                 : Image.memory(
-    //                     key: key,
-    //                     widget.projectModel.selectedFile!.readAsBytesSync(),
-    //                     gaplessPlayback: true,
-    //                     height: _cropModel?.size.height,
-    //                     width: _cropModel?.size.width,
-    //                     frameBuilder:
-    //                         (context, child, frame, wasSynchronouslyLoaded) {
-    //                       return child;
-    //                     },
-    //                     fit: BoxFit.fill,
-    //                   )),
-    //       ),
-    //     ),
-    //   ),
-    // );
-  }
-
-  Widget _buildClipImage({required Clip clipBehavior, Key? key}) {
+  Widget _buildImage() {
     if (widget.projectModel.uiImageAdjusted == null) {
       return const CustomLoadingIndicator();
     }
     return Transform.rotate(
       alignment: Alignment.center,
       angle: angleByRadian,
-      child: SizedBox(
-        key: key,
-        height: _rectImage.height,
-        width: _rectImage.width,
+      child: Container(
         child: widget.uiImageAdjusted != null
             ? RawImage(
                 image: widget.uiImageAdjusted!,
-                height: _rectImage.height,
-                width: _rectImage.width,
+                height: getRectImage.height,
+                width: getRectImage.width,
                 fit: BoxFit.fill,
               )
             : Image.memory(
                 widget.projectModel.selectedFile!.readAsBytesSync(),
                 gaplessPlayback: true,
-                height: _rectImage.height,
-                width: _rectImage.width,
+                height: getRectImage.height,
+                width: getRectImage.width,
                 frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                   return child;
                 },
@@ -1133,9 +1044,50 @@ class _BodyCropTestState extends State<BodyCropTest>
     );
   }
 
+  Widget _buildClipImage({required Clip clipBehavior, Key? key}) {
+    if (widget.projectModel.uiImageAdjusted == null) {
+      return const CustomLoadingIndicator();
+    }
+
+    return Transform.rotate(
+      alignment: Alignment.center,
+      angle: angleByRadian,
+      child: SizedBox(
+        key: key,
+        height: getRectImage.height,
+        width: getRectImage.width,
+        child: ClipPath(
+          clipper: _CropHoleClipper(
+            imageRect: getRectImage,
+            cropHoleRect: getRectCrop,
+            imageAngle: angleByRadian,
+          ),
+          child: widget.uiImageAdjusted != null
+              ? RawImage(
+                  image: widget.uiImageAdjusted!,
+                  height: getRectImage.height,
+                  width: getRectImage.width,
+                  fit: BoxFit.fill,
+                )
+              : Image.memory(
+                  widget.projectModel.selectedFile!.readAsBytesSync(),
+                  gaplessPlayback: true,
+                  height: getRectImage.height,
+                  width: getRectImage.width,
+                  frameBuilder:
+                      (context, child, frame, wasSynchronouslyLoaded) {
+                        return child;
+                      },
+                  fit: BoxFit.fill,
+                ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildTestWidget() {
     Rect surroundingRotatedCropRect = CropHelpers.getRotatedRect(
-      _rectCropHole,
+      getRectCrop,
       angleByRadian,
     );
     return Positioned(
@@ -1144,7 +1096,7 @@ class _BodyCropTestState extends State<BodyCropTest>
       child: Transform.rotate(
         angle: angleByRadian,
         child: Container(
-          color: blue,
+          color: red.withAlpha(70),
           width: surroundingRotatedCropRect.width,
           height: surroundingRotatedCropRect.height,
           child: WTextContent(
@@ -1154,5 +1106,78 @@ class _BodyCropTestState extends State<BodyCropTest>
         ),
       ),
     );
+  }
+}
+
+class _CropHoleClipper extends CustomClipper<Path> {
+  final Rect imageRect;
+  final Rect cropHoleRect;
+  final double imageAngle;
+
+  _CropHoleClipper({
+    required this.imageRect,
+    required this.cropHoleRect,
+    required this.imageAngle,
+  });
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+
+    // 1. Tính toán vị trí crop hole trong hệ tọa độ local của ảnh
+    // Do ảnh đã được xoay, cần tính toán chính xác vị trí
+
+    // Chuyển crop hole rect sang hệ tọa độ local của ảnh
+    final cropInImageSpace = Rect.fromLTWH(
+      cropHoleRect.left - imageRect.left,
+      cropHoleRect.top - imageRect.top,
+      cropHoleRect.width,
+      cropHoleRect.height,
+    );
+
+    // 2. Nếu ảnh không xoay, clip đơn giản
+    if (imageAngle == 0) {
+      path.addRect(cropInImageSpace);
+    } else {
+      // 3. Nếu ảnh đã xoay, cần tính polygon của crop hole sau khi xoay ngược lại
+      // Xoay ngược crop hole để match với ảnh đã xoay
+      final center = Offset(size.width / 2, size.height / 2);
+      final polygon = _getRotatedRectPolygon(
+        cropInImageSpace,
+        -imageAngle, // Xoay ngược lại
+        center,
+      );
+
+      path.addPolygon(polygon, true);
+    }
+
+    return path;
+  }
+
+  List<Offset> _getRotatedRectPolygon(Rect rect, double angle, Offset pivot) {
+    final corners = [
+      rect.topLeft,
+      rect.topRight,
+      rect.bottomRight,
+      rect.bottomLeft,
+    ];
+
+    return corners.map((corner) {
+      // Vector từ pivot đến corner
+      final vector = corner - pivot;
+
+      // Xoay vector
+      final rotatedVector = Offset(
+        vector.dx * cos(angle) - vector.dy * sin(angle),
+        vector.dx * sin(angle) + vector.dy * cos(angle),
+      );
+
+      return pivot + rotatedVector;
+    }).toList();
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return true;
   }
 }

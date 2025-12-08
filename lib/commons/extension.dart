@@ -17,6 +17,10 @@ extension NumberExtension on num {
 }
 
 extension DoubleExtension on double {
+  bool isEqualTo(double other, {double epsilon = EPSILON_E10}) {
+    return (this - other) < epsilon;
+  }
+
   String roundWithUnit({String? unitTitle, int? fractionDigits}) {
     if (unitTitle == null) {
       if (fractionDigits == null) {

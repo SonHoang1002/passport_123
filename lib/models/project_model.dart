@@ -60,6 +60,10 @@ class ProjectModel {
     this.bgRemovedFile,
     this.scaledSelectedFile,
     this.scaledSelectedImage,
+    this.uiImageAdjusted,
+    this.uiImageCropped,
+    this.croppedFile,
+    this.exportedFile,
     this.background = "",
     this.brightness = 0.5,
     this.listAdjustValue = const [],
@@ -78,5 +82,41 @@ class ProjectModel {
   /// reset adjustedImage, croppedImage, exportedFile
   void resetACEImage() {
     uiImageAdjusted = croppedFile = exportedFile = null;
+  }
+
+  ProjectModel copyWith({
+    File? selectedFile,
+    File? bgRemovedFile,
+    File? scaledSelectedFile,
+    ui.Image? scaledSelectedImage,
+    ui.Image? uiImageAdjusted,
+    ui.Image? uiImageCropped,
+    File? croppedFile,
+    File? exportedFile,
+    dynamic background,
+    double? brightness,
+    List<double>? listBlurShadow,
+    List<double>? listAdjustValue,
+    CountryModel? countryModel,
+    CropModel? cropModel,
+    ui.Image? scaledCroppedImage,
+  }) {
+    return ProjectModel(
+      selectedFile: selectedFile ?? this.selectedFile,
+      bgRemovedFile: bgRemovedFile ?? this.bgRemovedFile,
+      scaledSelectedFile: scaledSelectedFile ?? this.scaledSelectedFile,
+      scaledSelectedImage: scaledSelectedImage ?? this.scaledSelectedImage,
+      uiImageAdjusted: uiImageAdjusted ?? this.uiImageAdjusted,
+      uiImageCropped: uiImageCropped ?? this.uiImageCropped,
+      croppedFile: croppedFile ?? this.croppedFile,
+      exportedFile: exportedFile ?? this.exportedFile,
+      background: background ?? this.background,
+      brightness: brightness ?? this.brightness,
+      listBlurShadow: listBlurShadow ?? this.listBlurShadow,
+      listAdjustValue: listAdjustValue ?? this.listAdjustValue,
+      countryModel: countryModel ?? this.countryModel,
+      cropModel: cropModel ?? this.cropModel,
+      scaledCroppedImage: scaledCroppedImage ?? this.scaledCroppedImage,
+    );
   }
 }

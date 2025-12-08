@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:pass1_/helpers/crop_helpers.dart';
 import 'package:pass1_/helpers/random_number.dart';
 
@@ -40,6 +41,12 @@ class CropModel {
   /// tỉ lệ vị trí của điểm bottom đến cạnh dưới của ảnh gốc
   double ratioBottomInImage;
 
+  /// * Việc lưu rect này chỉ sử dụng khi từ màn hình finish trở về màn edit để kéo nó lại,
+  /// đỡ việc tinh toán dài dòng
+  ///
+  /// *
+  Rect? previewImageRectInCropScreen;
+
   CropModel({
     required this.id,
     required this.checkId,
@@ -49,6 +56,7 @@ class CropModel {
     required this.ratioTopInImage,
     required this.ratioRightInImage,
     required this.ratioBottomInImage,
+    this.previewImageRectInCropScreen,
   });
 
   // Size get size => cropRect.size;
@@ -94,6 +102,7 @@ class CropModel {
     double? ratioTopInImage,
     double? ratioRightInImage,
     double? ratioBottomInImage,
+    Rect? previewImageRectInCropScreen,
   }) {
     return CropModel(
       id: randomInt(),
@@ -105,6 +114,8 @@ class CropModel {
       ratioTopInImage: ratioTopInImage ?? this.ratioTopInImage,
       ratioRightInImage: ratioRightInImage ?? this.ratioRightInImage,
       ratioBottomInImage: ratioBottomInImage ?? this.ratioBottomInImage,
+      previewImageRectInCropScreen:
+          previewImageRectInCropScreen ?? this.previewImageRectInCropScreen,
     );
   }
 

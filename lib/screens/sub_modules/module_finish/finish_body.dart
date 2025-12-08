@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pass1_/commons/colors.dart';
 import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/log_custom.dart';
 import 'package:pass1_/helpers/native_bridge/method_channel.dart';
 import 'package:pass1_/models/project_model.dart';
 import 'package:pass1_/models/step_model.dart';
@@ -16,7 +17,6 @@ class BodyFinish extends StatefulWidget {
   final Function() onUpdateStep;
   final Function() onExport;
   final Function() onPrint;
-
   final ProjectModel projectModel;
   final Size screenSize;
   const BodyFinish({
@@ -67,6 +67,7 @@ class _BodyFinishState extends State<BodyFinish> {
 
   @override
   Widget build(BuildContext context) {
+    consolelog("_frameSize: ${_frameSize}");
     final bool isDarkMode = BlocProvider.of<ThemeBloc>(
       context,
       listen: true,
@@ -105,61 +106,33 @@ class _BodyFinishState extends State<BodyFinish> {
                   ],
                 ),
               ),
-              Stack(
-                children: [
-                  Positioned.fill(child: Container(color: black)),
-                  Container(
-                    constraints: const BoxConstraints(
-                      minHeight: 100,
-                      minWidth: 100,
-                      // maxWidth: _frameSize.width,
-                      // maxHeight: _frameSize.height,
-                    ),
-                    width: _frameSize.width,
-                    height: _frameSize.height,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: grey.withValues(alpha: 0.25),
-                        width: 0.3,
-                      ),
-                    ),
-                    child: widget.projectModel.croppedFile != null
-                        ? Image.memory(
-                            widget.projectModel.croppedFile!.readAsBytesSync(),
-                            frameBuilder:
-                                (
-                                  context,
-                                  child,
-                                  frame,
-                                  wasSynchronouslyLoaded,
-                                ) {
-                                  return child;
-                                },
-                          )
-                        : RawImage(
-                            image: (widget.projectModel.uiImageAdjusted!),
-                          ),
+              Container(
+                width: _frameSize.width,
+                height: _frameSize.height,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: grey.withValues(alpha: 0.25),
+                    width: 0.3,
                   ),
-                ],
+                ),
+                child: widget.projectModel.croppedFile != null
+                    ? Image.memory(
+                        width: _frameSize.width,
+                        height: _frameSize.height,
+                        widget.projectModel.croppedFile!.readAsBytesSync(),
+                        fit: BoxFit.fill,
+                        frameBuilder: (context, child, frame, _) {
+                          return child;
+                        },
+                      )
+                    : RawImage(
+                        fit: BoxFit.fill,
+                        width: _frameSize.width,
+                        height: _frameSize.height,
+                        image: (widget.projectModel.uiImageAdjusted!),
+                      ),
               ),
               const SizedBox(),
-              // WTextContent(value: "${_valueSlider}"),
-              // Container(
-              //   width: 400,
-              //   child: CustomSlider(
-              //     value: _valueSlider,
-              //     onChanged: (value) {
-              //       setState(() {
-              //         _valueSlider = value;
-              //       });
-              //     },
-              //     onChangeEnd: (value) async {},
-              //     min: 300,
-              //     max: 1200,
-              //     thumbColor: Theme.of(context).textTheme.bodySmall!.color,
-              //     activeColor: Theme.of(context).textTheme.bodySmall!.color,
-              //   ),
-              // )
             ],
           ),
         ),

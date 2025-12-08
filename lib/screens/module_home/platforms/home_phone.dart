@@ -18,7 +18,6 @@ import 'package:pass1_/providers/events/adjust_subject_event.dart';
 import 'package:pass1_/screens/module_home/widgets/w_footer.dart';
 import 'package:pass1_/screens/module_home/widgets/w_print.dart';
 import 'package:pass1_/screens/sub_modules/module_adjust/adjust_body_phone.dart';
-import 'package:pass1_/screens/sub_modules/module_crop/crop_body.dart';
 import 'package:pass1_/services/dio_api.dart';
 import 'package:pass1_/widgets/bottom_sheet/show_bottom_sheet.dart';
 import 'package:pass1_/models/step_model.dart';
@@ -174,7 +173,7 @@ class _HomePagePhoneState extends State<HomePagePhone>
       );
     } catch (e) {
       _projectModel.bgRemovedFile = _projectModel.selectedFile;
-      consolelog("_onRemoveImageBackground error: ${e}");
+      consolelog("_onRemoveImageBackground error: $e");
     }
     setState(() {});
   }
@@ -408,8 +407,9 @@ class _HomePagePhoneState extends State<HomePagePhone>
             setState(() {});
           },
           onUpdateCropModel: (cropModel) {
-            _projectModel = _projectModel..cropModel = cropModel;
-            setState(() {});
+            consolelog("onUpdateCropModel call: $cropModel");
+            _projectModel = _projectModel.copyWith(cropModel: cropModel);
+            // setState(() {});
           },
           uiImageAdjusted: (_projectModel.uiImageAdjusted),
           onUpdateStep: _onNext,

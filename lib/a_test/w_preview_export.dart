@@ -1,5 +1,6 @@
 import 'dart:math';
-// import 'package:color_picker_android/widgets/w_text_content.dart';
+
+import 'package:color_picker_android/widgets/w_text_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pass1_/commons/colors.dart';

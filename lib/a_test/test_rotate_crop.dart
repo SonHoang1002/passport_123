@@ -1,7 +1,9 @@
 import 'dart:math';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pass1_/commons/extension.dart';
 import 'package:pass1_/helpers/crop_helpers.dart';
@@ -23,6 +25,8 @@ class TestRotateCrop extends StatefulWidget {
 
 class _TestRotateCropState extends State<TestRotateCrop>
     with TickerProviderStateMixin, WidgetsBindingObserver {
+  final imagePath = "${PATH_PREFIX_IMAGE}IMG_0829_111.JPG";
+  Size originalPhysicalSize = Size(2000, 2667);
   // main variables
   late CropModel _cropModel;
 
@@ -34,19 +38,35 @@ class _TestRotateCropState extends State<TestRotateCrop>
 
   Rect _rectCropHole = Rect.zero;
   Rect _rectImage = Rect.zero;
-
-  Offset _startGlobalPosition = Offset.zero;
   Rect _startRectImage = Rect.zero;
 
+  Offset _startGlobalPosition = Offset.zero;
   bool isInitting = true;
+  RenderBox? _renderBoxImage, _renderBoxGestureArea;
+  double durationSpringSimulatorByMilis = 750;
 
   bool get isHaveLimitWhenGesture => false;
   bool get isHaveSnapCenter => false;
   double get ratioCurrentPassport => 2000 / 1500;
-  double get ratioImage => 0.777;
+  double get ratioImage => originalPhysicalSize.aspectRatio;
+
+  ui.Image? _cropUiImage;
 
   set setCropModel(CropModel cropModel) {
     _cropModel = cropModel;
+  }
+
+  set setRectImage(Rect newRect) {
+    _rectImage = newRect;
+    setCropModel = _cropModel.copyWith(
+      ratioLeftInImage:
+          (_rectCropHole.left - _rectImage.left) / _rectImage.width,
+      ratioTopInImage: (_rectCropHole.top - _rectImage.top) / _rectImage.height,
+      ratioRightInImage:
+          -(_rectCropHole.right - _rectImage.right) / _rectImage.width,
+      ratioBottomInImage:
+          -(_rectCropHole.bottom - _rectImage.bottom) / _rectImage.height,
+    );
   }
 
   double get angleByDegree => _cropModel.getAngleByDegree;
@@ -110,7 +130,7 @@ class _TestRotateCropState extends State<TestRotateCrop>
         imageWidth = widthCropHole;
         imageHeight = heightCropHole;
       }
-      _rectImage = Rect.fromCenter(
+      setRectImage = Rect.fromCenter(
         center: centerGestureArea,
         width: imageWidth,
         height: imageHeight,
@@ -119,10 +139,14 @@ class _TestRotateCropState extends State<TestRotateCrop>
       setCropModel = CropModel.create(
         instructionRotateValue: 0.5,
         currentRotateValue: 0.5,
-        ratioLeftInImage: 0,
-        ratioTopInImage: 0,
-        ratioRightInImage: 0,
-        ratioBottomInImage: 0,
+        ratioLeftInImage:
+            (_rectCropHole.left - _rectImage.left) / _rectImage.width,
+        ratioTopInImage:
+            (_rectCropHole.top - _rectImage.top) / _rectImage.height,
+        ratioRightInImage:
+            -(_rectCropHole.right - _rectImage.right) / _rectImage.width,
+        ratioBottomInImage:
+            -(_rectCropHole.bottom - _rectImage.bottom) / _rectImage.height,
       );
 
       isInitting = false;
@@ -177,15 +201,13 @@ class _TestRotateCropState extends State<TestRotateCrop>
     );
 
     /// Cập nhật lại giá trị của trv
-    _rectImage = Rect.fromCenter(
+    setRectImage = Rect.fromCenter(
       center: newImageCenterInGestureCoord,
       width: _rectImage.width,
       height: _rectImage.height,
     );
     setState(() {});
   }
-
-  RenderBox? _renderBoxImage, _renderBoxGestureArea;
 
   void _initRenderBoxsWhenNull() {
     _renderBoxImage ??=
@@ -251,7 +273,7 @@ class _TestRotateCropState extends State<TestRotateCrop>
             pivot: newRectImage.center,
           );
         }
-        _rectImage = newRectImage;
+        setRectImage = newRectImage;
         setState(() {});
       } else if (details.pointerCount == 2) {
         // 1. Tính toán kích thước mới sau khi scale
@@ -327,7 +349,7 @@ class _TestRotateCropState extends State<TestRotateCrop>
                 pivot: newRectInGestureCoordinate.center,
               );
         }
-        _rectImage = newRectInGestureCoordinate;
+        setRectImage = newRectInGestureCoordinate;
         setState(() {});
       } else {
         /// Chua ho tro
@@ -364,7 +386,6 @@ class _TestRotateCropState extends State<TestRotateCrop>
     _isGesturingImage = false;
   }
 
-  double durationSpringSimulatorByMilis = 750;
   void _animateRectWithSpring({
     required Rect from,
     required Rect to,
@@ -401,7 +422,7 @@ class _TestRotateCropState extends State<TestRotateCrop>
       final newWidth = widthSimulation.x(time);
       final newHeight = heightSimulation.x(time);
 
-      _rectImage = Rect.fromLTWH(newLeft, newTop, newWidth, newHeight);
+      setRectImage = Rect.fromLTWH(newLeft, newTop, newWidth, newHeight);
       setState(() {});
 
       // Kiểm tra xem animation đã done chưa
@@ -414,12 +435,89 @@ class _TestRotateCropState extends State<TestRotateCrop>
 
         // Đảm bảo giá trị cuối chính xác
 
-        _rectImage = to;
+        setRectImage = to;
         setState(() {});
       }
     });
 
     ticker.start();
+  }
+
+  void _generate() async {
+    ui.Image uiImage = await loadUiImageFromAsset(imagePath);
+
+    double currentRotation = _cropModel.getAngleByRadian;
+    final Size originalImageSize = originalPhysicalSize;
+
+    final double cropLeft =
+        _cropModel.ratioLeftInImage * originalImageSize.width;
+    final double cropTop =
+        _cropModel.ratioTopInImage * originalImageSize.height;
+    final double cropRight =
+        _cropModel.ratioRightInImage * originalImageSize.width;
+    final double cropBottom =
+        _cropModel.ratioBottomInImage * originalImageSize.height;
+
+    final double cropWidth = originalImageSize.width - cropLeft - cropRight;
+    final double cropHeight = originalImageSize.height - cropTop - cropBottom;
+
+    final Rect cropRect = Rect.fromLTWH(
+      cropLeft,
+      cropTop,
+      cropWidth,
+      cropHeight,
+    );
+    final Offset cropCenter = cropRect.center;
+    final Offset imageCenter = Offset(
+      originalImageSize.width / 2,
+      originalImageSize.height / 2,
+    );
+
+    consolelog("Image center: $imageCenter");
+    consolelog("Crop center: $cropCenter");
+    consolelog("Rotation: ${currentRotation * 180 / pi}°");
+
+    ui.PictureRecorder recorder = ui.PictureRecorder();
+    Canvas canvas = Canvas(recorder);
+
+    // Đổ màu đen background
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, cropWidth, cropHeight),
+      Paint()..color = const Color(0xFF000000),
+    );
+
+    canvas.save();
+
+    canvas.translate(cropWidth / 2, cropHeight / 2);
+
+    final Offset vectorFromCropToImage = imageCenter - cropCenter;
+    canvas.translate(vectorFromCropToImage.dx, vectorFromCropToImage.dy);
+
+    canvas.rotate(currentRotation);
+
+    canvas.drawImageRect(
+      uiImage,
+      Rect.fromLTWH(0, 0, originalImageSize.width, originalImageSize.height),
+      Rect.fromCenter(
+        center: Offset.zero,
+        width: originalImageSize.width,
+        height: originalImageSize.height,
+      ),
+      Paint(),
+    );
+
+    canvas.restore();
+
+    final ui.Picture picture = recorder.endRecording();
+    consolelog("Crop size: $cropWidth x $cropHeight");
+
+    final ui.Image resultImage = await picture.toImage(
+      cropWidth.toInt(),
+      cropHeight.toInt(),
+    );
+
+    _cropUiImage = resultImage;
+    setState(() {});
   }
 
   @override
@@ -432,8 +530,6 @@ class _TestRotateCropState extends State<TestRotateCrop>
       decoration: const BoxDecoration(),
       child: GestureDetector(
         key: _keyGestureArea,
-        // onTapUp: _onTapUp,
-        // onTapDown: _onTapDown,
         onScaleStart: _onScaleStart,
         onScaleUpdate: _onScaleUpdate,
         onScaleEnd: _onScaleEnd,
@@ -449,7 +545,6 @@ class _TestRotateCropState extends State<TestRotateCrop>
                   child: Stack(
                     clipBehavior: Clip.antiAlias,
                     children: [
-                      _buildReverseCropRectButton(),
                       Positioned(
                         left: _rectCropHole.left,
                         top: _rectCropHole.top,
@@ -459,7 +554,6 @@ class _TestRotateCropState extends State<TestRotateCrop>
                           height: _rectCropHole.height,
                         ),
                       ),
-
                       Positioned(
                         left: _rectImage.left,
                         top: _rectImage.top,
@@ -481,7 +575,6 @@ class _TestRotateCropState extends State<TestRotateCrop>
                         ),
                       ),
                       ..._buildTestWidget(),
-
                       if (!isInitting)
                         Positioned(
                           bottom: 30,
@@ -502,6 +595,10 @@ class _TestRotateCropState extends State<TestRotateCrop>
                             },
                           ),
                         ),
+                      _buildReverseCropRectButton(),
+                      _buildGenerateCanvasButton(),
+
+                      if (_cropUiImage != null) _buildCropUiImageWidget(),
                     ],
                   ),
                 ),
@@ -522,7 +619,7 @@ class _TestRotateCropState extends State<TestRotateCrop>
         height: _rectImage.height,
         width: _rectImage.width,
         child: Image.asset(
-          "${PATH_PREFIX_IMAGE}image_instruction_done_1.jpg",
+          imagePath,
           gaplessPlayback: true,
           height: _rectImage.height,
           width: _rectImage.width,
@@ -643,8 +740,8 @@ class _TestRotateCropState extends State<TestRotateCrop>
 
   Widget _buildReverseCropRectButton() {
     return Positioned(
-      top: 80,
-      left: 80,
+      top: 40,
+      left: 20,
       child: GestureDetector(
         onTap: () {
           _rectCropHole = _rectCropHole.reverse;
@@ -653,10 +750,114 @@ class _TestRotateCropState extends State<TestRotateCrop>
         child: Container(
           color: red,
           height: 40,
-          width: 200,
-          child: WTextContent(value: "Reverse Crop Rect"),
+          width: 130,
+          child: Center(child: WTextContent(value: "Reverse Crop Rect")),
         ),
       ),
     );
   }
+
+  Widget _buildGenerateCanvasButton() {
+    return Positioned(
+      top: 40,
+      right: 20,
+      child: GestureDetector(
+        onTap: () {
+          _generate();
+        },
+        child: Container(
+          color: blue,
+          height: 40,
+          width: 130,
+          child: Center(child: WTextContent(value: "Generate")),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCropUiImageWidget() {
+    return _Preview(
+      cropImage: _cropUiImage!,
+      onTap: () {
+        _cropUiImage = null;
+        setState(() {});
+      },
+    );
+  }
+}
+
+class _Preview extends StatefulWidget {
+  final ui.Image cropImage;
+  final void Function() onTap;
+  const _Preview({super.key, required this.cropImage, required this.onTap});
+
+  @override
+  State<_Preview> createState() => _PreviewState();
+}
+
+class _PreviewState extends State<_Preview> {
+  late Size imageSize;
+  Size boundingSize = Size(300, 300);
+  @override
+  void initState() {
+    super.initState();
+    double ratio = widget.cropImage.width / widget.cropImage.height;
+    if (ratio > 1) {
+      imageSize = Size(boundingSize.width, boundingSize.width / ratio);
+    } else if (ratio < 1) {
+      imageSize = Size(boundingSize.width * ratio, boundingSize.height);
+    } else {
+      imageSize = boundingSize;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: transparent,
+      body: GestureDetector(
+        onTap: widget.onTap,
+        child: Container(
+          color: transparent,
+          child: Center(
+            child: Container(
+              width: boundingSize.width,
+              height: boundingSize.height,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  RawImage(
+                    width: imageSize.width,
+                    height: imageSize.height,
+                    image: widget.cropImage,
+                  ),
+                  Container(
+                    child: WTextContent(
+                      value:
+                          "${widget.cropImage.width}x${widget.cropImage.height}",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Future<ui.Image> loadUiImageFromAsset(
+  String assetPath, {
+  int? targetWidth,
+  int? targetHeight,
+}) async {
+  final ByteData assetImageByteData = await rootBundle.load(assetPath);
+  final ui.Codec codec = await ui.instantiateImageCodec(
+    assetImageByteData.buffer.asUint8List(),
+    targetWidth: targetWidth,
+    targetHeight: targetHeight,
+  );
+  final ui.FrameInfo frameInfo = await codec.getNextFrame();
+  return frameInfo.image;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pass1_/a_test/test_rotate_crop.dart';
 import 'package:pass1_/commons/themes.dart';
 import 'package:pass1_/providers/blocs/theme_bloc.dart';
 import 'package:pass1_/providers/states/theme_state.dart';
@@ -25,7 +26,7 @@ class _MaterialWithThemeState extends State<MaterialWithTheme> {
     Widget homeWidget = (widget.isOnBoard)
         ? const OnBoardPage()
         : const HomePageMain();
-    // homeWidget = const TestSharpenWidget();
+    // homeWidget = const TestRotateCrop();
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, theme) {
         return MaterialApp(
