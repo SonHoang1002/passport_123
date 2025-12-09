@@ -32,7 +32,6 @@ class MyMethodChannel {
       } else {
         _outPath = outPath;
       }
-      consolelog("formatStatus ${listWH} - ${quality}");
       // consolelog("inputPath ${inputPath}");
       // consolelog("_outPath ${_outPath}");
 
@@ -219,5 +218,113 @@ class MyMethodChannel {
 
   static Future<bool> checkNetworkConnection() async {
     return await platform.invokeMethod('checkNetworkConnection');
+  }
+
+  static Future<(String, double)> handleGenerateSinglePhotoMediaToImage({
+    required int indexImageFormat,
+    required String imageCroppedPath,
+    required String outPath,
+    required int quality,
+    required double passportWidthByPixelPointLimited,
+    required double passportHeightByPixelPointLimited,
+  }) async {
+    try {
+      var data = {
+        "indexImageFormat": indexImageFormat,
+        "imageCroppedPath": imageCroppedPath,
+        "outPath": outPath,
+        "quality": quality,
+        "passportWidthByPixelPointLimited": passportWidthByPixelPointLimited,
+        "passportHeightByPixelPointLimited": passportHeightByPixelPointLimited,
+      };
+
+      var result =
+          (await platform.invokeMethod(
+                    "handleGenerateSinglePhotoMediaToImage",
+                    data,
+                  )
+                  as List<Object?>)
+              .cast<String>();
+
+      return (result[0], double.parse(result[1]));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<(String, double)> generateSingleImagePdf({
+    required Size passportSizeByPrintPoint,
+    required String pdfOutPath,
+    required List<String> listFilePath,
+  }) async {
+    try {
+      var data = {
+        "passportWidth": passportSizeByPrintPoint.width,
+        "passportHeight": passportSizeByPrintPoint.height,
+        "pdfOutPath": pdfOutPath,
+        "listFilePath": listFilePath,
+      };
+
+      List<String> result =
+          (await platform.invokeMethod("generateSingleImagePdf", data)
+                  as List<Object?>)
+              .cast<String>();
+
+      return (result[0], double.parse(result[1]));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<(List<String>, double)>
+  handleGenerateMultiplePaperMediaToImage({
+    required String imageCroppedPath,
+    required int indexImageFormat,
+    required String extension, // Jpg or png, if change, must fix native code,
+    required int quality,
+    required int copyNumber,
+    required int countPage,
+    required Size paperSizeByPixelPointLimited,
+    required Size passportSizeByPixelLimited,
+    required int countColumnIn1Page,
+    required int countRowIn1Page,
+    required double spacingHorizontalByPixelPoint,
+    required double spacingVerticalByPixelPoint,
+    required EdgeInsets marginByPixelPoint,
+  }) async {
+    try {
+      var data = {
+        "imageCroppedPath": imageCroppedPath,
+        "indexImageFormat": indexImageFormat,
+        "extension": extension,
+        "quality": quality,
+        "copyNumber": copyNumber,
+        "countPage": countPage,
+        "paperWidthByPixelPointLimited": paperSizeByPixelPointLimited.width,
+        "paperHeightByPixelPointLimited": paperSizeByPixelPointLimited.height,
+        "passportWidthByPixelLimited": passportSizeByPixelLimited.width,
+        "passportHeightByPixelLimited": passportSizeByPixelLimited.height,
+        "countColumnIn1Page": countColumnIn1Page,
+        "countRowIn1Page": countRowIn1Page,
+        "spacingHorizontalByPixelPoint": spacingHorizontalByPixelPoint,
+        "spacingVerticalByPixelPoint": spacingVerticalByPixelPoint,
+        "marginByPixelPointLeft": marginByPixelPoint.left,
+        "marginByPixelPointTop": marginByPixelPoint.top,
+        "marginByPixelPointRight": marginByPixelPoint.right,
+        "marginByPixelPointBottom": marginByPixelPoint.bottom,
+      };
+
+      List<String> result =
+          (await platform.invokeMethod(
+                    "handleGenerateMultiplePaperMediaToImage",
+                    data,
+                  )
+                  as List<Object?>)
+              .cast<String>();
+
+      return (result.sublist(0, result.length - 1), double.parse(result.last));
+    } catch (e) {
+      rethrow;
+    }
   }
 }

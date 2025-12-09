@@ -1,228 +1,169 @@
 package com.tapuniverse.passportphoto.exports
 
-import android.content.ContentResolver
 import android.content.Context
-import android.database.Cursor
-import android.graphics.Bitmap
+import android.util.Log
+import com.tapuniverse.passportphoto.helper.ImageHelper
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.media.ExifInterface
-import android.os.Build
-import android.provider.MediaStore
-import android.util.Log
-import com.tapuniverse.passportphoto.compress.HeifConverter
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
+import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import androidx.core.graphics.scale
+
 
 class ExportPhoto {
-
-    suspend fun resizeAndResoluteImage(
+    suspend fun handleGenerateSinglePhotoMediaToImage(
         context: Context,
-        inputPath: String,
+        indexImageFormat: Int,
+        imageCroppedPath: String,
         outPath: String,
-        format: Int,
-        width: Int?,
-        height: Int?,
-        scaleWidth: Double?,
-        scaleHeight: Double?,
-        quality: Int
-    ): Boolean {
-        return withContext(Dispatchers.IO) {
-            try {
+        quality: Int,
+        passportWidthByPixelPointLimited: Double,
+        passportHeightByPixelPointLimited: Double,
+    ): ArrayList<String> {
+        return try {
+            val inputFile = File(imageCroppedPath)
+            if (!inputFile.exists()) {
+                throw FileNotFoundException("Input file not found: $imageCroppedPath")
+            }
 
-                var bitmap: Bitmap = decodeBitmap(inputPath)
-                Log.i(
-                    "resizeAndResoluteImage",
-                    "bitmap size: ${bitmap.width}, height: ${bitmap.height}"
-                )
-                 var bitmapScale:Bitmap;
-                if(width == null || height == null  || scaleWidth ==null || scaleHeight == null){
-                    bitmapScale = bitmap
-                }else{
-                    bitmapScale =
-                        bitmap.scale((scaleWidth * width).toInt(), (scaleHeight * height).toInt())
-                }
+            if (passportWidthByPixelPointLimited <= 0 || passportHeightByPixelPointLimited <= 0) {
+                throw IllegalArgumentException("Invalid dimensions: ${passportWidthByPixelPointLimited}x$passportHeightByPixelPointLimited")
+            }
 
+            if (quality < 0 || quality > 100) {
+                throw IllegalArgumentException("Quality must be between 0-100: $quality")
+            }
 
+            ImageHelper().resizeAndResoluteImage(
+                context = context,
+                inputPath = imageCroppedPath,
+                outPath = outPath,
+                format = indexImageFormat,
+                width = passportWidthByPixelPointLimited.toInt(),
+                height = passportHeightByPixelPointLimited.toInt(),
+                scaleWidth = 1.0,
+                scaleHeight = 1.0,
+                quality = quality,
+            )
 
-                Log.i(
-                    "resizeAndResoluteImage",
-                    "scale: w: ${scaleWidth} - h: ${scaleHeight}, width: ${width}, height: ${height}, quality ${quality} "
-                )
+            val outputFile = File(outPath)
+            if (!outputFile.exists()) {
+                throw IOException("Output file was not created: $outPath")
+            }
 
-                var outputStream = FileOutputStream(outPath)
-                var quality = quality
-                Log.i("format", format.toString());
-                when (format) {
-                    0 -> {
-                        bitmapScale.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
-                    }
+            val fileSize = outputFile.length()
+            if (fileSize <= 0) {
+                throw IOException("Output file has invalid size: $fileSize bytes")
+            }
 
-                    1 -> {
-                        bitmapScale.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
-                    }
+            val listResult = ArrayList<String>()
+            listResult.add(outPath)
+            listResult.add(fileSize.toDouble().toString())
+            listResult
+        } catch (e: Exception) {
+            Log.e("PhotoMedia", "Unexpected error", e)
+            throw e
+        }
+    }
 
-                    2 -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                            bitmapScale.compress(
-                                Bitmap.CompressFormat.WEBP_LOSSY,
-                                quality,
-                                outputStream
-                            )
-                        } else {
-                            bitmapScale.compress(Bitmap.CompressFormat.WEBP, quality, outputStream)
+      suspend fun generateSingleImagePdf(
+        passportWidth: Double,
+        passportHeight: Double,
+        listFilePath: List<String>,
+        pdfOutPath: String,
+    ): ArrayList<String>? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val pdfDocument = PdfDocument()
+                val outputFile = File(pdfOutPath)
+
+                val fos = FileOutputStream(outputFile)
+                try {
+                    for ((index, filePath) in listFilePath.withIndex()) {
+                        val file = File(filePath)
+                        if (!file.exists()) {
+                            println("Warning: File not found: $filePath")
+                            continue
+                        }
+
+                        val bitmap = BitmapFactory.decodeFile(filePath)
+                        if (bitmap == null) {
+                            println("Warning: Cannot decode bitmap: $filePath")
+                            continue
+                        }
+
+                        try {
+                            val pageInfo = PdfDocument.PageInfo.Builder(
+                                passportWidth.toInt(),
+                                passportHeight.toInt(),
+                                index + 1
+                            ).create()
+
+                            val page = pdfDocument.startPage(pageInfo)
+                            val canvas = page.canvas
+
+                            val paint = Paint()
+
+                            val scaleX = passportWidth / bitmap.width
+                            val scaleY = passportHeight / bitmap.height
+                            val scale = maxOf(scaleX, scaleY)
+
+                            val scaledWidth = (bitmap.width * scale).toFloat()
+                            val scaledHeight = (bitmap.height * scale).toFloat()
+
+                            val left = (passportWidth - scaledWidth) / 2
+                            val top = (passportHeight - scaledHeight) / 2
+
+                            val matrix = Matrix().apply {
+                                postScale(scale.toFloat(), scale.toFloat())
+                                postTranslate(left.toFloat(), top.toFloat())
+                            }
+
+                            canvas.drawBitmap(bitmap, matrix, paint)
+
+                            pdfDocument.finishPage(page)
+
+                        } finally {
+                            bitmap.recycle()
                         }
                     }
 
-                    3 -> {
-                        HeifConverter().compressHeifFile(
-                            context = context,
-                            bitmap = bitmapScale,
-                            outputStream = outputStream,
-                            quality = quality,
-                        )
+                    if (pdfDocument.pages.isEmpty()) {
+                        throw IllegalStateException("No valid images to create PDF")
                     }
+
+                    pdfDocument.writeTo(fos)
+                    fos.flush()
+
+                    println ("PDF created successfully: ${outputFile.absolutePath}")
+                    println("PDF size: ${outputFile.length()} bytes, Pages: ${pdfDocument.pages.size}")
+
+                    val listResult = ArrayList<String>()
+                     listResult.add(outputFile.absolutePath)
+                     listResult.add(outputFile.length().toString())
+                     listResult
+
+                } catch (e: Exception) {
+                    println("Error creating PDF: ${e.message}")
+                    outputFile.takeIf { it.exists() }?.delete()
+                    null
+                } finally {
+                    try {
+                        fos.close()
+                    } catch (e: IOException) {
+                        println("Error closing stream: ${e.message}")
+                    }
+                    pdfDocument.close()
                 }
-                outputStream.close()
-                return@withContext true;
-            } catch (e: Exception) {
-                Log.e("changeImageFormat error", e.toString())
-                return@withContext false
             }
-        }
-    }
-
-    fun resizePhoto(
-        inputPath: String,
-        outPath: String,
-        width: Int,
-        height: Int,
-        scale: Double,
-    ): Boolean {
-        return try {
-            var bitmap: Bitmap = BitmapFactory.decodeFile(inputPath)
-            var bitmapScale = Bitmap.createScaledBitmap(
-                bitmap,
-                (scale * width).toInt(),
-                (scale * height).toInt(),
-                true
-            )
-            var outputStream = FileOutputStream(outPath)
-            bitmapScale.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-            true
-
         } catch (e: Exception) {
-            false
+            println("generatePdf error: ${e.message}")
+            null
         }
-    }
-
-    fun getAllImageFolders(context: Context): List<List<String>> {
-        val imageFolders = mutableListOf<String>()
-        val imageFolderPaths = mutableListOf<String>()
-        val results = mutableListOf<List<String>>();
-
-        val projection = arrayOf(
-            MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media.BUCKET_DISPLAY_NAME
-        )
-
-        val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
-        val selection = "${MediaStore.Images.Media.MIME_TYPE} LIKE ?"
-        val selectionArgs = arrayOf("image/%")
-
-        val contentResolver: ContentResolver = context.contentResolver
-        val cursor: Cursor? = contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            projection,
-            selection,
-            selectionArgs,
-            sortOrder
-        )
-
-        cursor?.use {
-            val columnIndexFolderName =
-                it.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-            val columnIndexData = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-
-            while (it.moveToNext()) {
-                val folderName = it.getString(columnIndexFolderName)
-                val imagePath = it.getString(columnIndexData)
-                Log.d("ImageFolders", "Folder: $folderName, Path: $imagePath")
-                // Check if the folder is not already added
-                if (!imageFolders.contains(folderName)) {
-                    imageFolders.add(folderName)
-                    imageFolderPaths.add(imagePath)
-                }
-            }
-            results.add(imageFolders)
-            results.add(imageFolderPaths)
-
-        }
-
-        cursor?.close()
-        return results
-    }
-
-}
-
-
-
-
-fun rotateBitmap(source: Bitmap, angle: Float): Bitmap {
-    val matrix = Matrix()
-    matrix.postRotate(angle)
-    return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
-}
-
-fun flipBitmap(source: Bitmap, angle: Float): Bitmap {
-    val matrix = Matrix()
-    matrix.postRotate(angle)
-    matrix.postScale(-1f, 1f)
-    return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
-}
-
-@Throws(FileNotFoundException::class, IOException::class, OutOfMemoryError::class)
-fun decodeBitmap(file: String?): Bitmap {
-    val exif = ExifInterface(file!!)
-    val orientation: Int =
-        exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
-    var mOptions = BitmapFactory.Options()
-    mOptions.inJustDecodeBounds = false
-    val bitmap = BitmapFactory.decodeFile(file, mOptions)
-    // 180 , check exif inteface 2,4,5,7
-    when (orientation) {
-        ExifInterface.ORIENTATION_ROTATE_90 -> {
-            return rotateBitmap(bitmap, 90f)
-        }
-
-        ExifInterface.ORIENTATION_ROTATE_270 -> {
-            return rotateBitmap(bitmap, -90f)
-        }
-
-        ExifInterface.ORIENTATION_ROTATE_180 -> {
-            return rotateBitmap(bitmap, 180f)
-        }
-
-        ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> {
-            return flipBitmap(bitmap, 0f)
-        }
-
-        ExifInterface.ORIENTATION_FLIP_VERTICAL -> {
-            return flipBitmap(bitmap, 180f)
-        }
-
-        ExifInterface.ORIENTATION_TRANSPOSE -> {
-            return flipBitmap(bitmap, 90f)
-        }
-
-        ExifInterface.ORIENTATION_TRANSVERSE -> {
-            return flipBitmap(bitmap, 270f)
-        }
-
-        else -> return bitmap
     }
 }

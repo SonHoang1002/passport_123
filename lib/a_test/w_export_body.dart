@@ -132,8 +132,8 @@ class _WExportBody1State extends State<WExportBody1> {
     //   return null;
     // }
     if (isTabPhoto) {
-      Map<String, dynamic> result =
-          await ExportHelpers.handleGenerateSinglePhotoMedia(
+      (File, double) result =
+          await ExportHelpers.handleGenerateSinglePhotoMediaV1(
             indexImageFormat: indexImageFormat,
             imageCropped: widget.imageCropped,
             countrySelected: widget.countrySelected,
@@ -143,16 +143,16 @@ class _WExportBody1State extends State<WExportBody1> {
             quality: _vSliderCompressionPercent.value,
           );
 
-      File? outputFile = result["outputFile"];
-      if (outputFile != null && _convertedPhotoFile?.path != outputFile.path) {
+      File outputFile = result.$1;
+      if (_convertedPhotoFile?.path != outputFile.path) {
         _convertedPhotoFile = outputFile;
       }
-      return result['fileSize'];
+      return result.$2;
     } else {
       double sum = 0.0;
 
       List<File> listPaperFile =
-          await ExportHelpers.handleGenerateMultiplePaperMedia(
+          await ExportHelpers.handleGenerateMultiplePaperMediaV1(
             projectModel: widget.projectModel,
             exportSize: _vExportSize.value,
             copyNumber: _vCopyCount.value,

@@ -23,8 +23,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import android.content.Context
+import android.graphics.RectF
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Size
+import com.tapuniverse.passportphoto.exports.ExportPdf
+import com.tapuniverse.passportphoto.helper.ImageHelper
+import kotlinx.coroutines.Job
 
 private const val TAG = "MainActivity"
 
@@ -44,6 +49,8 @@ class MainActivity : FlutterFragmentActivity() {
 
     var listFilePathForSaveActionDocument: List<String>? = null
     var methodResult: MethodChannel.Result? = null
+
+    var job: Job? = null;
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         Log.d(TAG, "configureFlutterEngine: ")
@@ -72,9 +79,11 @@ class MainActivity : FlutterFragmentActivity() {
                         val scale = args["scale"] as List<Double?>?
                         val quality = args["quality"] as Int
                         val context = this
-                        CoroutineScope(Dispatchers.IO).launch {
+                        job?.cancel()
+                        job = null
+                        job = CoroutineScope(Dispatchers.IO).launch {
                             val resultExport =
-                                ExportPhoto().resizeAndResoluteImage(
+                                ImageHelper().resizeAndResoluteImage(
                                     context,
                                     inputPath,
                                     outputPath,
@@ -85,7 +94,9 @@ class MainActivity : FlutterFragmentActivity() {
                                     scaleHeight = scale?.get(1),
                                     quality = quality
                                 )
-                            result.success(resultExport)
+                            withContext(Dispatchers.Main) {
+                                result.success(resultExport)
+                            }
                         }
                     } catch (e: Exception) {
                         Log.e("Method Channel Error", "ResizeAndResoluteImage: $e")
@@ -109,10 +120,10 @@ class MainActivity : FlutterFragmentActivity() {
 
                 "maskTwoImage" -> {
                     try {
-                        var listData = call.arguments as List<*>
-                        var originFilePath = listData[0] as String
-                        var transparentFilePath = listData[1] as String
-                        var outputPath = listData[2] as String
+                        val listData = call.arguments as List<*>
+                        val originFilePath = listData[0] as String
+                        val transparentFilePath = listData[1] as String
+                        val outputPath = listData[2] as String
                         PassportCanvas().maskTwoImage(
                             originFilePath,
                             transparentFilePath,
@@ -155,7 +166,7 @@ class MainActivity : FlutterFragmentActivity() {
 
                     val margins = args["margins"] as List<Double>
 
-                    var margin = Margin(margins[0], margins[1], margins[2], margins[3])
+                    val margin = Margin(margins[0], margins[1], margins[2], margins[3])
 
                     val qualityPassport = args["qualityPassport"] as Int
 
@@ -164,7 +175,9 @@ class MainActivity : FlutterFragmentActivity() {
                     val bitmapConfigIndex = args["bitmapConfigIndex"] as Int
 
                     try {
-                        CoroutineScope(Dispatchers.IO).launch {
+                        job?.cancel()
+                        job = null
+                        job = CoroutineScope(Dispatchers.IO).launch {
                             val resultExport = GenerateImageWithCanvas().generateSinglePage(
                                 passportPath, outputPath,
                                 paperWidth, paperHeight,
@@ -187,9 +200,9 @@ class MainActivity : FlutterFragmentActivity() {
                 }
 
                 "action_create_document" -> {
-                    var args = call.arguments as Map<String, Any>
-                    var listPath = args["listPath"] as List<String>
-                    var mimeType = args["mimeType"] as String
+                    val args = call.arguments as Map<String, Any>
+                    val listPath = args["listPath"] as List<String>
+                    val mimeType = args["mimeType"] as String
 
                     listFilePathForSaveActionDocument = listPath
                     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
@@ -253,9 +266,230 @@ class MainActivity : FlutterFragmentActivity() {
                     val message = data["message"] as String
                     showToast(context, message)
                 }
-                "checkNetworkConnection" ->{
+
+                "checkNetworkConnection" -> {
                     result.success(hasNetworkConnection())
 
+                }
+
+                "handleGenerateSinglePhotoMediaToImage" -> {
+                    try {
+                        val args = call.arguments as Map<*, *>
+                        val indexImageFormat = args["indexImageFormat"] as Int
+                        val imageCroppedPath = args["imageCroppedPath"] as String
+                        val outPath = args["outPath"] as String
+                        val quality = args["quality"] as Int
+                        val passportWidthByPixelPointLimited =
+                            args["passportWidthByPixelPointLimited"] as Double
+                        val passportHeightByPixelPointLimited =
+                            args["passportHeightByPixelPointLimited"] as Double
+                        val context = this
+                        job?.cancel()
+                        job = null;
+                        job = CoroutineScope(Dispatchers.IO).launch {
+                            val result1 = ExportPhoto().handleGenerateSinglePhotoMediaToImage(
+                                context = context,
+                                indexImageFormat = indexImageFormat,
+                                imageCroppedPath = imageCroppedPath,
+                                outPath = outPath,
+                                quality = quality,
+                                passportWidthByPixelPointLimited = passportWidthByPixelPointLimited,
+                                passportHeightByPixelPointLimited = passportHeightByPixelPointLimited,
+                            )
+                            withContext(Dispatchers.Main) {
+                                result.success(result1)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        result.error("handleGenerateSinglePhotoMedia error", e.message, null)
+                    }
+                }
+
+                "generateSingleImagePdf" -> {
+                    try {
+                        val args = call.arguments as Map<*, *>
+                        val pdfOutPath = args["pdfOutPath"] as String
+                        val passportWidth =
+                            args["passportWidth"] as Double
+                        val passportHeight =
+                            args["passportHeight"] as Double
+                        val listFilePath = args["listFilePath"] as List<String>
+                        job?.cancel()
+                        job = null
+                        job = CoroutineScope(Dispatchers.IO).launch {
+                            val result1 = ExportPhoto().generateSingleImagePdf(
+                                passportWidth = passportWidth,
+                                passportHeight = passportHeight,
+                                pdfOutPath = pdfOutPath,
+                                listFilePath = listFilePath,
+                            )
+                            withContext(Dispatchers.Main) {
+                                result.success(result1)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        result.error("handleGenerateSinglePhotoMedia error", e.message, null)
+                    }
+                }
+
+                "handleGenerateMultiplePaperMediaToImage" -> {
+                    try {
+                        val args = call.arguments as Map<*, *>
+                        val imageCroppedPath = args["imageCroppedPath"] as String
+                        val indexImageFormat = args["indexImageFormat"] as Int
+                        val extension = args["extension"] as String
+                        val quality = args["quality"] as Int
+                        val copyNumber = args["copyNumber"] as Int
+                        val countPage = args["countPage"] as Int
+                        val paperWidthByPixelPointLimited =
+                            args["paperWidthByPixelPointLimited"] as Double
+                        val paperHeightByPixelPointLimited =
+                            args["paperHeightByPixelPointLimited"] as Double
+
+                        val paperSizeByPixelPointLimited = Size(
+                            paperWidthByPixelPointLimited.toInt(),
+                            paperHeightByPixelPointLimited.toInt()
+                        )
+
+                        val passportWidthByPixelLimited =
+                            args["passportWidthByPixelLimited"] as Double
+                        val passportHeightByPixelLimited =
+                            args["passportHeightByPixelLimited"] as Double
+
+                        val passportSizeByPixelLimited = Size(
+                            passportWidthByPixelLimited.toInt(),
+                            passportHeightByPixelLimited.toInt()
+                        )
+
+                        val countColumnIn1Page = args["countColumnIn1Page"] as Int
+                        val countRowIn1Page = args["countRowIn1Page"] as Int
+                        val spacingHorizontalByPixelPoint =
+                            args["spacingHorizontalByPixelPoint"] as Double
+                        val spacingVerticalByPixelPoint =
+                            args["spacingVerticalByPixelPoint"] as Double
+                        val marginByPixelPointLeft = args["marginByPixelPointLeft"] as Double
+                        val marginByPixelPointTop = args["marginByPixelPointTop"] as Double
+                        val marginByPixelPointRight = args["marginByPixelPointRight"] as Double
+                        val marginByPixelPointBottom = args["marginByPixelPointBottom"] as Double
+
+                        val marginByPixelPoint = RectF(
+                            marginByPixelPointLeft.toFloat(),
+                            marginByPixelPointTop.toFloat(),
+                            marginByPixelPointRight.toFloat(),
+                            marginByPixelPointBottom.toFloat()
+                        )
+                        val context = this
+                        job?.cancel()
+                        job = null
+                        job = CoroutineScope(Dispatchers.IO).launch {
+                          val result1 =  ExportPdf().handleGenerateMultiplePaperMediaToImage(
+                                context = context,
+                                imageCroppedPath = imageCroppedPath,
+                                indexImageFormat = indexImageFormat,
+                                extension = extension,
+                                quality = quality,
+                                copyNumber = copyNumber,
+                                countPage = countPage,
+                                paperSizeByPixelPointLimited = paperSizeByPixelPointLimited,
+                                passportSizeByPixelLimited = passportSizeByPixelLimited,
+                                countColumnIn1Page = countColumnIn1Page,
+                                countRowIn1Page = countRowIn1Page,
+                                spacingHorizontalByPixelPoint = spacingHorizontalByPixelPoint,
+                                spacingVerticalByPixelPoint = spacingVerticalByPixelPoint,
+                                marginByPixelPoint = marginByPixelPoint,
+                            )
+                            withContext(Dispatchers.Main){
+                                result.success(result1)
+                            }
+                        }
+
+                    } catch (e: Exception) {
+                        result.error(
+                            "handleGenerateMultiplePaperMediaToImage error",
+                            e.message,
+                            null
+                        )
+                        Log.e("handleGenerateMultiplePaperMediaToImage", e.toString())
+                    }
+                }
+
+                "handleGenerateMultiplePaperMediaToPdf" -> {
+                    try {
+                        val args = call.arguments as Map<*, *>
+                        val imageCroppedPath = args["imageCroppedPath"] as String
+                        val pdfOutPath = args["pdfOutPath"] as String
+                        val quality = args["quality"] as Int
+                        val copyNumber = args["copyNumber"] as Int
+                        val countPage = args["countPage"] as Int
+                        val paperWidthByPoint =
+                            args["paperWidthByPoint"] as Double
+                        val paperHeightByPoint =
+                            args["paperHeightByPoint"] as Double
+
+                        val paperSizeByPoint = Size(
+                            paperWidthByPoint.toInt(),
+                            paperHeightByPoint.toInt()
+                        )
+
+                        val passportWidthByPoint =
+                            args["passportWidthByPoint"] as Double
+                        val passportHeightByPoint =
+                            args["passportHeightByPoint"] as Double
+
+                        val passportSizeByPoint = Size(
+                            passportWidthByPoint.toInt(),
+                            passportHeightByPoint.toInt()
+                        )
+
+                        val countColumnIn1Page = args["countColumnIn1Page"] as Int
+                        val countRowIn1Page = args["countRowIn1Page"] as Int
+                        val spacingHorizontalByPoint =
+                            args["spacingHorizontalByPoint"] as Double
+                        val spacingVerticalByPoint =
+                            args["spacingVerticalByPoint"] as Double
+                        val marginByPointLeft = args["marginByPointLeft"] as Double
+                        val marginByPointTop = args["marginByPointTop"] as Double
+                        val marginByPointRight = args["marginByPointRight"] as Double
+                        val marginByPointBottom = args["marginByPointBottom"] as Double
+
+                        val marginByPoint = RectF(
+                            marginByPointLeft.toFloat(),
+                            marginByPointTop.toFloat(),
+                            marginByPointRight.toFloat(),
+                            marginByPointBottom.toFloat()
+                        )
+                        val context = this
+                        job?.cancel()
+                        job = null
+                        job = CoroutineScope(Dispatchers.IO).launch {
+                            val result1 =  ExportPdf().handleGenerateMultiplePaperMediaToPdf(
+                                context = context,
+                                imageCroppedPath = imageCroppedPath,
+                                pdfOutPath = pdfOutPath,
+                                quality = quality,
+                                copyNumber = copyNumber,
+                                countPage = countPage,
+                                paperSizeByPoint = paperSizeByPoint,
+                                passportSizeByPoint = passportSizeByPoint,
+                                countColumnIn1Page = countColumnIn1Page,
+                                countRowIn1Page = countRowIn1Page,
+                                spacingHorizontalByPoint = spacingHorizontalByPoint,
+                                spacingVerticalByPoint = spacingVerticalByPoint,
+                                marginByPoint = marginByPoint,
+                            )
+                            withContext(Dispatchers.Main){
+                                result.success(result1)
+                            }
+                        }
+
+                    } catch (e: Exception) {
+                        result.error(
+                            "handleGenerateMultiplePaperMediaToImage error",
+                            e.message,
+                            null
+                        )
+                        Log.e("handleGenerateMultiplePaperMediaToImage", e.toString())
+                    }
                 }
             }
         }

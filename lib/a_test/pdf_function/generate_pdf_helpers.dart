@@ -3,8 +3,6 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pass1_/helpers/native_bridge/method_channel.dart';
 import 'package:pass1_/helpers/print_helper.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
@@ -629,28 +627,7 @@ class GeneratePdfHelpers {
       "passportSizeLimitedByPoint:  $passportSizeLimitedByPoint, marginByPoint = $marginByPoint, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, countImageMaxOn1Page = $countImageMaxOn1Page, countPage = $countPage",
     );
 
-    // List<ui.Image> listResult = [];
-    // for (var i = 0; i < countPage; i++) {
-    //   int countImageNeedDraw = countImageMaxOn1Page;
-    //   if (i >= countPage - 1) {
-    //     countImageNeedDraw =
-    //         copyNumber - countImageMaxOn1Page * (countPage - 1);
-    //   }
-    //   ui.Image result = _generateSinglePdfPage(
-    //     imageData: imageData,
-    //     paperSizeByPoint: paperSizeByPoint,
-    //     passportSizeByPoint: passportSizeLimitedByPoint,
-    //     countImageNeedDraw: countImageNeedDraw,
-    //     countImageOn1Row: countImageOn1Row,
-    //     countRow: countRowOn1Page,
-    //     spacingHorizontalByPoint: spacingHorizontalByPoint,
-    //     spacingVerticalByPoint: spacingVerticalByPoint,
-    //     margin: margin,
-    //   );
-    //   listResult.add(result);
-    // }
     return {
-      // "listUiPdfImage": listResult,
       "paperSizeByPoint": paperSizeByPoint,
       "passportSizeByPoint": passportSizeLimitedByPoint,
       "spacingHorizontalByPoint": spacingHorizontalByPoint,
@@ -842,7 +819,7 @@ class GeneratePdfHelpers {
     return data;
   }
 
-  Future<File?> generateSingleImagePdf(
+  Future<File> generateSingleImagePdf(
     Size passportSize,
     List<File> listFile,
   ) async {
@@ -887,8 +864,8 @@ class GeneratePdfHelpers {
       return result;
     } catch (e) {
       consolelog("generatePdf error: ${e}");
+      rethrow;
     }
-    return null;
   }
 
   Future<File> generatePaperPdf(

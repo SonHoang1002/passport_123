@@ -6,8 +6,9 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.util.Log
-import com.tapuniverse.passportphoto.exports.decodeBitmap
 import java.io.FileOutputStream
+import androidx.core.graphics.createBitmap
+import com.tapuniverse.passportphoto.helper.decodeBitmap
 
 class PassportCanvas {
     fun maskTwoImage(originalFilePath: String, transparentFilePath: String, outputPath: String) {
@@ -17,15 +18,9 @@ class PassportCanvas {
 //        val bitmapTransparent: Bitmap = BitmapFactory.decodeFile(transparentFilePath)
 
         val bitmapOriginal: Bitmap = decodeBitmap(originalFilePath)
-        var bitmapTransparent: Bitmap = decodeBitmap(transparentFilePath)
-        val bitmapResult: Bitmap = Bitmap.createBitmap(
-            bitmapOriginal.width,
-            bitmapOriginal.height,
-            Bitmap.Config.ARGB_8888
-        )
-
-
-        var canvas = Canvas(bitmapResult)
+        val bitmapTransparent: Bitmap = decodeBitmap(transparentFilePath)
+        val bitmapResult: Bitmap = createBitmap(bitmapOriginal.width, bitmapOriginal.height)
+        val canvas = Canvas(bitmapResult)
 
         val paintOriginal = Paint()
         paintOriginal.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
