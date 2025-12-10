@@ -1,602 +1,629 @@
-// import 'dart:io';
-// import 'dart:ui' as ui;
-// import 'package:auto_size_text/auto_size_text.dart';
-// import 'package:device_info_plus/device_info_plus.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-// import 'package:media_scanner/media_scanner.dart';
-// import 'package:pass1_/commons/colors.dart';
-// import 'package:pass1_/commons/constants.dart';
-// import 'package:pass1_/helpers/caculate_file_size.dart';
-// import 'package:pass1_/helpers/convert.dart';
-// import 'package:pass1_/helpers/method_channel.dart';
-// import 'package:pass1_/helpers/random_number.dart';
-// import 'package:pass1_/models/country_passport_model.dart';
-// import 'package:pass1_/models/project_model.dart';
-// import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
-// import 'package:pass1_/providers/blocs/theme_bloc.dart';
-// import 'package:pass1_/screens/module_home/helpers/export_helpers.dart';
-// import 'package:pass1_/widgets/w_button.dart';
-// import 'package:pass1_/widgets/w_custom_about_dialog.dart';
-// import 'package:pass1_/widgets/w_segment_custom.dart';
-// import 'package:pass1_/widgets/w_slider.dart';
-// import 'package:pass1_/widgets/w_spacer.dart';
-// import 'package:pass1_/widgets/w_text.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:pass1_/a_test/pdf_function/generate_mimetype.dart';
+import 'package:pass1_/a_test/w_export_childs.dart';
+import 'package:pass1_/commons/colors.dart';
+import 'package:pass1_/commons/constants.dart';
+import 'package:pass1_/helpers/convert.dart';
+import 'package:pass1_/helpers/file_helpers.dart';
+import 'package:pass1_/helpers/log_custom.dart';
+import 'package:pass1_/helpers/native_bridge/method_channel.dart';
+import 'package:pass1_/helpers/navigator_route.dart';
+import 'package:pass1_/helpers/random_number.dart';
+import 'package:pass1_/models/country_passport_model.dart';
+import 'package:pass1_/models/export_size_model.dart';
+import 'package:pass1_/models/project_model.dart';
+import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
+import 'package:pass1_/providers/blocs/theme_bloc.dart';
+import 'package:pass1_/screens/module_home/helpers/export_helpers.dart';
+import 'package:pass1_/widgets/w_custom_about_dialog.dart';
+import 'package:pass1_/widgets/w_custom_value_notifier.dart';
+import 'package:pass1_/widgets/w_spacer.dart';
+import 'package:share_plus/share_plus.dart';
 
-// class WExportBody extends StatefulWidget {
-//   final ProjectModel projectModel;
-//   final double height;
-//   final CountryModel countrySelected;
-//   final File imageCropped;
-//   final Function(ProjectModel projectModel) onUpdateModel;
-//   const WExportBody({
-//     super.key,
-//     required this.projectModel,
-//     required this.height,
-//     required this.countrySelected,
-//     required this.imageCropped,
-//     required this.onUpdateModel,
-//   });
+class WExportBody extends StatefulWidget {
+  final ProjectModel projectModel;
+  final double height;
+  final CountryModel countrySelected;
+  final File imageCropped;
+  final Function(ProjectModel projectModel) onUpdateModel;
+  const WExportBody({
+    super.key,
+    required this.projectModel,
+    required this.height,
+    required this.countrySelected,
+    required this.imageCropped,
+    required this.onUpdateModel,
+  });
 
-//   @override
-//   State<WExportBody> createState() => _WExportBodyState();
-// }
+  @override
+  State<WExportBody> createState() => _WExportBodyState();
+}
 
-// class _WExportBodyState extends State<WExportBody> {
-//   int _indexSelectedFormat = 0;
-//   int _indexSelectedResolution = 0;
-//   late double _valueResolution;
-//   late double _valueSlider;
+class _WExportBodyState extends State<WExportBody> {
+  final ValueNotifier<int> _vIndexSegment = ValueNotifier<int>(0);
 
-//   double? _fileSize;
-//   File? _fileConverted;
-//   late List<double> _listPassportDimensionByInch;
-//   late Size _size;
+  final ValueNotifier<int?> _vIndexFocusingFormat = ValueNotifier<int?>(null);
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _valueResolution = _valueSlider = 300;
-//     _handleConvertCurrentUnitToINCH();
-//     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-//       await _handleGenerateSinglePhotoMedia();
-//     });
-//   }
+  //copy
+  final ValueNotifier<int> _vCopyCount = ValueNotifier<int>(6);
+  // size
+  final ValueNotifier<ExportSizeModel> _vExportSize =
+      ValueNotifier<ExportSizeModel>(LIST_EXPORT_SIZE[1]);
+  //
+  final ValueNotifier<int> _vIndexImageFormat = ValueNotifier<int>(0);
+  final ValueNotifier<int> _vSliderCompressionPercent = ValueNotifier<int>(80);
 
-//   void _handleConvertCurrentUnitToINCH() {
-//     final currentPassport = widget.countrySelected
-//         .listPassportModel[widget.countrySelected.indexSelectedPassport];
-//     final currentUnit = currentPassport.unit;
-//     final Size currentSize =
-//         Size(currentPassport.width, currentPassport.height);
-//     final ratioWidth =
-//         FlutterConvert.convertUnit(currentUnit, INCH, currentSize.width);
-//     final ratioHeight =
-//         FlutterConvert.convertUnit(currentUnit, INCH, currentSize.height);
-//     _listPassportDimensionByInch = [ratioWidth, ratioHeight];
-//   }
+  final ValueNotifier<int> _vIndexDpiFormat = ValueNotifier<int>(0);
+  final ValueNotifier<double> _vSliderDpiResolutionPreview =
+      ValueNotifier<double>(600);
 
-//   String _handleGetTitlePassportFormat() {
-//     final selectedPassport = widget.countrySelected
-//         .listPassportModel[widget.countrySelected.indexSelectedPassport];
-//     return "${(selectedPassport.width).toStringAsFixed(0)}x${(selectedPassport.height).toStringAsFixed(0)}${selectedPassport.unit.title}";
-//   }
+  final ValueNotifier<double> _vSliderDpiResolutionMain = ValueNotifier<double>(
+    600,
+  );
 
-//   Future<void> _onFormatChange(int value) async {
-//     if (_indexSelectedFormat == value) return;
-//     _indexSelectedFormat = value;
-//     _handleResetFiles(forceReset: true);
-//     setState(() {});
-//     await _handleGenerateSinglePhotoMedia();
-//   }
+  File? _convertedPhotoFile;
+  List<File> _convertedPaperFiles = [];
+  late List<double> _listPassportDimensionByInch;
+  late Size _size;
+  late bool _isPhone;
 
-//   Future<double> _handleGenerateSinglePhotoMedia({
-//     double? fileHeight,
-//     double? fileWidth,
-//   }) async {
-//     try {
-//       if (_fileSize != null && _fileConverted != null) return 0.0;
-//       final dirPath = (await getExternalStorageDirectory())!.path;
-//       String extension = (_indexSelectedFormat == 0 ? JPG : PNG).toLowerCase();
-//       String outPath = "$dirPath/$FINISH_IMAGE_NAME.$extension";
-//       Size abc = ExportHelpers.handleLimitDPI(
-//         widget.countrySelected,
-//         _size,
-//         _valueResolution,
-//         _listPassportDimensionByInch,
-//       );
-//       final resizedFile = await MyMethodChannel.resizeAndResoluteImage(
-//         widget.imageCropped.path,
-//         _indexSelectedFormat,
-//         [
-//           fileWidth ?? abc.width,
-//           fileHeight ?? abc.height,
-//         ],
-//         [1, 1],
-//         outPath: outPath,
-//       );
-//       if (resizedFile != null) {
-//         final fileSize = await getFileSize(resizedFile);
-//         _fileConverted = resizedFile;
-//         _fileSize = fileSize;
-//         setState(() {});
-//         return fileSize;
-//       }
-//       return 0.0;
-//     } catch (e) {
-//       return 0.0;
-//     }
-//   }
+  final List<GlobalKey> _keysFormat = [];
 
-//   Future<void> _onResolutionChange(int value) async {
-//     if (_indexSelectedResolution == value) return;
-//     _handleResetFiles(forceReset: true);
-//     _indexSelectedResolution = value;
-//     switch (value) {
-//       case 0:
-//         _valueResolution = 600;
-//         break;
-//       case 1:
-//         _valueResolution = 1200;
-//         break;
-//       case 2:
-//         _valueResolution = _valueSlider;
-//         break;
-//       default:
-//     }
-//     setState(() {});
-//     await _handleGenerateSinglePhotoMedia();
-//   }
+  final ValueNotifier<List<double>> _vListMinMaxDpi = ValueNotifier(
+    LIST_MIN_MAX_RESOLUTION_1,
+  );
+  final ValueNotifier<Map<int, String>> _vDataSegmentResolution = ValueNotifier(
+    DATA_SEGMENT_RESOLUTION_1,
+  );
 
-//   Future<bool> _onSaveTo(File? file, String fileName) async {
-//     if (file != null) {
-//       //  xxxxxx
-//       final pickedDirectory = await FlutterFileDialog.pickDirectory();
-//       if (pickedDirectory != null) {
-//         await FlutterFileDialog.saveFileToDirectory(
-//           directory: pickedDirectory,
-//           data: file.readAsBytesSync(),
-//           mimeType: "image/*",
-//           fileName: fileName,
-//           replace: true,
-//         );
-//         return true;
-//       } else {
-//         return false;
-//       }
-//     } else {
-//       showCustomAboutDialog(
-//         context,
-//         360,
-//         "Error",
-//         "Cannot save your photo.",
-//         titleColor: red,
-//       );
-//       return false;
-//     }
-//   }
+  final ValueNotifier<bool> _isCaculating = ValueNotifier(false);
 
-//   Future<void> _onSaveToLibrary(File? file) async {
-//     // truong hop file size bi null khi dpi vuot qua nguong cho phep
-//     if (file != null) {
-//       final outputFile = file;
-//       // final outputFile = await saveToLibrary(
-//       //   inputFile: file,
-//       //   isPdfFormat: isPdfFormat,
-//       //   fileName: fileName,
-//       // );
-//       await MediaScanner.loadMedia(path: outputFile.path);
-//       double dialogWidth = 360;
-//       String content = "Your photo is saved successfully.";
-//       String title = "Saved";
-//       // ignore: use_build_context_synchronously
-//       showCustomAboutDialog(
-//         context,
-//         dialogWidth,
-//         title,
-//         content,
-//       );
-//     } else {
-//       showCustomAboutDialog(
-//         context,
-//         360,
-//         "Error",
-//         "Cannot save your photo.",
-//         titleColor: red,
-//       );
-//     }
-//   }
+  /// getters
+  int get indexTab => _vIndexSegment.value;
+  int get indexImageFormat => _vIndexImageFormat.value;
+  bool get isTabPhoto => indexTab == 0;
+  bool get isDisableDpiFormat {
+    var currentPassport = widget.countrySelected.currentPassport;
+    return (isTabPhoto && indexImageFormat != 2) &&
+        currentPassport.unit == PIXEL;
+  }
 
-//   String _handleRenderPreviewText() {
-//     Size abc = ExportHelpers.handleLimitDPI(
-//         widget.countrySelected, _size, _valueResolution, _listPassportDimensionByInch);
-//     return "${abc.width.toStringAsFixed(0)}x${abc.height.toStringAsFixed(0)}px";
-//   }
+  double get dpi {
+    return _vSliderDpiResolutionMain.value;
+  }
 
-//   Color? _handleRenderPreviewTextColor() {
-//     Size abc = ExportHelpers.handleLimitDPI(
-//         widget.countrySelected, _size, _valueResolution, _listPassportDimensionByInch);
-//     if (_size.width > MIN_SIZE.width) {
-//       if (abc.height > MAX_SIZE_EXPORT_IMAGE_NORMAL ||
-//           abc.width > MAX_SIZE_EXPORT_IMAGE_NORMAL) {
-//         return red;
-//       }
-//     } else {
-//       if (abc.height > MAX_SIZE_EXPORT_IMAGE_WEAK ||
-//           abc.width > MAX_SIZE_EXPORT_IMAGE_WEAK) {
-//         return red;
-//       }
-//     }
-//     return null;
-//   }
+  @override
+  void initState() {
+    super.initState();
+    for (var i = 0; i < 4; i++) {
+      _keysFormat.add(GlobalKey());
+    }
+  }
 
-//   void _handleResetFiles({bool forceReset = false}) {
-//     PassportModel currentPassport = widget.countrySelected.currentPassport;
-//     bool isReset;
-//     if (currentPassport.unit.id != LIST_UNIT.length - 1) {
-//       double targetWidth = _valueResolution * _listPassportDimensionByInch[0];
-//       double targetHeight = _valueResolution * _listPassportDimensionByInch[1];
-//       if (_size.width > MIN_SIZE.width) {
-//         if (targetWidth > MAX_SIZE_EXPORT_IMAGE_NORMAL ||
-//             targetHeight > MAX_SIZE_EXPORT_IMAGE_NORMAL) {
-//           isReset = false;
-//         } else {
-//           isReset = true;
-//         }
-//       } else {
-//         if (targetWidth > MAX_SIZE_EXPORT_IMAGE_WEAK ||
-//             targetHeight > MAX_SIZE_EXPORT_IMAGE_WEAK) {
-//           isReset = false;
-//         } else {
-//           isReset = true;
-//         }
-//       }
-//     } else {
-//       isReset = false;
-//     }
-//     if (forceReset || isReset) {
-//       _fileConverted = null;
-//       _fileSize = null;
-//     }
-//   }
+  Future<double?> _handleCaculateFileSize() async {
+    if (!_isCaculating.value) {
+      _isCaculating.value = true;
+    }
+    Stopwatch stopwatch = Stopwatch()..start();
+    double? resultByKB;
+    resultByKB = await _runGetFileSizeOnBackground();
+    stopwatch.stop();
+    consolelog(
+      "_handleCaculateFileSize call: ${stopwatch.elapsedMilliseconds}",
+    );
+    if (_isCaculating.value) {
+      _isCaculating.value = false;
+    }
+    return resultByKB;
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     _size = MediaQuery.sizeOf(context);
-//     final isDarkMode =
-//         BlocProvider.of<ThemeBloc>(context, listen: false).isDarkMode;
-//     bool isPhone = BlocProvider.of<DevicePlatformCubit>(context).isPhone;
+  Future<double?> _runGetFileSizeOnBackground() async {
+    if (isTabPhoto) {
+      (File, double) result =
+          await ExportHelpers.handleGenerateSinglePhotoMediaV1(
+            indexImageFormat: indexImageFormat,
+            imageCropped: widget.imageCropped,
+            countrySelected: widget.countrySelected,
+            valueResolutionDpi: dpi,
+            quality: _vSliderCompressionPercent.value,
+          );
 
-//     return Stack(
-//       children: [
-//         // blur bg
-//         SizedBox(
-//           height: widget.height,
-//           child: ClipRRect(
-//             child: BackdropFilter(
-//               filter: ui.ImageFilter.blur(
-//                 sigmaX: 20,
-//                 sigmaY: 20,
-//               ),
-//               child: Container(
-//                 color: transparent,
-//               ),
-//             ),
-//           ),
-//         ),
-//         // export photo title
-//         // title previews
-//         // format
-//         // resolution
-//         // custom resolution
-//         // button ( save to , save to library)
-//         Container(
-//           padding: EdgeInsets.only(
-//             bottom: MediaQuery.of(context).padding.bottom + 20,
-//             top: 10,
-//             right: 15,
-//             left: 15,
-//           ),
-//           height: _size.height * 0.6,
-//           decoration: BoxDecoration(
-//               color: isDarkMode ? blurDark : blurLight,
-//               borderRadius:
-//                   const BorderRadius.vertical(top: Radius.circular(20))),
-//           child: Column(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Column(
-//                   children: [
-//                     // export photo title
-//                     Container(
-//                       margin: const EdgeInsets.only(top: 25, left: 10),
-//                       alignment: Alignment.centerLeft,
-//                       child: WTextContent(
-//                         value: "Export Photo",
-//                         textSize: 24,
-//                         textLineHeight: 20,
-//                       ),
-//                     ),
-//                     WSpacer(height: 20),
-//                     // title previews
-//                     Container(
-//                       height: 46,
-//                       decoration: BoxDecoration(
-//                           color: Theme.of(context).badgeTheme.backgroundColor!,
-//                           borderRadius: BorderRadius.circular(12)),
-//                       padding: const EdgeInsets.symmetric(
-//                           vertical: 10, horizontal: 10),
-//                       child: Row(
-//                         // direction: Axis.horizontal,
-//                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                         children: [
-//                           _buildPreviewExport(
-//                               isDarkMode, _handleGetTitlePassportFormat()),
-//                           _buildLinePreviewExport(),
-//                           _buildPreviewExport(
-//                             isDarkMode,
-//                             _handleRenderPreviewText(),
-//                             textColor: _handleRenderPreviewTextColor(),
-//                           ),
-//                           _buildLinePreviewExport(),
-//                           _buildPreviewExport(isDarkMode,
-//                               LIST_FORMAT_IMAGE[_indexSelectedFormat]),
-//                           _buildLinePreviewExport(),
-//                           _buildPreviewExport(
-//                             isDarkMode,
-//                             ExportHelpers.handlePreviewFileSize(
-//                               _fileSize,
-//                               widget.countrySelected,
-//                               _size,
-//                               _valueResolution,
-//                               _listPassportDimensionByInch,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     WSpacer(height: 20),
-//                     //format
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: [
-//                         SizedBox(
-//                           width: 100,
-//                           child: WTextContent(
-//                             value: "Format",
-//                             textSize: 14,
-//                             textLineHeight: 20,
-//                             textFontWeight: FontWeight.w600,
-//                           ),
-//                         ),
-//                         Flexible(
-//                           child: SizedBox(
-//                             width: isPhone ? 300 : null,
-//                             height: 36,
-//                             child: buildSegmentControl(
-//                                 context: context,
-//                                 groupValue: _indexSelectedFormat,
-//                                 listSegment: {0: "JPG", 1: "PNG"},
-//                                 onValueChanged: (value) {
-//                                   _onFormatChange(value!);
-//                                 },
-//                                 unactiveTextColor: Theme.of(context)
-//                                     .textTheme
-//                                     .displayMedium!
-//                                     .color,
-//                                 borderRadius: 12),
-//                           ),
-//                         )
-//                       ],
-//                     ),
-//                     WSpacer(height: 20),
-//                     // resolution
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: [
-//                         SizedBox(
-//                           width: 100,
-//                           child: WTextContent(
-//                             value: "Resolution",
-//                             textSize: 14,
-//                             textLineHeight: 20,
-//                             textFontWeight: FontWeight.w600,
-//                           ),
-//                         ),
-//                         Flexible(
-//                           child: SizedBox(
-//                             width: isPhone ? 300 : null,
-//                             height: 36,
-//                             child: buildSegmentControl(
-//                                 context: context,
-//                                 groupValue: _indexSelectedResolution,
-//                                 listSegment: {
-//                                   0: "600dpi",
-//                                   1: "1200dpi",
-//                                   2: "Custom"
-//                                 },
-//                                 onValueChanged: (value) {
-//                                   _onResolutionChange(value!);
-//                                 },
-//                                 unactiveTextColor: Theme.of(context)
-//                                     .textTheme
-//                                     .displayMedium!
-//                                     .color,
-//                                 borderRadius: 12),
-//                           ),
-//                         )
-//                       ],
-//                     ),
-//                     WSpacer(height: 10),
-//                     // custom resolution
-//                     if (_indexSelectedResolution == 2)
-//                       Row(
-//                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                         children: [
-//                           const SizedBox(width: 100),
-//                           Flexible(
-//                             child: Container(
-//                               width: isPhone ? 300 : null,
-//                               height: 36,
-//                               decoration: BoxDecoration(
-//                                   color: Theme.of(context)
-//                                       .badgeTheme
-//                                       .backgroundColor!,
-//                                   borderRadius: BorderRadius.circular(12)),
-//                               child: Row(children: [
-//                                 Flexible(
-//                                     flex: 2,
-//                                     child: Container(
-//                                       padding: const EdgeInsets.only(left: 16),
-//                                       child: CustomSlider(
-//                                         value: _valueSlider,
-//                                         onChanged: (value) {
-//                                           setState(() {
-//                                             _valueSlider =
-//                                                 _valueResolution = value;
-//                                           });
-//                                         },
-//                                         onChangeEnd: (value) async {
-//                                           _valueSlider =
-//                                               _valueResolution = value;
-//                                           _handleResetFiles();
-//                                           setState(() {});
-//                                           await _handleGenerateSinglePhotoMedia();
-//                                         },
-//                                         min: 300,
-//                                         max: 1200,
-//                                         thumbColor: Theme.of(context)
-//                                             .textTheme
-//                                             .bodySmall!
-//                                             .color,
-//                                         activeColor: Theme.of(context)
-//                                             .textTheme
-//                                             .bodySmall!
-//                                             .color,
-//                                       ),
-//                                     )),
-//                                 Flexible(
-//                                   flex: 1,
-//                                   child: Container(
-//                                     alignment: Alignment.center,
-//                                     child: FittedBox(
-//                                       child: AutoSizeText(
-//                                         "${_valueSlider.toStringAsFixed(0)}dpi",
-//                                         maxLines: 1,
-//                                         style: TextStyle(
-//                                           color: Theme.of(context)
-//                                               .textTheme
-//                                               .bodySmall!
-//                                               .color,
-//                                           height: 13 / 20,
-//                                           fontWeight: FontWeight.w600,
-//                                           fontFamily: FONT_GOOGLESANS,
-//                                         ),
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 )
-//                               ]),
-//                             ),
-//                           )
-//                         ],
-//                       ),
-//                   ],
-//                 ),
-//                 // button ( save to , save to library)
-//                 Flex(
-//                   direction: Axis.horizontal,
-//                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                   children: [
-//                     Flexible(
-//                       child: WButtonFilled(
-//                         height: 54,
-//                         message: "Save to...",
-//                         backgroundColor:
-//                             isDarkMode ? primaryDark1 : primaryLight1,
-//                         onPressed: () async {
-//                           await _onSaveTo(_fileConverted,
-//                               "passport_${randomInt()}.${LIST_FORMAT_IMAGE[_indexSelectedFormat].toLowerCase()}");
-//                         },
-//                       ),
-//                     ),
-//                     WSpacer(width: 10),
-//                     Flexible(
-//                       child: WButtonFilled(
-//                         height: 54,
-//                         message: "Save to Library",
-//                         backgroundColor: isDarkMode ? white : black,
-//                         textColor: isDarkMode ? black : white,
-//                         onPressed: () async {
-//                           bool isAllowed = false;
-//                           PermissionStatus storageStatus;
-//                           int sdkVersion =
-//                               (await DeviceInfoPlugin().androidInfo)
-//                                   .version
-//                                   .sdkInt;
+      File outputFile = result.$1;
+      if (_convertedPhotoFile?.path != outputFile.path) {
+        _convertedPhotoFile = outputFile;
+      }
+      return result.$2;
+    } else {
+      double sum = 0.0;
 
-//                           if (sdkVersion >= 33) {
-//                             isAllowed = true;
-//                           } else {
-//                             storageStatus = await Permission.storage.status;
-//                             if (storageStatus.isGranted ||
-//                                 storageStatus.isLimited) {
-//                               isAllowed = true;
-//                             } else {
-//                               PermissionStatus requestPermission;
-//                               requestPermission =
-//                                   await Permission.storage.request();
-//                               if (requestPermission.isGranted) {
-//                                 isAllowed = true;
-//                               }
-//                             }
-//                           }
-//                           if (isAllowed) {
-//                             await _onSaveToLibrary(
-//                               _fileConverted,
-//                             );
-//                           }
-//                         },
-//                       ),
-//                     ),
-//                   ],
-//                 )
-//               ]),
-//         ),
-//       ],
-//     );
-//   }
+      (List<File>, double) result =
+          await ExportHelpers.handleGenerateMultiplePaperMediaV1(
+            projectModel: widget.projectModel,
+            exportSize: _vExportSize.value,
+            copyNumber: _vCopyCount.value,
+            valueResolutionDpi: dpi,
+            indexImageFormat: indexImageFormat,
+            countrySelected: widget.countrySelected,
+            listPassportDimensionByInch: _listPassportDimensionByInch,
+            quality: _vSliderCompressionPercent.value,
+          );
+      consolelog("listPaperFilelistPaperFile : ${result} ");
+      _convertedPaperFiles = result.$1;
+      sum = result.$2;
+      return sum / MB_TO_KB;
+    }
+  }
 
-//   Widget _buildPreviewExport(
-//     bool isDarkMode,
-//     String title, {
-//     Color? textColor,
-//   }) {
-//     return Container(
-//         alignment: Alignment.center,
-//         child: AutoSizeText(
-//           title,
-//           maxLines: 1,
-//           minFontSize: 10,
-//           maxFontSize: 13,
-//           style: TextStyle(
-//             color: textColor ?? (isDarkMode ? white07 : black07),
-//             height: 13 / 18.2,
-//             fontWeight: FontWeight.w600,
-//             fontFamily: FONT_GOOGLESANS,
-//           ),
-//         ));
-//   }
+  Future<bool> _onSaveTo({
+    required int indexImageFormat,
+    required List<File> files,
+    required List<String> listFileName,
+  }) async {
+    if (files.isNotEmpty) {
+      String mimeType = generateMimeType(indexImageFormat);
 
-//   Widget _buildLinePreviewExport() {
-//     return Container(
-//       height: 20,
-//       color: grey.withValues(alpha:0.5),
-//       width: 1,
-//       // margin: const EdgeInsets.symmetric(horizontal: 10),
-//     );
-//   }
-// }
+      final pickedDirectory = await FlutterFileDialog.pickDirectory();
+      if (pickedDirectory != null) {
+        for (var i = 0; i < files.length; i++) {
+          File? item = files[i];
+          String fileName = listFileName[i];
+          await FlutterFileDialog.saveFileToDirectory(
+            directory: pickedDirectory,
+            data: item.readAsBytesSync(),
+            mimeType: mimeType,
+            fileName: fileName,
+            replace: false,
+          );
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      showCustomAboutDialog(
+        context,
+        360,
+        "Error",
+        "Cannot save your photo.",
+        titleColor: red,
+      );
+      return false;
+    }
+  }
+
+  Future<bool> _onShare({
+    required int indexImageFormat,
+    required List<File> files,
+    required List<String> listFileName,
+  }) async {
+    if (files.isNotEmpty) {
+      ShareResult result = await Share.shareXFiles(
+        files.map((e) => XFile(e.path)).toList(),
+      );
+      return result.status == ShareResultStatus.success;
+    } else {
+      showCustomAboutDialog(
+        context,
+        360,
+        "Error",
+        "Cannot save your photo.",
+        titleColor: red,
+      );
+      return false;
+    }
+  }
+
+  Future<void> _onSaveToLibrary({
+    required List<File> listFile,
+    required int indexImageFormat,
+    required List<String> listFileName,
+  }) async {
+    if (listFile.isNotEmpty) {
+      if (indexImageFormat == 2) {
+        await MyMethodChannel.createActionDocument([
+          listFile[0].path,
+        ], indexImageFormat);
+      } else {
+        List<File?> resultFiles = [];
+        for (var i = 0; i < listFile.length; i++) {
+          var item = listFile[i];
+          String fileName = listFileName[i];
+
+          File outputFile = await saveToLibrary(
+            indexImageFormat: indexImageFormat,
+            inputFile: item,
+            fileName: fileName,
+          );
+          resultFiles.add(outputFile);
+        }
+        consolelog("resultFiles on Save toLibrary ${resultFiles}");
+      }
+
+      double dialogWidth = 360;
+      String content = "Your photo is saved successfully.";
+      String title = "Saved";
+      // ignore: use_build_context_synchronously
+      showCustomAboutDialog(context, dialogWidth, title, content);
+    } else {
+      showCustomAboutDialog(
+        context,
+        360,
+        "Error",
+        "Cannot save your photo.",
+        titleColor: red,
+      );
+    }
+  }
+
+  ///
+  /// output: {
+  /// "listFile": listFile,
+  /// "listFileName" : listFileName,
+  /// }
+  ///
+  (List<File>, List<String>) prepareSavedData() {
+    List<File> listFile = [];
+    if (indexTab == 0) {
+      listFile.add(_convertedPhotoFile!);
+    } else {
+      for (var i = 0; i < _convertedPaperFiles.length; i++) {
+        File item = _convertedPaperFiles[i];
+        listFile.add(item);
+      }
+    }
+    List<String> listFileName = [];
+    int randomNumber = randomInt();
+    for (var i = 0; i < listFile.length; i++) {
+      String fileName =
+          ("passport_$randomNumber.${EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[indexImageFormat]!.toLowerCase()}");
+
+      if (i != 0) {
+        fileName =
+            ("passport_$randomNumber ($i).${EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[indexImageFormat]!.toLowerCase()}");
+      }
+      listFileName.add(fileName);
+    }
+
+    return (listFile, listFileName);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // consolelog("widget.projectModel.scaledCroppedImage ${widget.projectModel.scaledCroppedImage}");
+    _size = MediaQuery.sizeOf(context);
+    _size = Size(min(SIZE_EXAMPLE.width, _size.width), _size.height);
+    _isPhone = BlocProvider.of<DevicePlatformCubit>(context).isPhone;
+    final currentPassport = widget
+        .countrySelected
+        .listPassportModel[widget.countrySelected.indexSelectedPassport];
+
+    if (currentPassport.unit == PIXEL) {
+      _listPassportDimensionByInch = [
+        currentPassport.width / dpi,
+        currentPassport.height / dpi,
+      ];
+    } else {
+      _listPassportDimensionByInch = [
+        FlutterConvert.convertUnit(
+          currentPassport.unit,
+          INCH,
+          currentPassport.width,
+        ),
+        FlutterConvert.convertUnit(
+          currentPassport.unit,
+          INCH,
+          currentPassport.height,
+        ),
+      ];
+    }
+    consolelog("_listPassportDimensionByInch: $_listPassportDimensionByInch");
+    Color backgroundColor = Theme.of(context).appBarTheme.backgroundColor!;
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      child: Container(
+        color: backgroundColor,
+        child: Stack(children: [_buildBlurBg(backgroundColor), _buildBody()]),
+      ),
+    );
+  }
+
+  Widget _buildBlurBg(Color color) {
+    return WExports.buildBlurBackground(widget.height, color);
+  }
+
+  Widget _buildBody() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildAnalyze(),
+        WSpacer(height: 15),
+        _buildSegments(),
+        WSpacer(height: 15),
+        Expanded(child: _buildPreview()),
+        WSpacer(height: 15),
+        _buildFormats(),
+        WSpacer(height: 15),
+        _buildButtons(),
+      ],
+    );
+  }
+
+  Widget _buildAnalyze() {
+    bool isDarkMode = BlocProvider.of<ThemeBloc>(
+      context,
+      listen: true,
+    ).isDarkMode;
+    var countrySelected = widget.countrySelected;
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          FittedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                WExports.buildAnalyzePaperSize(
+                  context,
+                  countrySelected,
+                  isDarkMode,
+                ),
+                WExports.buildAnalyzeDot(context, isDarkMode),
+                ValueListenableBuilder(
+                  valueListenable: ValuesListenablesCustom(
+                    valueListenables: [_vSliderDpiResolutionPreview],
+                  ),
+                  builder: (context, _, child) {
+                    return WExports.buildAnalyzeDimension(
+                      context: context,
+                      screenSize: _size,
+                      isDarkMode: isDarkMode,
+                      countrySelected: countrySelected,
+                      dpi: _vSliderDpiResolutionPreview.value,
+                      indexImageFormat: indexImageFormat,
+                      indexTab: indexTab,
+                    );
+                  },
+                ),
+                WExports.buildAnalyzeDot(context, isDarkMode),
+                ValueListenableBuilder(
+                  valueListenable: ValuesListenablesCustom(
+                    valueListenables: [_vIndexImageFormat],
+                  ),
+                  builder: (context, _, child) {
+                    return WExports.buildAnalyzeOutputFormat(
+                      context,
+                      isDarkMode,
+                      EXPORT_SEGMENT_COMPRESSION_IMAGE_FORMAT[indexImageFormat]!,
+                    );
+                  },
+                ),
+                WExports.buildAnalyzeDot(context, isDarkMode),
+                ValueListenableBuilder(
+                  valueListenable: ValuesListenablesCustom(
+                    valueListenables: [
+                      _vIndexSegment,
+                      _vCopyCount,
+                      _vExportSize,
+                      _vIndexImageFormat,
+                      _vSliderCompressionPercent,
+                      _vSliderDpiResolutionMain,
+                    ],
+                  ),
+                  builder: (context, _, child) {
+                    return FutureBuilder<double?>(
+                      future: _handleCaculateFileSize(),
+                      builder: (context, snapshot) {
+                        double? data;
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          data = snapshot.data;
+                        }
+                        return WExports.buildAnalyzeFileSize(
+                          context: context,
+                          isDarkMode: isDarkMode,
+                          fileSize: data,
+                          size: _size,
+                          countrySelected: countrySelected,
+                          valueResolution: dpi,
+                          listPassportDimensionByInch:
+                              _listPassportDimensionByInch,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () {
+                popNavigator(context);
+              },
+              child: Container(
+                height: 28,
+                width: 28,
+                margin: const EdgeInsets.only(right: 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(999),
+                  color: isDarkMode ? white005 : black005,
+                ),
+                child: Icon(
+                  Icons.close,
+                  size: 20,
+                  color: isDarkMode ? white04 : black04,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSegments() {
+    return ValueListenableBuilder(
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [_vIndexSegment],
+      ),
+      builder: (context, _, child) {
+        return WExports.buildSegments(
+          context: context,
+          indexSelectedSegment: indexTab,
+          isPhone: _isPhone,
+          onSegmentChange: (value, prev) {
+            if (value != prev) {
+              if (value == 0) {
+                _vListMinMaxDpi.value = LIST_MIN_MAX_RESOLUTION_1;
+                _vDataSegmentResolution.value = DATA_SEGMENT_RESOLUTION_1;
+                _vIndexDpiFormat.value = 0;
+                // _vSliderDpiResolutionPreview.value = 600;
+                // _vSliderDpiResolutionMain.value = 600;
+              } else {
+                _vListMinMaxDpi.value = LIST_MIN_MAX_RESOLUTION_2;
+                _vDataSegmentResolution.value = DATA_SEGMENT_RESOLUTION_2;
+                _vIndexDpiFormat.value = 1;
+                // _vSliderDpiResolutionPreview.value = 600;
+                // _vSliderDpiResolutionMain.value = 600;
+              }
+              _vIndexSegment.value = value;
+            }
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildPreview() {
+    return ValueListenableBuilder(
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [
+          _vIndexSegment,
+          _vExportSize,
+          _vCopyCount,
+          // _vSliderDpiResolutionMain
+        ],
+      ),
+      builder: (context, _, child) {
+        return WExports.buildPreview(
+          context: context,
+          exportSize: _vExportSize.value,
+          indexSelectedSegment: indexTab,
+          screenSize: _size,
+          projectModel: widget.projectModel,
+          copyNumber: _vCopyCount.value,
+          valueResolutionDpi: dpi,
+        );
+      },
+    );
+  }
+
+  Widget _buildFormats() {
+    return ValueListenableBuilder(
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [
+          _vCopyCount,
+          _vExportSize,
+          _vIndexSegment,
+          _vIndexFocusingFormat,
+          _vSliderCompressionPercent,
+          _vIndexImageFormat,
+          _vSliderDpiResolutionPreview,
+          _vIndexDpiFormat,
+          _vListMinMaxDpi,
+          _vDataSegmentResolution,
+        ],
+      ),
+      builder: (context, _, child) {
+        return WExports.buildFormats(
+          isDisableDpiFormat: isDisableDpiFormat,
+          context: context,
+          screenSize: _size,
+          indexSelectedSegment: indexTab,
+          projectModel: widget.projectModel,
+          keysFormat: _keysFormat,
+          copyNumber: _vCopyCount.value,
+          exportSize: _vExportSize.value,
+          compressionPercent: _vSliderCompressionPercent.value,
+          dpiResolution: dpi,
+          indexImageFormat: indexImageFormat,
+          listMinMaxDpi: _vListMinMaxDpi.value,
+          dataSegmentResolution: _vDataSegmentResolution.value,
+          indexDpiFormat: _vIndexDpiFormat.value,
+          indexFocusingFormat: _vIndexFocusingFormat.value,
+          onChangeCopy: (value) {
+            _vCopyCount.value = value;
+          },
+          onChangeSizeFormat: (value) {
+            _vExportSize.value = value;
+          },
+          onChangeCompressionPercent: (percent) {
+            // _vSliderCompressionPercent.value = percent;
+          },
+          onCompressionEnd: (percent) {
+            _vSliderCompressionPercent.value = percent;
+          },
+          onChangeImageFormat: (index) {
+            _vIndexImageFormat.value = index;
+          },
+          onChangeDPIResolution: (dpi) {
+            _vSliderDpiResolutionPreview.value = dpi;
+          },
+          onChangeDPIResolutionEnd: (dpi) {
+            _vSliderDpiResolutionMain.value = dpi;
+          },
+          onChangeDpiFormat: (index) {
+            _vIndexDpiFormat.value = index;
+          },
+          onTapFormat: (index) {
+            _vIndexFocusingFormat.value = index;
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildButtons() {
+    return ValueListenableBuilder(
+      valueListenable: ValuesListenablesCustom(
+        valueListenables: [
+          _vIndexImageFormat,
+          // _isCaculating,
+        ],
+      ),
+      builder: (context, _, child) {
+        return WExports.buildButtons(
+          context: context,
+          screenSize: _size,
+          indexImageFormat: indexImageFormat,
+          isDisable: _isCaculating.value,
+          onSaveTo: () async {
+            if (_isCaculating.value) return;
+            (List<File>, List<String>) listData = prepareSavedData();
+            consolelog("listDatalistData = $listData");
+            _onShare(
+              indexImageFormat: indexImageFormat,
+              files: listData.$1,
+              listFileName: listData.$2,
+            );
+          },
+          onSaveToLibrary: () async {
+            if (_isCaculating.value) return;
+            (List<File>, List<String>) listData = prepareSavedData();
+            _onSaveToLibrary(
+              indexImageFormat: indexImageFormat,
+              listFile: listData.$1,
+              listFileName: listData.$2,
+            );
+          },
+        );
+      },
+    );
+  }
+}

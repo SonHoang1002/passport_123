@@ -19,256 +19,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 
 class GeneratePdfHelpers {
-  // Map<String, dynamic> draw(
-  //   ProjectModel projectModel,
-  //   ExportSizeModel exportSize,
-  //   int copyNumber,
-  //   ui.Image imageData,
-  //   double dpi,
-  // ) {
-  //   /// Tờ giấy
-  //   double paperWidthByPoint = FlutterConvert.convertUnit(
-  //     exportSize.unit,
-  //     POINT,
-  //     exportSize.size.width,
-  //   );
-  //   double paperHeightByPoint = FlutterConvert.convertUnit(
-  //     exportSize.unit,
-  //     POINT,
-  //     exportSize.size.height,
-  //   );
-
-  //   Size paperSizeByPoint = Size(paperWidthByPoint, paperHeightByPoint);
-
-  //   EdgeInsets margin = exportSize.marginModel.toEdgeInsets();
-
-  //   double left = FlutterConvert.convertUnit(POINT, POINT, margin.left);
-  //   double top = FlutterConvert.convertUnit(POINT, POINT, margin.top);
-  //   double right = FlutterConvert.convertUnit(POINT, POINT, margin.right);
-  //   double bottom = FlutterConvert.convertUnit(POINT, POINT, margin.bottom);
-
-  //   margin = EdgeInsets.fromLTRB(left, top, right, bottom);
-  //   //
-  //   double spacingHorizontalByPoint =
-  //       FlutterConvert.convertUnit(POINT, POINT, exportSize.spacingHorizontal);
-
-  //   double spacingVerticalByPoint = FlutterConvert.convertUnit(
-  //     POINT,
-  //     POINT,
-  //     exportSize.spacingVertical,
-  //   );
-  //   //
-  //   PassportModel currentPassport = projectModel.countryModel!.currentPassport;
-
-  //   /// Kích thước ảnh hộ chiếu đổi ra đơn vị point
-
-  //   double passportWidthByPoint, passportHeightByPoint;
-  //   if (currentPassport.unit == PIXEL) {
-  //     passportWidthByPoint = currentPassport.width / dpi * 72;
-  //     passportHeightByPoint = currentPassport.height / dpi * 72;
-  //   } else {
-  //     passportWidthByPoint = FlutterConvert.convertUnit(
-  //       currentPassport.unit,
-  //       POINT,
-  //       currentPassport.width,
-  //     );
-  //     passportHeightByPoint = FlutterConvert.convertUnit(
-  //       currentPassport.unit,
-  //       POINT,
-  //       currentPassport.height,
-  //     );
-  //   }
-
-  //   Size passportSizeByPoint =
-  //       Size(passportWidthByPoint, passportHeightByPoint);
-
-  //   // giới hạn kích thước ảnh
-  //   Size aroundAvailableSize = paperSizeByPoint.copyWith(
-  //     width: paperSizeByPoint.width - margin.left - margin.right,
-  //     height: paperSizeByPoint.height - margin.top - margin.bottom,
-  //   );
-
-  //   Size passportSizeLimitedByPoint = getLimitImageInPaper(
-  //     aroundAvailableSize,
-  //     passportSizeByPoint,
-  //     isKeepSizeWhenSmall: true,
-  //   );
-
-  //   int countImageOn1Row =
-  //       max(1, (aroundAvailableSize.width) ~/ passportSizeLimitedByPoint.width);
-
-  //   int countRowOn1Page = max(
-  //       1, (aroundAvailableSize.height) ~/ passportSizeLimitedByPoint.height);
-  //   consolelog(
-  //       "passportSizeLimitedByPoint: $passportSizeLimitedByPoint, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, margin = $margin");
-
-  //   int countImageMaxOn1Page = countRowOn1Page * countImageOn1Row;
-
-  //   int countPage = (copyNumber / countImageMaxOn1Page).ceil();
-  //   consolelog(
-  //       "passportSizeLimitedByPoint:  $passportSizeLimitedByPoint, margin = $margin, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, countImageMaxOn1Page = $countImageMaxOn1Page, countPage = $countPage");
-
-  //   List<ui.Image> listResult = [];
-  //   for (var i = 0; i < countPage; i++) {
-  //     int countImageNeedDraw = countImageMaxOn1Page;
-  //     if (i >= countPage - 1) {
-  //       countImageNeedDraw =
-  //           copyNumber - countImageMaxOn1Page * (countPage - 1);
-  //     }
-  //     ui.Image result = _generateSinglePdfPage(
-  //       imageData: imageData,
-  //       paperSizeByPoint: paperSizeByPoint,
-  //       passportSizeByPoint: passportSizeLimitedByPoint,
-  //       countImageNeedDraw: countImageNeedDraw,
-  //       countImageOn1Row: countImageOn1Row,
-  //       countRow: countRowOn1Page,
-  //       spacingHorizontalByPoint: spacingHorizontalByPoint,
-  //       spacingVerticalByPoint: spacingVerticalByPoint,
-  //       margin: margin,
-  //     );
-  //     listResult.add(result);
-  //   }
-  //   return {
-  //     "listUiImage": listResult,
-  //     "paperSizeByPoint": paperSizeByPoint,
-  //     "passportSizeByPoint": passportSizeLimitedByPoint,
-  //     "spacingHorizontalByPoint": spacingHorizontalByPoint,
-  //     "spacingVerticalByPoint": spacingVerticalByPoint,
-  //     "marginByPoint": margin,
-  //   };
-  // }
-
-  // Map<String, dynamic> drawPdfImage(
-  //   ProjectModel projectModel,
-  //   ExportSizeModel exportSize,
-  //   int copyNumber,
-  //   ui.Image imageData,
-  //   double dpi,
-  // ) {
-  //   consolelog("exportSize $exportSize");
-
-  //   /// Tờ giấy đổi sang pixel, có sử dụng dpi kèm theo
-  //   double paperWidthByPixel = FlutterConvert.convertUnit(
-  //         exportSize.unit,
-  //         INCH,
-  //         exportSize.size.width,
-  //       ) *
-  //       dpi;
-
-  //   double paperHeightByPixel = FlutterConvert.convertUnit(
-  //         exportSize.unit,
-  //         INCH,
-  //         exportSize.size.height,
-  //       ) *
-  //       dpi;
-
-  //   Size paperSizeByPixel = Size(paperWidthByPixel, paperHeightByPixel);
-
-  //   EdgeInsets margin = exportSize.marginModel.toEdgeInsets();
-
-  //   double marginLeftByPixel = FlutterConvert.convertUnit(
-  //     POINT,
-  //     INCH,
-  //     margin.left,
-  //   );
-  //   double marginTopByPixel =
-  //       FlutterConvert.convertUnit(exportSize.unit, INCH, margin.top) * dpi;
-  //   double marginRightByPixel =
-  //       FlutterConvert.convertUnit(exportSize.unit, INCH, margin.right) * dpi;
-  //   double marginBottomByPixel =
-  //       FlutterConvert.convertUnit(exportSize.unit, INCH, margin.bottom) * dpi;
-
-  //   margin = EdgeInsets.fromLTRB(
-  //     marginLeftByPixel,
-  //     marginTopByPixel,
-  //     marginRightByPixel,
-  //     marginBottomByPixel,
-  //   );
-  //   //
-  //   double spacingHorizontalByPixel = FlutterConvert.convertUnit(
-  //         exportSize.unit,
-  //         INCH,
-  //         exportSize.spacingHorizontal,
-  //       ) *
-  //       dpi;
-
-  //   double spacingVerticalByPixel = FlutterConvert.convertUnit(
-  //         exportSize.unit,
-  //         INCH,
-  //         exportSize.spacingVertical,
-  //       ) *
-  //       dpi;
-  //   //
-
-  //   /// Kích thước ảnh hộ chiếu đổi ra đơn vị point
-
-  //   Size passportSizeByPixel = Size(
-  //     imageData.width.toDouble(),
-  //     imageData.height.toDouble(),
-  //   );
-
-  //   // giới hạn kích thước passportWidthByPixel ảnh
-  //   Size aroundAvailableSize = paperSizeByPixel.copyWith(
-  //     width: paperSizeByPixel.width - margin.left - margin.right,
-  //     height: paperSizeByPixel.height - margin.top - margin.bottom,
-  //   );
-
-  //   Size passportSizeLimitedByPixel = getLimitImageInPaper(
-  //     aroundAvailableSize,
-  //     passportSizeByPixel,
-  //     isKeepSizeWhenSmall: true,
-  //   );
-
-  //   int countImageOn1Row = max(
-  //     1,
-  //     (aroundAvailableSize.width) ~/ passportSizeLimitedByPixel.width,
-  //   );
-
-  //   int countRowOn1Page = max(
-  //     1,
-  //     (aroundAvailableSize.height) ~/ passportSizeLimitedByPixel.height,
-  //   );
-  //   consolelog(
-  //     "passportSizeLimitedByPixel: $passportSizeLimitedByPixel, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, margin = $margin",
-  //   );
-
-  //   int countImageMaxOn1Page = countRowOn1Page * countImageOn1Row;
-
-  //   int countPage = (copyNumber / countImageMaxOn1Page).ceil();
-  //   consolelog(
-  //     "passportSizeLimitedByPixel:  $passportSizeLimitedByPixel, margin = $margin, countImageOn1Row = $countImageOn1Row, countRowOn1Page = $countRowOn1Page, countImageMaxOn1Page = $countImageMaxOn1Page, countPage = $countPage",
-  //   );
-
-  //   List<ui.Image> listResult = [];
-  //   for (var i = 0; i < countPage; i++) {
-  //     int countImageNeedDraw = countImageMaxOn1Page;
-  //     if (i >= countPage - 1) {
-  //       countImageNeedDraw =
-  //           copyNumber - countImageMaxOn1Page * (countPage - 1);
-  //     }
-  //     ui.Image result = _generateSinglePdfImage(
-  //       imageData: imageData,
-  //       paperSizeByPixel: paperSizeByPixel,
-  //       passportSizeByPixel: passportSizeLimitedByPixel,
-  //       countImageNeedDraw: countImageNeedDraw,
-  //       countImageOn1Row: countImageOn1Row,
-  //       countRow: countRowOn1Page,
-  //       spacingHorizontalByPixel: spacingHorizontalByPixel,
-  //       spacingVerticalByPixel: spacingVerticalByPixel,
-  //       margin: margin,
-  //     );
-  //     listResult.add(result);
-  //   }
-  //   return {
-  //     "listUiPdfImage": listResult,
-  //     "paperSizeByPixel": paperSizeByPixel,
-  //     "passportSizeByPixel": passportSizeLimitedByPixel,
-  //     "spacingHorizontalByPixel": spacingHorizontalByPixel,
-  //     "spacingVerticalByPixel": spacingVerticalByPixel,
-  //     "marginByPixel": margin,
-  //   };
-  // }
-
   Future<Map<String, dynamic>> drawPdfImageV1(
     ProjectModel projectModel,
     ExportSizeModel exportSize,
@@ -438,16 +188,21 @@ class GeneratePdfHelpers {
       isKeepSizeWhenSmall: true,
     );
 
+    Size mainpassportSizeByPixelLimited = Size(
+      passportSizeByPixelLimited.width + spacingHorizontalByPixelPoint * 2,
+      passportSizeByPixelLimited.height + spacingVerticalByPixelPoint,
+    );
+
     int countColumnIn1Page = max(
       1,
       (aroundAvailableSizeByPixelPoint.width) ~/
-          passportSizeByPixelLimited.width,
+          mainpassportSizeByPixelLimited.width,
     );
 
     int countRowIn1Page = max(
       1,
       (aroundAvailableSizeByPixelPoint.height) ~/
-          passportSizeByPixelLimited.height,
+          mainpassportSizeByPixelLimited.height,
     );
 
     int countImageOn1Page = countRowIn1Page * countColumnIn1Page;
@@ -498,6 +253,7 @@ class GeneratePdfHelpers {
 
     double leftByPoint, topByPoint, rightByPoint, bottomByPoint;
     double spacingHorizontalByPoint, spacingVerticalByPoint;
+
     var exportUnit = exportSize.unit;
     if (exportUnit == PIXEL) {
       paperWidthByPoint = exportSize.width / dpi * 72;
@@ -645,8 +401,9 @@ class GeneratePdfHelpers {
     required int countImageNeedDraw,
     required int countRowIn1Page,
     required int countColumnIn1Page,
-    required double spacingHorizontalByPixel,
-    required double spacingVerticalByPixel,
+    required double
+    spacingHorizontalByPixel, // Đổi tên cho rõ nghĩa: spacing GIỮA các ảnh
+    required double spacingVerticalByPixel, // spacing GIỮA các hàng
     required EdgeInsets margin,
   }) {
     consolelog(
@@ -664,21 +421,44 @@ class GeneratePdfHelpers {
     ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     Canvas canvas = Canvas(pictureRecorder);
 
+    // Vẽ nền trắng cho trang
     canvas.drawRect(
       Rect.fromLTWH(0, 0, paperSizeByPixel.width, paperSizeByPixel.height),
       Paint()..color = white,
     );
 
-    // tinh phan thua de can giua cac passport
-    double tong_do_dai_can_ve =
-        countColumnIn1Page *
-        (spacingHorizontalByPixel + passportSizeByPixel.width);
-    double deltaWidthToAlignCenter = max(
+    // Tính toán căn giữa theo chiều ngang
+    // Tổng chiều rộng cần vẽ = n * imageWidth + (n-1) * spacing
+    final totalWidthNeeded =
+        countColumnIn1Page * passportSizeByPixel.width +
+        (countColumnIn1Page - 1) * spacingHorizontalByPixel;
+
+    // Khoảng cách cần thêm vào 2 bên để căn giữa
+    final deltaWidthToAlignCenter = max(
       0,
-      (paperSizeByPixel.width - margin.left * 2 - tong_do_dai_can_ve) / 2,
+      (paperSizeByPixel.width - margin.left - margin.right - totalWidthNeeded) /
+          2,
+    );
+
+    // Tính toán tương tự cho chiều dọc
+    final totalHeightNeeded =
+        countRowIn1Page * passportSizeByPixel.height +
+        (countRowIn1Page - 1) * spacingVerticalByPixel;
+
+    final deltaHeightToAlignCenter = max(
+      0,
+      (paperSizeByPixel.height -
+              margin.top -
+              margin.bottom -
+              totalHeightNeeded) /
+          2,
+    );
+
+    consolelog(
+      "Total width needed: $totalWidthNeeded, Delta width: $deltaWidthToAlignCenter",
     );
     consolelog(
-      "passportSizeByPixel aspect ratio = ${passportSizeByPixel.aspectRatio}, imageData = ${imageData.width / imageData.height}",
+      "Total height needed: $totalHeightNeeded, Delta height: $deltaHeightToAlignCenter",
     );
 
     for (var indexRow = 0; indexRow < countRowIn1Page; indexRow++) {
@@ -687,34 +467,41 @@ class GeneratePdfHelpers {
         indexColumn < countColumnIn1Page;
         indexColumn++
       ) {
-        double marginLeft =
+        // Tính toán vị trí với spacing GIỮA các ảnh
+        // Công thức: margin + căn_giữa + column * (imageWidth + spacing)
+        double left =
             margin.left +
-            passportSizeByPixel.width * indexColumn +
-            spacingHorizontalByPixel * (indexColumn + 1) +
-            deltaWidthToAlignCenter;
-        double marginTop =
+            deltaWidthToAlignCenter +
+            indexColumn *
+                (passportSizeByPixel.width + spacingHorizontalByPixel * 2);
+
+        double top =
             margin.top +
-            passportSizeByPixel.height * indexRow +
-            spacingVerticalByPixel * (indexRow + 1);
-        // Nếu là item là item có số thứ tự lớn hơn tổng số ảnh cần vẽ -> vẽ ra những item trong suốt
+            // deltaHeightToAlignCenter +
+            indexRow *
+                (passportSizeByPixel.height + spacingVerticalByPixel * 2);
+
+        // Tính số thứ tự ảnh hiện tại
         int currentImageIndex =
             indexPage * countRowIn1Page * countColumnIn1Page +
             indexRow * countColumnIn1Page +
-            indexColumn +
-            1;
+            indexColumn;
 
-        bool isOverCountImageNeedDraw = currentImageIndex > countImageNeedDraw;
+        bool isOverCountImageNeedDraw = currentImageIndex >= countImageNeedDraw;
+
         if (isOverCountImageNeedDraw) {
+          // Vẽ container trống (trong suốt)
           canvas.drawRect(
             Rect.fromLTWH(
-              marginLeft,
-              marginTop,
+              left,
+              top,
               passportSizeByPixel.width,
               passportSizeByPixel.height,
             ),
             Paint()..color = transparent,
           );
         } else {
+          // Vẽ ảnh thật
           canvas.drawImageRect(
             imageData,
             Rect.fromLTWH(
@@ -724,97 +511,35 @@ class GeneratePdfHelpers {
               imageData.height.toDouble(),
             ),
             Rect.fromLTWH(
-              marginLeft,
-              marginTop,
+              left,
+              top,
               passportSizeByPixel.width,
               passportSizeByPixel.height,
             ),
             Paint(),
           );
+
+          // Vẽ border xung quanh ảnh (tùy chọn, để debug)
+          canvas.drawRect(
+            Rect.fromLTWH(
+              left,
+              top,
+              passportSizeByPixel.width,
+              passportSizeByPixel.height,
+            ),
+            Paint()
+              ..color =
+                  const Color.fromARGB(50, 128, 128, 128) // Màu xám trong suốt
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 0.5,
+          );
         }
       }
     }
+
     var data = pictureRecorder.endRecording().toImageSync(
       paperSizeByPixel.width.toInt(),
       paperSizeByPixel.height.toInt(),
-    );
-    return data;
-  }
-
-  ui.Image _generateSinglePdfPage({
-    required ui.Image imageData,
-    required Size paperSizeByPoint,
-    required Size passportSizeByPoint,
-    required int countImageNeedDraw,
-    required int countImageOn1Row,
-    required int countRow,
-    required double spacingHorizontalByPoint,
-    required double spacingVerticalByPoint,
-    required EdgeInsets margin,
-  }) {
-    ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
-    Canvas canvas = Canvas(pictureRecorder);
-
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, paperSizeByPoint.width, paperSizeByPoint.height),
-      Paint()..color = white,
-    );
-
-    int column = countImageOn1Row;
-    int row = countRow;
-    // tinh phan thua de can giua cac passport
-    double tong_do_dai_can_ve =
-        column * (spacingHorizontalByPoint + passportSizeByPoint.width);
-    double deltaWidthToAlignCenter = max(
-      0,
-      (paperSizeByPoint.width - margin.left * 2 - tong_do_dai_can_ve) / 2,
-    );
-
-    for (var y = 0; y < row; y++) {
-      for (var i = 0; i < column; i++) {
-        double marginLeft =
-            margin.left +
-            passportSizeByPoint.width * i +
-            spacingHorizontalByPoint * (i + 1) +
-            deltaWidthToAlignCenter;
-        double marginTop =
-            margin.top +
-            passportSizeByPoint.height * y +
-            spacingVerticalByPoint * (y + 1);
-        int thu_tu_cua_anh = y * column + (i + 1);
-        if (thu_tu_cua_anh > countImageNeedDraw) {
-          canvas.drawRect(
-            Rect.fromLTWH(
-              marginLeft,
-              marginTop,
-              passportSizeByPoint.width,
-              passportSizeByPoint.height,
-            ),
-            Paint()..color = transparent,
-          );
-        } else {
-          canvas.drawImageRect(
-            imageData,
-            Rect.fromLTWH(
-              0,
-              0,
-              imageData.width.toDouble(),
-              imageData.height.toDouble(),
-            ),
-            Rect.fromLTWH(
-              marginLeft,
-              marginTop,
-              passportSizeByPoint.width,
-              passportSizeByPoint.height,
-            ),
-            Paint(),
-          );
-        }
-      }
-    }
-    var data = pictureRecorder.endRecording().toImageSync(
-      paperSizeByPoint.width.toInt(),
-      paperSizeByPoint.height.toInt(),
     );
     return data;
   }

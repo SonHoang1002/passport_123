@@ -4,18 +4,23 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import com.tapuniverse.passportphoto.helper.ImageHelper
-import java.io.File
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.pdf.PdfDocument
 import android.util.Size
-import java.io.FileOutputStream
 import androidx.core.graphics.createBitmap
+import kotlin.math.ceil
 import kotlin.math.max
+import java.io.File
+import java.io.FileOutputStream
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.min
 
 
 class ExportPdf {
@@ -182,8 +187,8 @@ class ExportPdf {
         countImageNeedDraw: Int,
         countRowIn1Page: Int,
         countColumnIn1Page: Int,
-        spacingHorizontalByPixel: Double,
-        spacingVerticalByPixel: Double,
+        spacingHorizontalByPixel: Double,  // spacing GIỮA các ảnh
+        spacingVerticalByPixel: Double,    // spacing GIỮA các hàng
         margin: RectF
     ): Bitmap {
         println(
@@ -210,13 +215,18 @@ class ExportPdf {
             Paint().apply { color = Color.WHITE }
         )
 
-        // Tính phần thừa để căn giữa các passport
-        val totalDrawingWidth = countColumnIn1Page *
-                (spacingHorizontalByPixel + passportSizeByPixel.width)
+        // Tính toán căn giữa theo chiều ngang
+        // Tổng chiều rộng cần vẽ = n * imageWidth + (n-1) * spacing
+        val totalWidthNeeded = countColumnIn1Page * passportSizeByPixel.width +
+                (countColumnIn1Page - 1) * spacingHorizontalByPixel
+
+        // Khoảng cách cần thêm vào 2 bên để căn giữa chiều ngang
         val deltaWidthToAlignCenter = max(
             0.0,
-            (paperSizeByPixel.width - margin.left * 2 - totalDrawingWidth) / 2
+            (paperSizeByPixel.width - margin.left - margin.right - totalWidthNeeded) / 2
         )
+
+        println("Total width needed: $totalWidthNeeded, Delta width: $deltaWidthToAlignCenter")
 
         val aspectRatio = passportSizeByPixel.width / passportSizeByPixel.height
         val imageAspectRatio = imageData.width.toFloat() / imageData.height.toFloat()
@@ -224,34 +234,48 @@ class ExportPdf {
 
         for (indexRow in 0 until countRowIn1Page) {
             for (indexColumn in 0 until countColumnIn1Page) {
-                val marginLeft = margin.left +
-                        passportSizeByPixel.width * indexColumn +
-                        spacingHorizontalByPixel * (indexColumn + 1) +
-                        deltaWidthToAlignCenter
+                // Tính toán vị trí
+                // Chiều ngang: margin + căn_giữa + column * (imageWidth + spacing)
+                val left = margin.left +
+                        deltaWidthToAlignCenter +
+                        indexColumn * (passportSizeByPixel.width + spacingHorizontalByPixel*2)
 
-                val marginTop = margin.top +
-                        passportSizeByPixel.height * indexRow +
-                        spacingVerticalByPixel * (indexRow + 1)
+                // Chiều dọc: margin + row * (imageHeight + spacing) - KHÔNG căn giữa
+                val top = margin.top +
+                        indexRow * (passportSizeByPixel.height + spacingVerticalByPixel*2)
 
-                // Tính chỉ số ảnh hiện tại
+                // Tính chỉ số ảnh hiện tại (bắt đầu từ 0)
                 val currentImageIndex = indexPage * countRowIn1Page * countColumnIn1Page +
                         indexRow * countColumnIn1Page +
-                        indexColumn + 1
+                        indexColumn
 
-                val isOverCountImageNeedDraw = currentImageIndex > countImageNeedDraw
+                val isOverCountImageNeedDraw = currentImageIndex >= countImageNeedDraw
 
                 val destRect = RectF(
-                    marginLeft.toFloat(),
-                    marginTop.toFloat(),
-                    (marginLeft + passportSizeByPixel.width).toFloat(),
-                    (marginTop + passportSizeByPixel.height).toFloat()
+                    left.toFloat(),
+                    top.toFloat(),
+                    (left + passportSizeByPixel.width).toFloat(),
+                    (top + passportSizeByPixel.height).toFloat()
                 )
 
                 if (isOverCountImageNeedDraw) {
                     // Vẽ hình chữ nhật trong suốt
                     canvas.drawRect(
                         destRect,
-                        Paint().apply { color = Color.TRANSPARENT }
+                        Paint().apply {
+                            color = Color.TRANSPARENT
+                            style = Paint.Style.FILL
+                        }
+                    )
+
+                    // Vẽ border cho container trống (tùy chọn, để debug)
+                    canvas.drawRect(
+                        destRect,
+                        Paint().apply {
+                            color = Color.LTGRAY
+                            style = Paint.Style.STROKE
+                            strokeWidth = 0.5f
+                        }
                     )
                 } else {
                     // Vẽ ảnh vào vị trí
@@ -265,6 +289,21 @@ class ExportPdf {
                             isAntiAlias = true
                         }
                     )
+
+                    // Vẽ border xung quanh ảnh (tùy chọn, để debug)
+                    canvas.drawRect(
+                        destRect,
+                        Paint().apply {
+                            color = Color.argb(50, 128, 128, 128) // Màu xám trong suốt
+                            style = Paint.Style.STROKE
+                            strokeWidth = 0.5f
+                        }
+                    )
+                }
+
+                // Debug: in ra vị trí của ảnh đầu tiên mỗi hàng
+                if (indexColumn == 0) {
+                    println("Row $indexRow: top = $top, destRect = $destRect")
                 }
             }
         }
@@ -278,9 +317,6 @@ class ExportPdf {
         pdfOutPath: String,
         quality: Int,
         copyNumber: Int,
-        countPage: Int,
-        countColumnIn1Page: Int,
-        countRowIn1Page: Int,
         paperSizeByPoint: Size,
         passportSizeByPoint: Size,
         spacingHorizontalByPoint: Double,
@@ -308,12 +344,9 @@ class ExportPdf {
                 paperSizeByPoint = paperSizeByPoint,
                 passportSizeByPoint = passportSizeByPoint,
                 copyNumber = copyNumber,
-                countColumnIn1Page = countColumnIn1Page,
-                countRowIn1Page = countRowIn1Page,
                 marginByPoint = marginByPoint,
                 spacingHorizontalByPoint = spacingHorizontalByPoint,
                 spacingVerticalByPoint = spacingVerticalByPoint,
-                countPage = countPage,
                 resizeBitmap = resizeBitmap,
                 pdfOutPath = pdfOutPath
             )
@@ -331,24 +364,196 @@ class ExportPdf {
 
     }
 
+
     fun generatePaperPdf(
         paperSizeByPoint: Size,
         passportSizeByPoint: Size,
         copyNumber: Int,
-        countColumnIn1Page: Int,
-        countRowIn1Page: Int,
         marginByPoint: RectF,
-        spacingHorizontalByPoint: Double,
-        spacingVerticalByPoint: Double,
-        countPage: Int,
+        spacingHorizontalByPoint: Double,  // spacing GIỮA các ảnh (dùng cho margin)
+        spacingVerticalByPoint: Double,    // spacing GIỮA các hàng (dùng cho margin)
         resizeBitmap: Bitmap,
         pdfOutPath: String
     ) {
-        val pdfDocument = PdfDocument()
-        val outputFile = File(pdfOutPath)
+        try {
+            val pdfDocument = PdfDocument()
+            val outputFile = File(pdfOutPath)
 
-        val fos = FileOutputStream(outputFile)
-        x
+            // Tạo thư mục nếu chưa tồn tại
+            outputFile.parentFile?.mkdirs()
+
+            val fos = FileOutputStream(outputFile)
+
+            // Tính toán tương tự Dart code
+            // imageSize = passportSize + spacing * 2 (vì spacing ở cả 2 bên)
+            val imageSizeWithSpacing = Size(
+                (passportSizeByPoint.width + spacingHorizontalByPoint * 2).toInt(),
+                (passportSizeByPoint.height + spacingVerticalByPoint * 2).toInt()
+            )
+
+            // Tính toán số ảnh trong 1 hàng
+            // availableWidth = paperSize - marginLeft - marginRight
+            val availableWidth = paperSizeByPoint.width - marginByPoint.left - marginByPoint.right
+
+            // Tính số ảnh trong 1 hàng: availableWidth / imageSizeWithSpacing.width
+            val countImageIn1Row = if (availableWidth > 0 && imageSizeWithSpacing.width > 0) {
+                floor(availableWidth / imageSizeWithSpacing.width).toInt()
+            } else {
+                0
+            }
+
+            // Tính toán tương tự cho số hàng
+            // availableHeight = paperSize - marginTop - marginBottom
+            val availableHeight = paperSizeByPoint.height - marginByPoint.top - marginByPoint.bottom
+
+            val countImageIn1Column = if (availableHeight > 0 && imageSizeWithSpacing.height > 0) {
+                floor(availableHeight / imageSizeWithSpacing.height).toInt()
+            } else {
+                0
+            }
+
+            // Đảm bảo không nhỏ hơn 1
+            val countImageIn1Page = max(1, countImageIn1Row) * max(1, countImageIn1Column)
+            val countPage = ceil(copyNumber.toDouble() / countImageIn1Page).toInt()
+
+            // Kiểm tra nếu không đủ chỗ cho ít nhất 1 ảnh
+            if (countImageIn1Row < 1 || countImageIn1Column < 1) {
+                throw IllegalArgumentException("Kích thước ảnh quá lớn so với trang giấy")
+            }
+
+            // Tính toán tổng chiều rộng cần vẽ để căn giữa chiều ngang
+            // Tổng chiều rộng = n * imageSizeWithSpacing.width
+            val totalWidthNeeded = countImageIn1Row * imageSizeWithSpacing.width
+
+            // Khoảng cách cần thêm vào 2 bên để căn giữa chiều ngang
+            val deltaWidthToAlignCenter = max(
+                0.0,
+                ((availableWidth - totalWidthNeeded) / 2).toDouble()
+            )
+
+            println("Total width needed: $totalWidthNeeded, Delta width: $deltaWidthToAlignCenter")
+            println("Count per page: $countImageIn1Page, Total pages: $countPage")
+
+            // Tạo ma trận cho bitmap để fit cover (tương tự pw.BoxFit.cover)
+            val bitmapMatrix = Matrix()
+            val scaleX = passportSizeByPoint.width / resizeBitmap.width.toFloat()
+            val scaleY = passportSizeByPoint.height / resizeBitmap.height.toFloat()
+            val scale = maxOf(scaleX, scaleY) // BoxFit.cover lấy scale lớn hơn
+
+            bitmapMatrix.setScale(scale, scale)
+
+            // Tính toán offset để căn giữa sau khi scale
+            val scaledWidth = resizeBitmap.width * scale
+            val scaledHeight = resizeBitmap.height * scale
+            val offsetX = (passportSizeByPoint.width - scaledWidth) / 2
+            val offsetY = (passportSizeByPoint.height - scaledHeight) / 2
+            bitmapMatrix.postTranslate(offsetX, offsetY)
+
+            for (pageIndex in 0 until countPage) {
+                val pageInfo = PdfDocument.PageInfo.Builder(
+                    paperSizeByPoint.width.toInt(),
+                    paperSizeByPoint.height.toInt(),
+                    pageIndex + 1
+                ).create()
+
+                val page = pdfDocument.startPage(pageInfo)
+                val canvas = page.canvas
+                val paint = Paint()
+
+                // Vẽ nền trắng cho trang
+                paint.color = Color.WHITE
+                paint.style = Paint.Style.FILL
+                canvas.drawRect(
+                    0f,
+                    0f,
+                    paperSizeByPoint.width.toFloat(),
+                    paperSizeByPoint.height.toFloat(),
+                    paint
+                )
+
+                // Số ảnh cần vẽ trên trang hiện tại
+                val soAnh = if (pageIndex == countPage - 1) {
+                    // Trang cuối: số ảnh còn lại
+                    copyNumber - countImageIn1Page * (countPage - 1)
+                } else {
+                    countImageIn1Page
+                }
+
+                // Vẽ tất cả các vị trí (cả ảnh thật và container trống)
+                for (indexInPage in 0 until countImageIn1Page) {
+                    // Tính toán vị trí hàng và cột
+                    val row = indexInPage / countImageIn1Row
+                    val col = indexInPage % countImageIn1Row
+
+                    // Tính toán tọa độ với căn giữa chiều ngang
+                    // Chiều ngang: margin + căn_giữa + column * imageSizeWithSpacing.width
+                    val left = marginByPoint.left +
+                            deltaWidthToAlignCenter +
+                            col * imageSizeWithSpacing.width
+
+                    // Chiều dọc: margin + row * imageSizeWithSpacing.height - KHÔNG căn giữa
+                    val top = marginByPoint.top +
+                            row * imageSizeWithSpacing.height
+
+                    // Kiểm tra nếu vượt quá số ảnh cần vẽ -> vẽ container trống
+                    if (indexInPage >= soAnh) {
+                        // Vẽ container trống trong suốt
+                        continue
+                    }
+
+                    // Tính toán vị trí thực tế để vẽ ảnh (có tính spacing)
+                    val imageLeft = left + spacingHorizontalByPoint
+                    val imageTop = top + spacingVerticalByPoint
+
+                    // Vẽ background xám cho container ảnh (tương tự PdfColors.grey500)
+                    paint.color = Color.rgb(158, 158, 158) // Màu grey500
+                    paint.style = Paint.Style.FILL
+                    canvas.drawRect(
+                        RectF(
+                            imageLeft.toFloat(),
+                            imageTop.toFloat(),
+                            (imageLeft + passportSizeByPoint.width).toFloat(),
+                            (imageTop + passportSizeByPoint.height).toFloat()
+                        ),
+                        paint
+                    )
+
+                    // Vẽ bitmap với BoxFit.cover
+                    canvas.save()
+                    canvas.translate(imageLeft.toFloat(), imageTop.toFloat())
+                    canvas.drawBitmap(resizeBitmap, bitmapMatrix, paint)
+                    canvas.restore()
+
+                    // Vẽ border xung quanh ảnh (tùy chọn)
+                    paint.color = Color.LTGRAY
+                    paint.style = Paint.Style.STROKE
+                    paint.strokeWidth = 0.5f
+                    canvas.drawRect(
+                        RectF(
+                            imageLeft.toFloat(),
+                            imageTop.toFloat(),
+                            (imageLeft + passportSizeByPoint.width).toFloat(),
+                            (imageTop + passportSizeByPoint.height).toFloat()
+                        ),
+                        paint
+                    )
+                }
+
+                pdfDocument.finishPage(page)
+            }
+
+            // Ghi PDF ra file
+            pdfDocument.writeTo(fos)
+            pdfDocument.close()
+            fos.close()
+
+            println("PDF created successfully at: $pdfOutPath")
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
     }
+
 
 }

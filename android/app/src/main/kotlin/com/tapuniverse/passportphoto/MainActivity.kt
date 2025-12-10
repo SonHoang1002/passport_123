@@ -420,7 +420,6 @@ class MainActivity : FlutterFragmentActivity() {
                         val pdfOutPath = args["pdfOutPath"] as String
                         val quality = args["quality"] as Int
                         val copyNumber = args["copyNumber"] as Int
-                        val countPage = args["countPage"] as Int
                         val paperWidthByPoint =
                             args["paperWidthByPoint"] as Double
                         val paperHeightByPoint =
@@ -441,8 +440,6 @@ class MainActivity : FlutterFragmentActivity() {
                             passportHeightByPoint.toInt()
                         )
 
-                        val countColumnIn1Page = args["countColumnIn1Page"] as Int
-                        val countRowIn1Page = args["countRowIn1Page"] as Int
                         val spacingHorizontalByPoint =
                             args["spacingHorizontalByPoint"] as Double
                         val spacingVerticalByPoint =
@@ -468,11 +465,8 @@ class MainActivity : FlutterFragmentActivity() {
                                 pdfOutPath = pdfOutPath,
                                 quality = quality,
                                 copyNumber = copyNumber,
-                                countPage = countPage,
                                 paperSizeByPoint = paperSizeByPoint,
                                 passportSizeByPoint = passportSizeByPoint,
-                                countColumnIn1Page = countColumnIn1Page,
-                                countRowIn1Page = countRowIn1Page,
                                 spacingHorizontalByPoint = spacingHorizontalByPoint,
                                 spacingVerticalByPoint = spacingVerticalByPoint,
                                 marginByPoint = marginByPoint,

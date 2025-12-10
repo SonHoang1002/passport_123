@@ -327,4 +327,47 @@ class MyMethodChannel {
       rethrow;
     }
   }
+
+  static Future<(String, double)> handleGenerateMultiplePaperMediaToPdf({
+    required String imageCroppedPath,
+    required String pdfOutPath,
+    required int quality,
+    required int copyNumber,
+    required Size paperSizeByPoint,
+    required Size passportSizeByPoint,
+    required double spacingHorizontalByPoint,
+    required double spacingVerticalByPoint,
+    required EdgeInsets marginByPoint,
+  }) async {
+    try {
+      var data = {
+        "imageCroppedPath": imageCroppedPath,
+        "pdfOutPath": pdfOutPath,
+        "quality": quality,
+        "copyNumber": copyNumber,
+        "paperWidthByPoint": paperSizeByPoint.width,
+        "paperHeightByPoint": paperSizeByPoint.height,
+        "passportWidthByPoint": passportSizeByPoint.width,
+        "passportHeightByPoint": passportSizeByPoint.height,
+        "spacingHorizontalByPoint": spacingHorizontalByPoint,
+        "spacingVerticalByPoint": spacingVerticalByPoint,
+        "marginByPointLeft": marginByPoint.left,
+        "marginByPointTop": marginByPoint.top,
+        "marginByPointRight": marginByPoint.right,
+        "marginByPointBottom": marginByPoint.bottom,
+      };
+
+      List<String> result =
+          (await platform.invokeMethod(
+                    "handleGenerateMultiplePaperMediaToPdf",
+                    data,
+                  )
+                  as List<Object?>)
+              .cast<String>();
+
+      return (result[0], double.parse(result[1]));
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

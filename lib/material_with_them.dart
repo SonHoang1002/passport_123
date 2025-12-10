@@ -26,7 +26,7 @@ class _MaterialWithThemeState extends State<MaterialWithTheme> {
     Widget homeWidget = (widget.isOnBoard)
         ? const OnBoardPage()
         : const HomePageMain();
-    // homeWidget = const TestRotateCrop();
+    homeWidget = const TestRotateCrop();
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, theme) {
         return MaterialApp(

@@ -25,7 +25,7 @@ class TestRotateCrop extends StatefulWidget {
 
 class _TestRotateCropState extends State<TestRotateCrop>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  final imagePath = "${PATH_PREFIX_IMAGE}IMG_0829_111.JPG";
+  final imagePath = "${PATH_PREFIX_IMAGE}image_crop_man.png";
   Size originalPhysicalSize = Size(2000, 2667);
   // main variables
   late CropModel _cropModel;
@@ -618,9 +618,11 @@ class _TestRotateCropState extends State<TestRotateCrop>
         key: key,
         height: _rectImage.height,
         width: _rectImage.width,
+        color: red,
         child: Image.asset(
           imagePath,
           gaplessPlayback: true,
+          color: blue,
           height: _rectImage.height,
           width: _rectImage.width,
           frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
@@ -789,7 +791,7 @@ class _TestRotateCropState extends State<TestRotateCrop>
 class _Preview extends StatefulWidget {
   final ui.Image cropImage;
   final void Function() onTap;
-  const _Preview({super.key, required this.cropImage, required this.onTap});
+  const _Preview({required this.cropImage, required this.onTap});
 
   @override
   State<_Preview> createState() => _PreviewState();

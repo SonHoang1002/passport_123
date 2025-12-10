@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pass1_/commons/constants.dart';
 import 'package:pass1_/helpers/convert.dart';
 import 'package:pass1_/helpers/random_number.dart';
 import 'package:pass1_/models/country_passport_model.dart';

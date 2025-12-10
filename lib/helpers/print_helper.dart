@@ -64,7 +64,16 @@ class PrintHelper {
     consolelog(
       "widthPassportByPoint = $widthPassportByPoint, heightPassportByPoint = $heightPassportByPoint, mainSizePassportByPoint = $mainSizePassportByPoint",
     );
-    Size imageSizeByPoint = mainSizePassportByPoint;
+
+    double spacingHorizontalAroundImageByPoint =
+        PRINT_MARGIN_AROUND_IMAGE_BY_POINT; // 0.5 mm
+    double spacingVerticalAroundImageByPoint =
+        PRINT_MARGIN_AROUND_IMAGE_BY_POINT; // 0.5 mm
+
+    Size imageSizeByPoint = Size(
+      mainSizePassportByPoint.width + spacingHorizontalAroundImageByPoint * 2,
+      mainSizePassportByPoint.height + spacingVerticalAroundImageByPoint * 2,
+    );
 
     final countImageIn1Row = availableWidth ~/ imageSizeByPoint.width;
 
@@ -75,21 +84,10 @@ class PrintHelper {
       numberPage = numberPage + 1;
     }
 
-    // String outPath =
-    //     "${(await getExternalStorageDirectory())!.path}/resize_before_print.jpg";
-    // File? convertedFile = await MyMethodChannel.resizeAndResoluteImage(
-    //   inputPath: croppedFile.path,
-    //   format: 0,
-    //   // listWH: [imagePreviewSize.width, imagePreviewSize.height],
-    //   // scaleWH: [1, 1],
-    //   outPath: outPath,
-    // );
     File? convertedFile = File(croppedFile.path);
     Uint8List byteData = convertedFile.readAsBytesSync();
 
     pw.Image imageMemory = pw.Image(pw.MemoryImage(byteData));
-    double marginAroundImageByPoint =
-        PRINT_MARGIN_AROUND_IMAGE_BY_POINT; // 0.5 mm
 
     for (int i = 0; i < numberPage; i++) {
       consolelog(
@@ -118,15 +116,21 @@ class PrintHelper {
                       // vẽ thừa 1 số ảnh còn lại để căn trái list
                       if ((e + 1) + i * countImageIn1Page > numberImage) {
                         return pw.Container(
-                          margin: pw.EdgeInsets.all(marginAroundImageByPoint),
-                          height: imageSizeByPoint.height,
-                          width: imageSizeByPoint.width,
+                          margin: pw.EdgeInsets.symmetric(
+                            horizontal: spacingHorizontalAroundImageByPoint,
+                            vertical: spacingVerticalAroundImageByPoint,
+                          ),
+                          height: mainSizePassportByPoint.height,
+                          width: mainSizePassportByPoint.width,
                         );
                       }
                       return pw.Container(
-                        margin: pw.EdgeInsets.all(marginAroundImageByPoint),
-                        height: imageSizeByPoint.height,
-                        width: imageSizeByPoint.width,
+                        margin: pw.EdgeInsets.symmetric(
+                          horizontal: spacingHorizontalAroundImageByPoint,
+                          vertical: spacingVerticalAroundImageByPoint,
+                        ),
+                        height: mainSizePassportByPoint.height,
+                        width: mainSizePassportByPoint.width,
                         alignment: pw.Alignment.center,
                         child: imageMemory,
                       );
@@ -152,23 +156,6 @@ class PrintHelper {
     int quality,
     List<double> listSpaceHV,
   ) async {
-    final pdf = pw.Document(
-      pageMode: PdfPageMode.fullscreen,
-      version: PdfVersion.pdf_1_5,
-    );
-
-    Size imageSize = passportSizeDrawByPoint;
-    consolelog("format.width = ${format.width}");
-    final soAnhTrong1Dong =
-        (format.width - format.marginLeft - format.marginRight) ~/
-        imageSize.width;
-
-    final soDongTrong1Trang =
-        (format.height - format.marginTop - format.marginBottom) ~/
-        imageSize.height;
-    final soAnhTrong1Trang = soDongTrong1Trang * soAnhTrong1Dong;
-    int soTrangCanIn = (numberImage / soAnhTrong1Trang).ceil();
-
     // change quality of file
     final dirPath = (await getExternalStorageDirectory())!.path;
     String extension = "jpg";
@@ -188,12 +175,34 @@ class PrintHelper {
       fit: pw.BoxFit.cover,
     );
     consolelog("imageMemory = ${imageMemory.width}, ${imageMemory.height}");
+
+    final pdf = pw.Document(
+      pageMode: PdfPageMode.fullscreen,
+      version: PdfVersion.pdf_1_5,
+    );
+
+    double spacingHorizontalByPoint =
+        listSpaceHV[0]; // mặc định spacing là 0,5mm, 1 bên
+    double spacingVerticalByPoint =
+        listSpaceHV[1]; // mặc định spacing là 0,5mm, 1 bên
+
+    Size imageSize = Size(
+      passportSizeDrawByPoint.width + spacingHorizontalByPoint * 2,
+      passportSizeDrawByPoint.height + spacingVerticalByPoint * 2,
+    );
+
+    final soAnhTrong1Dong =
+        (format.width - format.marginLeft - format.marginRight) ~/
+        (imageSize.width);
+
+    final soDongTrong1Trang =
+        (format.height - format.marginTop - format.marginBottom) ~/
+        imageSize.height;
+    final soAnhTrong1Trang = soDongTrong1Trang * soAnhTrong1Dong;
+    int soTrangCanIn = (numberImage / soAnhTrong1Trang).ceil();
+
     // draw pdf page
     for (int i = 0; i < soTrangCanIn; i++) {
-      int soAnh = soAnhTrong1Trang;
-      if (i >= soTrangCanIn - 1) {
-        soAnh = numberImage - soAnhTrong1Trang * (soTrangCanIn - 1);
-      }
       pdf.addPage(
         pw.Page(
           pageFormat: format,
@@ -201,26 +210,34 @@ class PrintHelper {
             return pw.Container(
               alignment: pw.Alignment.topCenter,
               child: pw.Wrap(
-                spacing: listSpaceHV[0],
-                runSpacing: listSpaceHV[1],
                 alignment: pw.WrapAlignment.start,
                 crossAxisAlignment: pw.WrapCrossAlignment.start,
-                children: List.generate(soAnh, (index) => index).map((e) {
-                  // vẽ thừa 1 số ảnh còn lại để căn trái list
-                  if ((e + 1) + i * soAnhTrong1Trang > numberImage) {
+                children: List.generate(soAnhTrong1Trang, (index) => index).map(
+                  (e) {
+                    bool isOver = (e + 1) + i * soAnhTrong1Trang > numberImage;
+                    if (isOver) {
+                      return pw.Container(
+                        margin: pw.EdgeInsets.symmetric(
+                          vertical: spacingVerticalByPoint,
+                          horizontal: spacingHorizontalByPoint,
+                        ),
+                        height: passportSizeDrawByPoint.height,
+                        width: passportSizeDrawByPoint.width,
+                      );
+                    }
                     return pw.Container(
-                      height: imageSize.height,
-                      width: imageSize.width,
+                      color: PdfColors.grey500,
+                      margin: pw.EdgeInsets.symmetric(
+                        vertical: spacingVerticalByPoint,
+                        horizontal: spacingHorizontalByPoint,
+                      ),
+                      height: passportSizeDrawByPoint.height,
+                      width: passportSizeDrawByPoint.width,
+                      alignment: pw.Alignment.center,
+                      child: imageMemory,
                     );
-                  }
-                  return pw.Container(
-                    color: PdfColors.black,
-                    height: imageSize.height,
-                    width: imageSize.width,
-                    alignment: pw.Alignment.center,
-                    child: imageMemory,
-                  );
-                }).toList(),
+                  },
+                ).toList(),
               ),
             );
           },

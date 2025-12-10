@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'package:pass1_/a_test/crop_body_test.dart';
 import 'package:pass1_/helpers/size_helpers.dart';
-import 'package:pass1_/a_test/w_export_body.dart';
 import 'package:pass1_/helpers/file_helpers.dart';
 import 'package:pass1_/helpers/native_bridge/method_channel.dart';
 import 'package:pass1_/helpers/remove_background.dart';
@@ -17,9 +15,11 @@ import 'package:pass1_/models/project_model.dart';
 import 'package:pass1_/providers/blocs/adjust_subject_bloc.dart';
 import 'package:pass1_/providers/blocs/device_platform_bloc.dart';
 import 'package:pass1_/providers/events/adjust_subject_event.dart';
+import 'package:pass1_/screens/module_home/widgets/w_export.dart';
 import 'package:pass1_/screens/module_home/widgets/w_footer.dart';
 import 'package:pass1_/screens/module_home/widgets/w_print.dart';
 import 'package:pass1_/screens/sub_modules/module_adjust/adjust_body_tablet.dart';
+import 'package:pass1_/screens/sub_modules/module_crop/crop_body.dart';
 import 'package:pass1_/screens/sub_modules/module_import/import_body_tablet.dart';
 import 'package:pass1_/services/dio_api.dart';
 import 'package:pass1_/widgets/bottom_sheet/show_bottom_sheet.dart';
@@ -237,7 +237,7 @@ class _HomePagePhoneState extends State<HomePageTablet>
     }
     showCustomBottomSheetWithDragIcon(
       context: context,
-      child: WExportBody1(
+      child: WExportBody(
         projectModel: _projectModel,
         height: height,
         countrySelected: _projectModel.countryModel!,
@@ -403,7 +403,7 @@ class _HomePagePhoneState extends State<HomePageTablet>
           },
           onUpdateLoadingStatus: _updateLoadingStatus,
         ),
-        BodyCropTest(
+        BodyCrop(
           projectModel: _projectModel,
           matrix4: _matrix4Crop,
           imageSelectedSize: _imageSelectedSize ?? const Size(240, 240),

@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:color_picker_android/widgets/w_text_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pass1_/commons/colors.dart';
@@ -241,8 +239,9 @@ class WPreviewExport extends StatelessWidget {
             paperSizeByPixel: paperSizePreviewByPixelPointLimited,
             passportSizeByPixel: passportSizeByPixelPointLimitedScaled,
             margin: marginByPixelPointScaled,
-            spacingVertical: spacingVerticalByPixelPointScaled,
-            spacingHorizontal: spacingHorizontalByPixelPointScaled,
+            spacingVerticalSurroundingImage: spacingVerticalByPixelPointScaled,
+            spacingHorizontalSurroundingImage:
+                spacingHorizontalByPixelPointScaled,
           ),
         );
       },
@@ -253,15 +252,20 @@ class WPreviewExport extends StatelessWidget {
     required Size paperSizeByPixel,
     required Size passportSizeByPixel,
     required EdgeInsets margin,
-    required double spacingVertical,
-    required double spacingHorizontal,
+    required double spacingVerticalSurroundingImage,
+    required double spacingHorizontalSurroundingImage,
   }) {
     double availableWidth = paperSizeByPixel.width - margin.left - margin.right;
     double availableHeight =
         paperSizeByPixel.height - margin.left - margin.right;
-    int countColumn = max(1, availableWidth ~/ passportSizeByPixel.width);
 
-    int countRow = max(1, availableHeight ~/ passportSizeByPixel.height);
+    Size mainPassportSize = Size(
+      passportSizeByPixel.width + spacingHorizontalSurroundingImage * 2,
+      passportSizeByPixel.height + spacingHorizontalSurroundingImage * 2,
+    );
+    int countColumn = max(1, availableWidth ~/ mainPassportSize.width);
+
+    int countRow = max(1, availableHeight ~/ mainPassportSize.height);
 
     int countImageIn1Page = (countColumn * countRow);
 
@@ -293,8 +297,6 @@ class WPreviewExport extends StatelessWidget {
                         decoration: BoxDecoration(color: transparent),
                         child: Wrap(
                           clipBehavior: Clip.hardEdge,
-                          spacing: spacingHorizontal,
-                          runSpacing: spacingVertical,
                           alignment: WrapAlignment.center,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: List.generate(countImageIn1Page, (
@@ -304,6 +306,10 @@ class WPreviewExport extends StatelessWidget {
                                     indexPage * countImageIn1Page >
                                 copyNumber) {
                               return Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: spacingHorizontalSurroundingImage,
+                                  vertical: spacingVerticalSurroundingImage,
+                                ),
                                 width: passportSizeByPixel.width,
                                 height: passportSizeByPixel.height,
                                 color: transparent,
@@ -312,6 +318,10 @@ class WPreviewExport extends StatelessWidget {
 
                             return Container(
                               // color: black,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: spacingHorizontalSurroundingImage,
+                                vertical: spacingVerticalSurroundingImage,
+                              ),
                               width: passportSizeByPixel.width,
                               height: passportSizeByPixel.height,
                               alignment: Alignment.topCenter,
